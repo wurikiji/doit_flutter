@@ -1,7 +1,8 @@
 import 'dart:async';
 
 class CategoryService {
-  Future<List<String>> get getAllCategory async {
+  static get allCategory => _getAllCategory();
+  static Future<List<String>> _getAllCategory() async {
     return [
       "운동",
       "공부",

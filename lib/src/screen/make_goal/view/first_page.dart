@@ -1,4 +1,5 @@
 import 'package:do_it/src/screen/make_goal/view/module/choose_category.dart';
+import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dart';
 import 'package:do_it/src/screen/make_goal/view/module/define_title.dart';
 import 'package:flutter/material.dart';
 
@@ -6,6 +7,7 @@ class MakeGoalFirstPage extends StatelessWidget {
   final List<Widget> questionList = [
     ChooseCategory(),
     DefineTitle(),
+    ChooseConfirmMethod(),
   ];
   @override
   Widget build(BuildContext context) {
