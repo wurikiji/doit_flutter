@@ -45,7 +45,7 @@ class ChooseConfirmMethod extends StatelessWidget {
               ),
               icon: EasyStatefulBuilder(
                 identifier: chipKey,
-                keepAlive: true,
+                keepAlive: false,
                 initialValue: false,
                 builder: (context, selected) {
                   return Icon(

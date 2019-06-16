@@ -4,6 +4,8 @@ import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dar
 import 'package:do_it/src/screen/make_goal/view/module/choose_period.dart';
 import 'package:do_it/src/screen/make_goal/view/module/define_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
 class MakeGoalFirstPage extends StatelessWidget {
   final List<Widget> questionList = [
@@ -16,38 +18,61 @@ class MakeGoalFirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 42.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 30.0),
-              child: ListView.separated(
-                separatorBuilder: (context, index) => SizedBox(height: 50.0),
-                itemCount: this.questionList.length,
-                itemBuilder: (context, index) => this.questionList[index],
-              ),
-            ),
-          ),
-          GestureDetector(
-            child: AnimatedContainer(
-              duration: Duration(milliseconds: 500),
-              height: 50.0,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                color: Color(0x33ffffff),
-              ),
-              child: Center(
-                child: Text(
-                  "다음",
-                  style: DoitMainTheme.makeGoalNextButtonDisabledTextStyle,
+      child: Provider<int>.value(
+        value: 0,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 30.0),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => SizedBox(height: 50.0),
+                  itemCount: this.questionList.length,
+                  itemBuilder: (context, index) => this.questionList[index],
+                  physics: ClampingScrollPhysics(),
                 ),
               ),
             ),
-          ),
-        ],
+            Consumer<int>(
+              builder: (context, value, _) {
+                final bool didAnswerAll = (value == this.questionList.length);
+                return GestureDetector(
+                  onTap: () {
+                    if (didAnswerAll) {
+                      // goto next page
+                    } else {
+                      Scaffold.of(context).showSnackBar(
+                        SnackBar(
+                          duration: Duration(milliseconds: 1000),
+                          content: Text("모든 항목을 완료해주세요."),
+                        ),
+                      );
+                    }
+                  },
+                  child: AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    height: 50.0,
+                    decoration: ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      color: Color(0x33ffffff),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "다음",
+                        style: didAnswerAll
+                            ? DoitMainTheme.makeGoalNextButtonEnabledTextStyle
+                            : DoitMainTheme.makeGoalNextButtonDisabledTextStyle,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

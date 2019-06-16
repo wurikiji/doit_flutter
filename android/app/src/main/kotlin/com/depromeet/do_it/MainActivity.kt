@@ -1,4 +1,4 @@
-package com.example.do_it
+package com.depromeet.do_it
 
 import android.os.Bundle
 

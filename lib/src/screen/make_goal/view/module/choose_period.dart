@@ -8,11 +8,14 @@ class ChoosePeriod extends StatelessWidget {
       body: RaisedButton(
         child: Text("click"),
         onPressed: () async {
+          final DateTime now = DateTime.now();
           final DateTime dateTime = await showDatePicker(
             context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(2010),
+            initialDate: now,
+            firstDate: DateTime(now.year, now.month),
             lastDate: DateTime(2999),
+            selectableDayPredicate: (date) =>
+                date.isAfter(now.subtract(Duration(days: 1))),
           );
           print(dateTime);
         },
