@@ -40,4 +40,17 @@ class DoitMainTheme {
     fontStyle: FontStyle.normal,
     fontSize: 14.0,
   );
+
+  static TextStyle makeGoalNextButtonDisabledTextStyle = const TextStyle(
+    color: const Color(0xff222222),
+    fontWeight: FontWeight.bold,
+    fontFamily: 'SpoqaHanSans',
+    fontSize: 16.0,
+  );
+  static TextStyle makeGoalNextButtonEnabledTextStyle = const TextStyle(
+    color: const Color(0xffffffff),
+    fontWeight: FontWeight.bold,
+    fontFamily: 'SpoqaHanSans',
+    fontSize: 16.0,
+  );
 }

@@ -4,13 +4,13 @@ import 'package:do_it/src/color/doit_theme.dart';
 
 class QuestionScaffold extends StatelessWidget {
   QuestionScaffold({
-    @required this.children,
+    @required this.body,
     @required this.title,
     Key key,
   }) : super(key: key);
 
   final String title;
-  final List<Widget> children;
+  final Widget body;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -19,7 +19,7 @@ class QuestionScaffold extends StatelessWidget {
         children: <Widget>[
           QuestionTitle(title: this.title),
           SizedBox(height: 8.0),
-        ]..addAll(this.children),
+        ]..add(this.body),
       ),
     );
   }

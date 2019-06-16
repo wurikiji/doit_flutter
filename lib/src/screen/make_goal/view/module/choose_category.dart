@@ -9,33 +9,31 @@ class ChooseCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     return QuestionScaffold(
       title: '카테고리를 고르세요.',
-      children: <Widget>[
-        FutureBuilder(
-          future: this.categoryList,
-          builder: (context, AsyncSnapshot snapshot) {
-            if (snapshot?.hasData ?? false) {
-              return Wrap(
-                runSpacing: 10.0,
-                spacing: 10.0,
-                children: (snapshot.data as List)
-                    .map(
-                      (category) => SelectableGradientChip(
-                        title: category,
-                      ),
-                    )
-                    .toList(),
-              );
-            } else {
-              print("Not yet loaded categories");
-              return Container(
-                child: Center(
-                  child: RefreshProgressIndicator(),
-                ),
-              );
-            }
-          },
-        ),
-      ],
+      body: FutureBuilder(
+        future: this.categoryList,
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot?.hasData ?? false) {
+            return Wrap(
+              runSpacing: 10.0,
+              spacing: 10.0,
+              children: (snapshot.data as List)
+                  .map(
+                    (category) => SelectableGradientChip(
+                      title: category,
+                    ),
+                  )
+                  .toList(),
+            );
+          } else {
+            print("Not yet loaded categories");
+            return Container(
+              child: Center(
+                child: RefreshProgressIndicator(),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }

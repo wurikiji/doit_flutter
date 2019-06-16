@@ -77,18 +77,22 @@ class SelectableGradientChip<T> extends StatelessWidget {
                       ],
                     ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                if (this.icon != null) this.icon,
-                if (this.icon != null) SizedBox(width: 8.0),
-                Text(
-                  this.title,
-                  style: selected
-                      ? DoitMainTheme.makeGoalSelectedCategory
-                      : DoitMainTheme.makeGoalUnselectedCategory,
+            child: IntrinsicWidth(
+              child: Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    if (this.icon != null) this.icon,
+                    if (this.icon != null) SizedBox(width: 8.0),
+                    Text(
+                      this.title,
+                      style: selected
+                          ? DoitMainTheme.makeGoalSelectedCategory
+                          : DoitMainTheme.makeGoalUnselectedCategory,
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );

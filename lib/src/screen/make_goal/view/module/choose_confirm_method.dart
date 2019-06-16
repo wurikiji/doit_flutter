@@ -1,5 +1,6 @@
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
+import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -30,29 +31,55 @@ class ConfirmMethod {
 class ChooseConfirmMethod extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List methodChips = List.generate(
+      confirmMethod.length * 2 - 1,
+      (index) {
+        if (index % 2 == 0) {
+          final ConfirmMethod method = confirmMethod[index ~/ 2];
+          final String chipKey = 'confirm' + method.title + 'Icon';
+          return Expanded(
+            child: SelectableGradientChip(
+              title: method.title,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              icon: EasyStatefulBuilder(
+                identifier: chipKey,
+                keepAlive: true,
+                initialValue: false,
+                builder: (context, selected) {
+                  return Icon(
+                    method.icon,
+                    size: 18.0,
+                    color: selected ? Color(0xffffffff) : Color(0x66ffffff),
+                  );
+                },
+              ),
+              onTap: (context, _) {
+                /// 아이콘 색 변경을 위한 setState
+                EasyStatefulBuilder.setState(
+                  chipKey,
+                  (state) {
+                    state.nextState = !state.currentState;
+                  },
+                );
+              },
+            ),
+          );
+        } else {
+          // 사이 띄우는
+          return SizedBox(width: 15.0);
+        }
+      },
+    ).toList();
+
     return QuestionScaffold(
       title: '인증방식을 고르세요. (중복가능)',
-      children: <Widget>[
-        // TODO: Listview horizontal 로 변경하고 separator로 중간 띄어 줘야함.
-        // TODO: icon theme 유동적으로 변경할 방법이 필요함.
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: confirmMethod
-              .map(
-                (method) => Expanded(
-                  child: SelectableGradientChip(
-                    title: method.title,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    icon: Icon(method.icon),
-                  ),
-                ),
-              )
-              .toList(),
-        ),
-      ],
+      body: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: methodChips,
+      ),
     );
   }
 }
