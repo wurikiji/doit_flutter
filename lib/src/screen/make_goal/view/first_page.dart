@@ -1,4 +1,5 @@
 import 'package:do_it/src/color/doit_theme.dart';
+import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/model/goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/module/choose_category.dart';
 import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dart';
@@ -6,6 +7,7 @@ import 'package:do_it/src/screen/make_goal/view/module/choose_period.dart';
 import 'package:do_it/src/screen/make_goal/view/module/define_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
 class MakeGoalFirstPage extends StatelessWidget {
@@ -36,9 +38,8 @@ class MakeGoalFirstPage extends StatelessWidget {
               ),
             ),
             Consumer<FirstPageGoalModel>(
-              builder: (context, firstPageGoal, _) {
-                final bool didAnswerAll =
-                    firstPageGoal.numOfGoalsSet == firstPageGoal.maxNumGoals;
+              builder: (context, _pageController, _) {
+                final bool didAnswerAll = true;
                 return GestureDetector(
                   onTap: () {
                     if (didAnswerAll) {
@@ -51,6 +52,13 @@ class MakeGoalFirstPage extends StatelessWidget {
                         ),
                       );
                     }
+                    final MakeGoalNavigationBloc _makeGoalNavBloc =
+                        BlocProvider.of<MakeGoalNavigationBloc>(context);
+                    _makeGoalNavBloc.dispatch(
+                      MakeGoalNavigationEvent(
+                        action: MakeGoalNavigationAction.goNext,
+                      ),
+                    );
                   },
                   child: AnimatedContainer(
                     duration: Duration(milliseconds: 500),
@@ -59,7 +67,12 @@ class MakeGoalFirstPage extends StatelessWidget {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(4.0),
                       ),
-                      color: Color(0x33ffffff),
+                      gradient: LinearGradient(
+                        colors: [
+                          didAnswerAll ? Color(0xff771de4) : Color(0x33ffffff),
+                          didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),
+                        ],
+                      ),
                     ),
                     child: Center(
                       child: Text(

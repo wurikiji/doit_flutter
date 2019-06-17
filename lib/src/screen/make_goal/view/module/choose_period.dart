@@ -21,26 +21,29 @@ class ChoosePeriod extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            EasyStatefulBuilder(
-              identifier: startDateKey,
-              initialValue: null,
-              keepAlive: false,
-              builder: (context, DateTime date) {
-                return GestureDetector(
-                  onTap: () async {
-                    DateTime date = await selectDateTime(context);
-                    EasyStatefulBuilder.setState(startDateKey, (state) {
-                      state.nextState = date;
-                    });
-                  },
-                  child: Text(
-                    date == null ? "시작 날짜" : dateTimeToString(date),
-                    style: date == null
-                        ? DoitMainTheme.makeGoalHintTextStyle
-                        : DoitMainTheme.makeGoalUserInputTextStyle,
-                  ),
-                );
-              },
+            Expanded(
+              child: EasyStatefulBuilder(
+                identifier: startDateKey,
+                initialValue: null,
+                keepAlive: false,
+                builder: (context, DateTime date) {
+                  return GestureDetector(
+                    onTap: () async {
+                      DateTime date = await selectDateTime(context);
+                      EasyStatefulBuilder.setState(startDateKey, (state) {
+                        state.nextState = date;
+                      });
+                    },
+                    child: Text(
+                      date == null ? "시작 날짜" : dateTimeToString(date),
+                      textAlign: TextAlign.end,
+                      style: date == null
+                          ? DoitMainTheme.makeGoalHintTextStyle
+                          : DoitMainTheme.makeGoalUserInputTextStyle,
+                    ),
+                  );
+                },
+              ),
             ),
             SizedBox(width: 20.0),
             Container(
@@ -56,26 +59,28 @@ class ChoosePeriod extends StatelessWidget {
               ),
             ),
             SizedBox(width: 20.0),
-            EasyStatefulBuilder(
-              identifier: endDateKey,
-              initialValue: null,
-              keepAlive: false,
-              builder: (context, DateTime date) {
-                return GestureDetector(
-                  onTap: () async {
-                    DateTime date = await selectDateTime(context);
-                    EasyStatefulBuilder.setState(endDateKey, (state) {
-                      state.nextState = date;
-                    });
-                  },
-                  child: Text(
-                    date == null ? "종료 날짜" : dateTimeToString(date),
-                    style: date == null
-                        ? DoitMainTheme.makeGoalHintTextStyle
-                        : DoitMainTheme.makeGoalUserInputTextStyle,
-                  ),
-                );
-              },
+            Expanded(
+              child: EasyStatefulBuilder(
+                identifier: endDateKey,
+                initialValue: null,
+                keepAlive: false,
+                builder: (context, DateTime date) {
+                  return GestureDetector(
+                    onTap: () async {
+                      DateTime date = await selectDateTime(context);
+                      EasyStatefulBuilder.setState(endDateKey, (state) {
+                        state.nextState = date;
+                      });
+                    },
+                    child: Text(
+                      date == null ? "종료 날짜" : dateTimeToString(date),
+                      style: date == null
+                          ? DoitMainTheme.makeGoalHintTextStyle
+                          : DoitMainTheme.makeGoalUserInputTextStyle,
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
