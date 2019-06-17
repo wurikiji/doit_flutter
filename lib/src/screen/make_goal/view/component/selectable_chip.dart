@@ -2,7 +2,7 @@ import 'package:do_it/src/color/doit_theme.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 
-typedef SelectableChipOnTap<T> = Function(BuildContext, T);
+typedef SelectableChipOnTap = Function(BuildContext, dynamic);
 
 class SelectableGradientChip<T> extends StatelessWidget {
   SelectableGradientChip({
@@ -31,7 +31,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
   final T value;
 
   /// 칩을 클릭했을 때, 활성화 이외에 추가로 수행할 작업
-  final SelectableChipOnTap<T> onTap;
+  final SelectableChipOnTap onTap;
 
   /// 칩이 선택됐을 떄의 그라디언트
   final Gradient gradient;
@@ -63,7 +63,6 @@ class SelectableGradientChip<T> extends StatelessWidget {
               if (groupKey != null) {
                 // TODO: 코드가 비슷하므로 refactor 가능성이 매우 높다.
                 if (selected) {
-                  if (this.onTap != null) this.onTap(context, this.value);
                   EasyStatefulBuilder.setState(stateIdentifier, (state) {
                     state.nextState = false;
                   });
@@ -72,7 +71,6 @@ class SelectableGradientChip<T> extends StatelessWidget {
                     state.nextState = state.currentState;
                   });
                 } else if (selectedChips.length < this.maxMultiSelectables) {
-                  if (this.onTap != null) this.onTap(context, this.value);
                   EasyStatefulBuilder.setState(stateIdentifier, (state) {
                     state.nextState = true;
                   });
@@ -97,7 +95,10 @@ class SelectableGradientChip<T> extends StatelessWidget {
                     state.nextState = current;
                   });
                 }
+                if (this.onTap != null)
+                  this.onTap(context, EasyStatefulBuilder.getState(groupKey));
               } else {
+                if (this.onTap != null) this.onTap(context, this.value);
                 EasyStatefulBuilder.setState(stateIdentifier, (state) {
                   state.nextState = !state.currentState;
                 });

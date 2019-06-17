@@ -11,7 +11,7 @@ const List<ConfirmMethod> confirmMethod = [
   ),
   const ConfirmMethod(
     title: '글',
-    icon: FontAwesomeIcons.envelopeOpenText,
+    icon: Icons.text_fields,
   ),
   const ConfirmMethod(
     title: '타이머',
@@ -40,6 +40,7 @@ class ChooseConfirmMethod extends StatelessWidget {
           return Expanded(
             child: SelectableGradientChip(
               title: method.title,
+              value: index ~/ 2,
               groupKey: 'confirmationQuestion',
               maxMultiSelectables: confirmMethod.length,
               shape: RoundedRectangleBorder(

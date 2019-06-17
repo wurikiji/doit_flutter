@@ -22,6 +22,7 @@ class ChooseCategory extends StatelessWidget {
                       title: category,
                       groupKey: 'categoryQuestion',
                       maxMultiSelectables: 1,
+                      value: category,
                     ),
                   )
                   .toList(),

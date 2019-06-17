@@ -1,4 +1,5 @@
 import 'package:do_it/src/color/doit_theme.dart';
+import 'package:do_it/src/screen/make_goal/model/goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/module/choose_category.dart';
 import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dart';
 import 'package:do_it/src/screen/make_goal/view/module/choose_period.dart';
@@ -18,8 +19,8 @@ class MakeGoalFirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 42.0),
-      child: Provider<int>.value(
-        value: 0,
+      child: Provider<FirstPageGoalModel>.value(
+        value: FirstPageGoalModel(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -34,9 +35,10 @@ class MakeGoalFirstPage extends StatelessWidget {
                 ),
               ),
             ),
-            Consumer<int>(
-              builder: (context, value, _) {
-                final bool didAnswerAll = (value == this.questionList.length);
+            Consumer<FirstPageGoalModel>(
+              builder: (context, firstPageGoal, _) {
+                final bool didAnswerAll =
+                    firstPageGoal.numOfGoalsSet == firstPageGoal.maxNumGoals;
                 return GestureDetector(
                   onTap: () {
                     if (didAnswerAll) {
