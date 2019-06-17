@@ -20,6 +20,8 @@ class ChooseCategory extends StatelessWidget {
                   .map(
                     (category) => SelectableGradientChip(
                       title: category,
+                      groupKey: 'categoryQuestion',
+                      maxMultiSelectables: 1,
                     ),
                   )
                   .toList(),

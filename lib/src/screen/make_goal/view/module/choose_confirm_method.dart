@@ -40,6 +40,8 @@ class ChooseConfirmMethod extends StatelessWidget {
           return Expanded(
             child: SelectableGradientChip(
               title: method.title,
+              groupKey: 'confirmationQuestion',
+              maxMultiSelectables: confirmMethod.length,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(4.0),
               ),
