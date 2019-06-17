@@ -9,8 +9,11 @@ class DefineTitle extends StatelessWidget {
       title: '프로젝트의 상세 타이틀을 적어주세요.',
       body: TextField(
         decoration: InputDecoration(
-          border: InputBorder.none,
           filled: true,
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(4.0),
+            borderSide: BorderSide(style: BorderStyle.none),
+          ),
           fillColor: Color(0xff2b2b2b),
           hintText: '주 3회 이상 운동하기',
           hintStyle: DoitMainTheme.makeGoalHintTextStyle,
