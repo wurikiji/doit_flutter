@@ -28,16 +28,19 @@ class ChooseConfirmMethod extends StatelessWidget {
 
     return QuestionScaffold(
       title: '타이머 사용여부를 선택해주세요.',
-      body: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          WillUseTimerQuestionWidget(
-              method: method, groupKey: groupKey, chipKey: chipKey),
-          SizedBox(width: 14.0),
-          ConfirmMethodsNotice(),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 18.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            WillUseTimerQuestionWidget(
+                method: method, groupKey: groupKey, chipKey: chipKey),
+            SizedBox(width: 14.0),
+            ConfirmMethodsNotice(),
+          ],
+        ),
       ),
     );
   }
