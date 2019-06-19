@@ -2,36 +2,36 @@ import 'package:equatable/equatable.dart';
 
 enum GoalCategory { sport, study, hobby, saveMoney, travle, diet, etc }
 
-int _howManyGoalsForPageOne = 3;
+const int _howManyGoalsForPageOne = 5;
 
 class FirstPageGoalModel extends Equatable {
   GoalCategory category;
   String goalTitle;
   DateTime startDate;
   DateTime endDate;
-  List<int> confirmMethods;
+  bool useTimer;
 
   FirstPageGoalModel({
     this.category,
-    this.confirmMethods,
+    this.useTimer,
     this.endDate,
     this.goalTitle,
     this.startDate,
-  }) : super([category, confirmMethods, endDate, goalTitle, startDate]);
+  }) : super([category, useTimer, endDate, goalTitle, startDate]);
 
   FirstPageGoalModel copyWith({
     GoalCategory category,
     String goalTitle,
     DateTime startDate,
     DateTime endDate,
-    List<int> confirmMethods,
+    bool useTimer,
   }) =>
       FirstPageGoalModel(
         category: category ?? this.category,
         goalTitle: goalTitle ?? this.goalTitle,
         startDate: startDate ?? this.startDate,
         endDate: endDate ?? this.endDate,
-        confirmMethods: confirmMethods ?? this.confirmMethods,
+        useTimer: useTimer ?? this.useTimer,
       );
 
   int get numOfGoalsSet {
@@ -40,7 +40,7 @@ class FirstPageGoalModel extends Equatable {
     if (this.goalTitle != null) ret++;
     if (this.startDate != null) ret++;
     if (this.endDate != null) ret++;
-    if (this.confirmMethods?.isNotEmpty ?? false) ret++;
+    if (this.useTimer != null) ret++;
     return ret;
   }
 

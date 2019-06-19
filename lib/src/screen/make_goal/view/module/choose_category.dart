@@ -18,11 +18,14 @@ class ChooseCategory extends StatelessWidget {
               spacing: 10.0,
               children: (snapshot.data as List)
                   .map(
-                    (category) => SelectableGradientChip(
-                      title: category,
-                      groupKey: 'categoryQuestion',
-                      maxMultiSelectables: 1,
-                      value: category,
+                    (category) => Container(
+                      height: 30.0,
+                      child: SelectableGradientChip(
+                        title: category,
+                        groupKey: 'categoryQuestion',
+                        maxMultiSelectables: 1,
+                        value: category,
+                      ),
                     ),
                   )
                   .toList(),

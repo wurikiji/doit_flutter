@@ -69,8 +69,8 @@ class MakeGoalFirstPage extends StatelessWidget {
                       ),
                       gradient: LinearGradient(
                         colors: [
-                          didAnswerAll ? Color(0xff771de4) : Color(0x33ffffff),
                           didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),
+                          didAnswerAll ? Color(0xff771de4) : Color(0x33ffffff),
                         ],
                       ),
                     ),

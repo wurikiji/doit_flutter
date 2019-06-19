@@ -54,8 +54,8 @@ class MakeGoalProgressBar extends StatelessWidget {
                 shape: StadiumBorder(),
                 gradient: LinearGradient(
                   colors: [
-                    Color(0xff771de4),
                     Color(0xff4d90fb),
+                    Color(0xff771de4),
                   ],
                 ),
               ),

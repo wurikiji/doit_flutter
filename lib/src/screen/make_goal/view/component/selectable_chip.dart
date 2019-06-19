@@ -105,8 +105,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
               }
             },
             child: AnimatedContainer(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 17.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 17.0),
               duration: const Duration(milliseconds: 200),
               decoration: ShapeDecoration(
                 shape: this.shape ??
@@ -117,8 +116,8 @@ class SelectableGradientChip<T> extends StatelessWidget {
                     ? (this.gradient ??
                         LinearGradient(
                           colors: [
-                            Color(0xff771de4),
                             Color(0xff4d90fb),
+                            Color(0xff771de4),
                           ],
                         ))
                     : LinearGradient(
