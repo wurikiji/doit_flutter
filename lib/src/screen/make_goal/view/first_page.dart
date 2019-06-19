@@ -20,7 +20,7 @@ class MakeGoalFirstPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 42.0),
+      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 62.0),
       child: Provider<FirstPageGoalModel>.value(
         value: FirstPageGoalModel(),
         child: Column(
