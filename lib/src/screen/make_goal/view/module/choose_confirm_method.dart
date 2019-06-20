@@ -33,7 +33,7 @@ class ChooseConfirmMethod extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             WillUseTimerQuestionWidget(
                 method: method, groupKey: groupKey, chipKey: chipKey),

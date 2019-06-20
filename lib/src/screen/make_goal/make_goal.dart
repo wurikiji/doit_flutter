@@ -33,7 +33,7 @@ class MakeGoal extends StatelessWidget {
           shape: CircularNotchedRectangle(),
           notchMargin: 8.0,
           child: Container(
-            height: 75.0,
+            height: 65.0,
             decoration: BoxDecoration(
               border: Border(
                 top: BorderSide(
@@ -91,6 +91,14 @@ class MakeGoal extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
+              MakeGoalProgressBloc bloc =
+                  BlocProvider.of<MakeGoalProgressBloc>(builderContext);
+              bloc.dispatch(
+                MakeGoalProgressEvent(
+                  action: MakeGoalProgressAction.setProgress,
+                  pageIndex: value,
+                ),
+              );
             },
             child: PageView.builder(
               controller: this._pageController,
@@ -99,16 +107,6 @@ class MakeGoal extends StatelessWidget {
                 return this._pages[index];
               },
               physics: NeverScrollableScrollPhysics(),
-              onPageChanged: (index) {
-                MakeGoalProgressBloc bloc =
-                    BlocProvider.of<MakeGoalProgressBloc>(builderContext);
-                bloc.dispatch(
-                  MakeGoalProgressEvent(
-                    action: MakeGoalProgressAction.setProgress,
-                    pageIndex: index,
-                  ),
-                );
-              },
             ),
           ),
         ),
