@@ -2,6 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum FirstPageMakeGoalInfoAction {
   setCategory,
@@ -34,37 +36,42 @@ class FirstPageMakeGoalBloc
   final MakeGoalBloc makeGoalBloc;
   @override
   FirstPageMakeGoalInfoSnapshot get initialState =>
-      FirstPageMakeGoalInfoSnapshot(goal: MakeGoalFirstPageModel());
+      FirstPageMakeGoalInfoSnapshot(
+        goal: makeGoalBloc.goalState.data.firstPage,
+      );
 
   @override
   Stream<FirstPageMakeGoalInfoSnapshot> mapEventToState(
       FirstPageMakeGoalInfoEvent event) async* {
+    MakeGoalFirstPageModel nextState;
     switch (event.action) {
       case FirstPageMakeGoalInfoAction.setCategory:
-        yield FirstPageMakeGoalInfoSnapshot(
-          goal: currentState.goal.copyWith(category: event.data),
-        );
+        nextState = currentState.goal.copyWith(category: event.data);
         break;
       case FirstPageMakeGoalInfoAction.setTitle:
-        yield FirstPageMakeGoalInfoSnapshot(
-          goal: currentState.goal.copyWith(goalTitle: event.data),
-        );
+        nextState = currentState.goal.copyWith(goalTitle: event.data);
         break;
       case FirstPageMakeGoalInfoAction.setStartDate:
-        yield FirstPageMakeGoalInfoSnapshot(
-          goal: currentState.goal.copyWith(startDate: event.data),
-        );
+        nextState = currentState.goal.copyWith(startDate: event.data);
         break;
       case FirstPageMakeGoalInfoAction.setEndDate:
-        yield FirstPageMakeGoalInfoSnapshot(
-          goal: currentState.goal.copyWith(endDate: event.data),
-        );
+        nextState = currentState.goal.copyWith(endDate: event.data);
         break;
       case FirstPageMakeGoalInfoAction.setUseTimer:
-        yield FirstPageMakeGoalInfoSnapshot(
-          goal: currentState.goal.copyWith(useTimer: event.data),
-        );
+        nextState = currentState.goal.copyWith(useTimer: event.data);
         break;
     }
+    makeGoalBloc.dispatch(
+      MakeGoalEvent(
+        action: MakeGoalAction.setFirstPageGoal,
+        data: nextState,
+      ),
+    );
+    yield FirstPageMakeGoalInfoSnapshot(
+      goal: nextState,
+    );
   }
+
+  static getBloc(BuildContext context) =>
+      BlocProvider.of<FirstPageMakeGoalBloc>(context);
 }

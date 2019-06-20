@@ -1,4 +1,7 @@
+import 'package:do_it/src/color/doit_theme.dart';
+import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/progress_bloc.dart';
+import 'package:do_it/src/screen/make_goal/constant/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +18,45 @@ class MakeGoalAppBar extends AppBar {
             child: MakeGoalProgressBar(),
             preferredSize: const Size.fromHeight(8.0),
           ),
+          actions: [
+            MakeGoalPrevStepWidget(),
+          ],
         );
+}
+
+class MakeGoalPrevStepWidget extends StatelessWidget {
+  const MakeGoalPrevStepWidget({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final MakeGoalProgressBloc bloc =
+        BlocProvider.of<MakeGoalProgressBloc>(context);
+    return BlocBuilder(
+      bloc: bloc,
+      builder: (context, MakeGoalProgressSnapshot value) => InkWell(
+        onTap: () {
+          MakeGoalNavigationBloc navBloc =
+              BlocProvider.of<MakeGoalNavigationBloc>(context);
+          navBloc.dispatch(
+            MakeGoalNavigationEvent(
+              action: MakeGoalNavigationAction.goBack,
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.only(right: 16.0),
+          child: Center(
+            child: Text(
+              value.progress > (1 / numOfMakeGoalPages) ? "이전" : "",
+              style: DoitMainTheme.makeGoalHintTextStyle,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class MakeGoalBackButton extends StatelessWidget {

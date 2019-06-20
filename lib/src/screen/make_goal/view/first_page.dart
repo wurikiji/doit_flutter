@@ -21,28 +21,34 @@ class MakeGoalFirstPage extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 52.0),
-      child: BlocProvider<FirstPageMakeGoalBloc>(
-        builder: (context) => FirstPageMakeGoalBloc(
-          makeGoalBloc: BlocProvider.of<MakeGoalBloc>(context),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 30.0),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => SizedBox(height: 50.0),
-                  itemCount: this.questionList.length,
-                  itemBuilder: (context, index) => this.questionList[index],
-                  physics: ClampingScrollPhysics(),
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).requestFocus(new FocusNode());
+      },
+      child: Container(
+        padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 52.0),
+        child: BlocProvider<FirstPageMakeGoalBloc>(
+          builder: (context) => FirstPageMakeGoalBloc(
+            makeGoalBloc: BlocProvider.of<MakeGoalBloc>(context),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 30.0),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) =>
+                        SizedBox(height: 50.0),
+                    itemCount: this.questionList.length,
+                    itemBuilder: (context, index) => this.questionList[index],
+                    physics: ClampingScrollPhysics(),
+                  ),
                 ),
               ),
-            ),
-            MakeGoalNextStepButton(),
-          ],
+              MakeGoalNextStepButton(),
+            ],
+          ),
         ),
       ),
     );

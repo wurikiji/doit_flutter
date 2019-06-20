@@ -1,4 +1,5 @@
 import 'package:do_it/src/color/doit_theme.dart';
+import 'package:do_it/src/screen/make_goal/bloc/first_page_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:flutter/material.dart';
 
@@ -22,6 +23,15 @@ class DefineTitle extends StatelessWidget {
         ),
         style: DoitMainTheme.makeGoalUserInputTextStyle,
         maxLines: 1,
+        onChanged: (String title) async {
+          FirstPageMakeGoalBloc _bloc = FirstPageMakeGoalBloc.getBloc(context);
+          _bloc.dispatch(
+            FirstPageMakeGoalInfoEvent(
+              action: FirstPageMakeGoalInfoAction.setTitle,
+              data: title,
+            ),
+          );
+        },
       ),
     );
   }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-enum GoalCategory { sport, study, hobby, saveMoney, travle, diet, etc }
+enum GoalCategory { sport, study, hobby, saveMoney, travel, diet, etc, none }
 
 const int _howManyGoalsForPageOne = 5;
 
@@ -13,7 +13,7 @@ class MakeGoalFirstPageModel extends Equatable {
 
   MakeGoalFirstPageModel({
     this.category,
-    this.useTimer,
+    this.useTimer = false,
     this.endDate,
     this.goalTitle,
     this.startDate,
@@ -36,8 +36,8 @@ class MakeGoalFirstPageModel extends Equatable {
 
   int get numOfGoalsSet {
     int ret = 0;
-    if (this.category != null) ret++;
-    if (this.goalTitle != null) ret++;
+    if ((this.category ?? GoalCategory.none) != GoalCategory.none) ret++;
+    if ((this.goalTitle?.length ?? 0) > 0) ret++;
     if (this.startDate != null) ret++;
     if (this.endDate != null) ret++;
     if (this.useTimer != null) ret++;
