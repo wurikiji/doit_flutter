@@ -21,7 +21,7 @@ class FirstPageMakeGoalInfoEvent<T> extends Equatable {
 }
 
 class FirstPageMakeGoalInfoSnapshot extends Equatable {
-  FirstPageGoalModel goal;
+  MakeGoalFirstPageModel goal;
   FirstPageMakeGoalInfoSnapshot({
     this.goal,
   }) : super([goal]);
@@ -34,7 +34,7 @@ class FirstPageMakeGoalBloc
   final MakeGoalBloc makeGoalBloc;
   @override
   FirstPageMakeGoalInfoSnapshot get initialState =>
-      FirstPageMakeGoalInfoSnapshot(goal: FirstPageGoalModel());
+      FirstPageMakeGoalInfoSnapshot(goal: MakeGoalFirstPageModel());
 
   @override
   Stream<FirstPageMakeGoalInfoSnapshot> mapEventToState(

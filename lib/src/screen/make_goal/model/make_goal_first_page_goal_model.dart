@@ -4,14 +4,14 @@ enum GoalCategory { sport, study, hobby, saveMoney, travle, diet, etc }
 
 const int _howManyGoalsForPageOne = 5;
 
-class FirstPageGoalModel extends Equatable {
+class MakeGoalFirstPageModel extends Equatable {
   GoalCategory category;
   String goalTitle;
   DateTime startDate;
   DateTime endDate;
   bool useTimer;
 
-  FirstPageGoalModel({
+  MakeGoalFirstPageModel({
     this.category,
     this.useTimer,
     this.endDate,
@@ -19,14 +19,14 @@ class FirstPageGoalModel extends Equatable {
     this.startDate,
   }) : super([category, useTimer, endDate, goalTitle, startDate]);
 
-  FirstPageGoalModel copyWith({
+  MakeGoalFirstPageModel copyWith({
     GoalCategory category,
     String goalTitle,
     DateTime startDate,
     DateTime endDate,
     bool useTimer,
   }) =>
-      FirstPageGoalModel(
+      MakeGoalFirstPageModel(
         category: category ?? this.category,
         goalTitle: goalTitle ?? this.goalTitle,
         startDate: startDate ?? this.startDate,
