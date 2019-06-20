@@ -1,4 +1,5 @@
 import 'package:do_it/src/color/swatch.dart';
+import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/progress_bloc.dart';
 import 'package:do_it/src/screen/make_goal/constant/constant.dart';
@@ -26,6 +27,9 @@ class MakeGoal extends StatelessWidget {
         BlocProvider<MakeGoalNavigationBloc>(
           builder: (context) => MakeGoalNavigationBloc(),
         ),
+        BlocProvider<MakeGoalBloc>(
+          builder: (context) => MakeGoalBloc(),
+        ),
       ],
       child: Scaffold(
         appBar: MakeGoalAppBar(),
@@ -49,6 +53,7 @@ class MakeGoal extends StatelessWidget {
                   child: Icon(
                     Icons.home,
                     color: Colors.white,
+                    size: 23.0,
                   ),
                 ),
                 SizedBox(width: 20.0),
@@ -56,6 +61,7 @@ class MakeGoal extends StatelessWidget {
                   child: Icon(
                     Icons.person,
                     color: Colors.white,
+                    size: 23.0,
                   ),
                 ),
               ],
@@ -73,6 +79,13 @@ class MakeGoal extends StatelessWidget {
                   Color(0xff4d90fb),
                   Color(0xff771de4),
                 ],
+              ),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.add,
+                color: Colors.white,
+                size: 36.0,
               ),
             ),
           ),

@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:do_it/src/screen/make_goal/model/goal_model.dart';
-import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dart';
+import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
+import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model.dart';
 import 'package:equatable/equatable.dart';
 
 enum FirstPageMakeGoalInfoAction {
@@ -29,9 +29,12 @@ class FirstPageMakeGoalInfoSnapshot extends Equatable {
 
 class FirstPageMakeGoalBloc
     extends Bloc<FirstPageMakeGoalInfoEvent, FirstPageMakeGoalInfoSnapshot> {
+  FirstPageMakeGoalBloc({this.makeGoalBloc});
+
+  final MakeGoalBloc makeGoalBloc;
   @override
   FirstPageMakeGoalInfoSnapshot get initialState =>
-      FirstPageMakeGoalInfoSnapshot();
+      FirstPageMakeGoalInfoSnapshot(goal: FirstPageGoalModel());
 
   @override
   Stream<FirstPageMakeGoalInfoSnapshot> mapEventToState(

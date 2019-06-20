@@ -25,6 +25,9 @@ class ChooseCategory extends StatelessWidget {
                         groupKey: 'categoryQuestion',
                         maxMultiSelectables: 1,
                         value: category,
+                        onTap: (context, selectedList) {
+                          print(selectedList);
+                        },
                       ),
                     ),
                   )

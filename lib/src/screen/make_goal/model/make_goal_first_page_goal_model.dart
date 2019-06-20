@@ -45,4 +45,6 @@ class FirstPageGoalModel extends Equatable {
   }
 
   int get maxNumGoals => _howManyGoalsForPageOne;
+
+  bool get isAllAnswered => maxNumGoals == numOfGoalsSet;
 }
