@@ -4,23 +4,21 @@
     // 자세한 내용을 보려면 https://go.microsoft.com/fwlink/?linkid=830387을(를) 방문하세요.
     "version": "0.2.0",
     "configurations": [{
-            "name": "Flutter arm64",
-            "type": "dart",
-            "request": "launch",
-            "program": "lib/main.dart",
-            "args": [
-                "--flavor",
-                "arm64_v8a"
-            ]
-        },
-        {
-            "name": "Flutter x86_64",
-            "request": "launch",
-            "type": "dart",
-            "args": [
-                "--flavor",
-                "x86_64"
-            ]
-        },
-    ]
+        "name": "Flutter x86_64",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+            "--flavor",
+            "x86_64"
+        ]
+    }, {
+        "name": "Flutter arm64",
+        "type": "dart",
+        "request": "launch",
+        "program": "lib/main.dart",
+        "args": [
+            "--flavor",
+            "arm64_v8a"
+        ]
+    }, ]
 }
