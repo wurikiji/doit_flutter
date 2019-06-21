@@ -86,6 +86,7 @@ class ConfirmMethodsNotice extends StatelessWidget {
               ),
             ],
           ),
+          SizedBox(height: 5.5),
           Text(
             "기본 인증방식은 글+사진 입니다.",
             style: DoitMainTheme.makeGoalUserInputTextStyle
