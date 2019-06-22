@@ -35,7 +35,7 @@ class MakeGoalPrevStepWidget extends StatelessWidget {
         BlocProvider.of<MakeGoalProgressBloc>(context);
     return BlocBuilder(
       bloc: bloc,
-      builder: (context, MakeGoalProgressSnapshot value) => InkWell(
+      builder: (context, MakeGoalProgressSnapshot value) => GestureDetector(
         onTap: () {
           MakeGoalNavigationBloc navBloc =
               BlocProvider.of<MakeGoalNavigationBloc>(context);
@@ -46,7 +46,7 @@ class MakeGoalPrevStepWidget extends StatelessWidget {
           );
         },
         child: Padding(
-          padding: const EdgeInsets.only(right: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Center(
             child: Text(
               value.progress > (1 / numOfMakeGoalPages) ? "이전" : "",

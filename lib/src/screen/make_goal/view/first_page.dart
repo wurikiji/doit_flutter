@@ -2,15 +2,13 @@ import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/first_page_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
-import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model.dart';
-import 'package:do_it/src/screen/make_goal/view/module/choose_category.dart';
-import 'package:do_it/src/screen/make_goal/view/module/choose_confirm_method.dart';
-import 'package:do_it/src/screen/make_goal/view/module/choose_period.dart';
-import 'package:do_it/src/screen/make_goal/view/module/define_title.dart';
+import 'package:do_it/src/screen/make_goal/view/first_page/choose_category.dart';
+import 'package:do_it/src/screen/make_goal/view/first_page/choose_confirm_method.dart';
+import 'package:do_it/src/screen/make_goal/view/first_page/choose_period.dart';
+import 'package:do_it/src/screen/make_goal/view/first_page/define_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:provider/provider.dart';
 
 class MakeGoalFirstPage extends StatelessWidget {
   final List<Widget> questionList = [

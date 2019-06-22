@@ -48,106 +48,116 @@ class SelectableGradientChip<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String stateIdentifier = title + 'chip';
+    if (initialSelected && EasyStatefulBuilder.getState(groupKey) != null) {
+      Future(() async {
+        EasyStatefulBuilder.setState(groupKey, (state) {
+          state.nextState = [this];
+        });
+      });
+    }
     return EasyStatefulBuilder(
-      identifier: groupKey,
-      initialValue: [],
-      keepAlive: false,
-      builder: (context, List selectedChips) => EasyStatefulBuilder(
-        identifier: stateIdentifier,
+        identifier: groupKey,
+        initialValue: [],
         keepAlive: false,
-        initialValue: this.initialSelected,
-        builder: (context, selected) {
-          return GestureDetector(
-            onTap: () {
-              print("tapped ${this.title}");
-              if (groupKey != null) {
-                // TODO: 코드가 비슷하므로 refactor 가능성이 매우 높다.
-                if (selected) {
-                  EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                    state.nextState = false;
-                  });
-                  EasyStatefulBuilder.setState(groupKey, (state) {
-                    (state.currentState as List).remove(this);
-                    state.nextState = state.currentState;
-                  });
-                } else if (selectedChips.length < this.maxMultiSelectables) {
-                  EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                    state.nextState = true;
-                  });
-                  EasyStatefulBuilder.setState(groupKey, (state) {
-                    (state.currentState as List).add(this);
-                    state.nextState = state.currentState;
-                  });
-                } else {
-                  EasyStatefulBuilder.setState(groupKey, (state) {
-                    final List current = (state.currentState as List);
-                    final SelectableGradientChip firstWidget = current[0];
+        builder: (context, List selectedChips) {
+          return EasyStatefulBuilder(
+            identifier: stateIdentifier,
+            keepAlive: false,
+            initialValue: this.initialSelected,
+            builder: (context, selected) {
+              return GestureDetector(
+                onTap: () {
+                  print("tapped ${this.title}");
+                  if (groupKey != null) {
+                    // TODO: 코드가 비슷하므로 refactor 가능성이 매우 높다.
+                    if (selected) {
+                      EasyStatefulBuilder.setState(stateIdentifier, (state) {
+                        state.nextState = false;
+                      });
+                      EasyStatefulBuilder.setState(groupKey, (state) {
+                        (state.currentState as List).remove(this);
+                        state.nextState = state.currentState;
+                      });
+                    } else if (selectedChips.length <
+                        this.maxMultiSelectables) {
+                      EasyStatefulBuilder.setState(stateIdentifier, (state) {
+                        state.nextState = true;
+                      });
+                      EasyStatefulBuilder.setState(groupKey, (state) {
+                        (state.currentState as List).add(this);
+                        state.nextState = state.currentState;
+                      });
+                    } else {
+                      EasyStatefulBuilder.setState(groupKey, (state) {
+                        final List current = (state.currentState as List);
+                        final SelectableGradientChip firstWidget = current[0];
 
-                    final String identifier = firstWidget.title + 'chip';
-                    EasyStatefulBuilder.setState(identifier, (state) {
-                      state.nextState = false;
-                    });
+                        final String identifier = firstWidget.title + 'chip';
+                        EasyStatefulBuilder.setState(identifier, (state) {
+                          state.nextState = false;
+                        });
+                        EasyStatefulBuilder.setState(stateIdentifier, (state) {
+                          state.nextState = true;
+                        });
+                        current.removeAt(0);
+                        current.add(this);
+                        state.nextState = current;
+                      });
+                    }
+                    if (this.onTap != null)
+                      this.onTap(
+                          context, EasyStatefulBuilder.getState(groupKey));
+                  } else {
+                    if (this.onTap != null) this.onTap(context, this.value);
                     EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                      state.nextState = true;
+                      state.nextState = !state.currentState;
                     });
-                    current.removeAt(0);
-                    current.add(this);
-                    state.nextState = current;
-                  });
-                }
-                if (this.onTap != null)
-                  this.onTap(context, EasyStatefulBuilder.getState(groupKey));
-              } else {
-                if (this.onTap != null) this.onTap(context, this.value);
-                EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                  state.nextState = !state.currentState;
-                });
-              }
-            },
-            child: AnimatedContainer(
-              padding: const EdgeInsets.symmetric(horizontal: 17.0),
-              duration: const Duration(milliseconds: 200),
-              decoration: ShapeDecoration(
-                shape: this.shape ??
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                gradient: selected
-                    ? (this.gradient ??
-                        LinearGradient(
-                          colors: [
-                            Color(0xff4d90fb),
-                            Color(0xff771de4),
-                          ],
-                        ))
-                    : LinearGradient(
-                        colors: [
-                          Color(0xff2b2b2b),
-                          Color(0xff2b2b2b),
+                  }
+                },
+                child: AnimatedContainer(
+                  padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                  duration: const Duration(milliseconds: 200),
+                  decoration: ShapeDecoration(
+                    shape: this.shape ??
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                    gradient: selected
+                        ? (this.gradient ??
+                            LinearGradient(
+                              colors: [
+                                Color(0xff4d90fb),
+                                Color(0xff771de4),
+                              ],
+                            ))
+                        : LinearGradient(
+                            colors: [
+                              Color(0xff2b2b2b),
+                              Color(0xff2b2b2b),
+                            ],
+                          ),
+                  ),
+                  child: IntrinsicWidth(
+                    child: Center(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          if (this.icon != null) this.icon,
+                          if (this.icon != null) SizedBox(width: 8.0),
+                          Text(
+                            this.title,
+                            style: selected
+                                ? DoitMainTheme.makeGoalSelectedCategory
+                                : DoitMainTheme.makeGoalUnselectedCategory,
+                          ),
                         ],
                       ),
-              ),
-              child: IntrinsicWidth(
-                child: Center(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      if (this.icon != null) this.icon,
-                      if (this.icon != null) SizedBox(width: 8.0),
-                      Text(
-                        this.title,
-                        style: selected
-                            ? DoitMainTheme.makeGoalSelectedCategory
-                            : DoitMainTheme.makeGoalUnselectedCategory,
-                      ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
+              );
+            },
           );
-        },
-      ),
-    );
+        });
   }
 }

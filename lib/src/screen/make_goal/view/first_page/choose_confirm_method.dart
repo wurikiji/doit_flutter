@@ -6,6 +6,7 @@ import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:do_it/src/service/api/category_service.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 const willUseTimer = ConfirmMethod(
@@ -39,7 +40,10 @@ class ChooseConfirmMethod extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             WillUseTimerQuestionWidget(
-                method: method, groupKey: groupKey, chipKey: chipKey),
+              method: method,
+              groupKey: groupKey,
+              chipKey: chipKey,
+            ),
             SizedBox(width: 14.0),
             ConfirmMethodsNotice(),
           ],
@@ -113,56 +117,47 @@ class WillUseTimerQuestionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Container(
-        height: 40.0,
-        child: SelectableGradientChip(
-          title: method.title,
-          value: 0,
-          groupKey: groupKey,
-          maxMultiSelectables: 1,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(4.0),
-          ),
-          icon: EasyStatefulBuilder(
-            identifier: chipKey,
-            keepAlive: false,
-            initialValue: false,
-            builder: (context, selected) {
-              return Icon(
-                method.icon,
-                size: 18.0,
-                color: selected ? Color(0xffffffff) : Color(0x66ffffff),
+      child: BlocBuilder(
+        bloc: FirstPageMakeGoalBloc.getBloc(context),
+        builder: (context, FirstPageMakeGoalInfoSnapshot snapshot) => Container(
+          height: 40.0,
+          child: SelectableGradientChip(
+            title: method.title,
+            value: 0,
+            groupKey: groupKey,
+            maxMultiSelectables: 1,
+            initialSelected: snapshot?.goal?.useTimer ?? false,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(4.0),
+            ),
+            icon: Icon(
+              method.icon,
+              size: 18.0,
+              color: (snapshot?.goal?.useTimer ?? false)
+                  ? Color(0xffffffff)
+                  : Color(0x66ffffff),
+            ),
+            onTap: (context, selected) {
+              final FirstPageMakeGoalBloc _bloc =
+                  FirstPageMakeGoalBloc.getBloc(context);
+              final selectedList =
+                  (selected as ImmutableState).currentState as List;
+
+              bool useTimer = false;
+              if (selectedList.isNotEmpty) {
+                useTimer = true;
+              }
+              if ((selectedList?.length ?? 0) > 1) {
+                print("Can't be here: Multi category error");
+              }
+              _bloc.dispatch(
+                FirstPageMakeGoalInfoEvent(
+                  action: FirstPageMakeGoalInfoAction.setUseTimer,
+                  data: useTimer,
+                ),
               );
             },
           ),
-          onTap: (context, selected) {
-            final FirstPageMakeGoalBloc _bloc =
-                FirstPageMakeGoalBloc.getBloc(context);
-            final selectedList =
-                (selected as ImmutableState).currentState as List;
-
-            bool useTimer = false;
-            if (selectedList.isNotEmpty) {
-              useTimer = true;
-            }
-            if ((selectedList?.length ?? 0) > 1) {
-              print("Can't be here: Multi category error");
-            }
-            _bloc.dispatch(
-              FirstPageMakeGoalInfoEvent(
-                action: FirstPageMakeGoalInfoAction.setUseTimer,
-                data: useTimer,
-              ),
-            );
-
-            /// 아이콘 색 변경을 위한 setState
-            EasyStatefulBuilder.setState(
-              chipKey,
-              (state) {
-                state.nextState = !state.currentState;
-              },
-            );
-          },
         ),
       ),
     );

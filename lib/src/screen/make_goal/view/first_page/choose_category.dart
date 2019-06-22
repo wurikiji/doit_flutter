@@ -5,32 +5,50 @@ import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:do_it/src/service/api/category_service.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChooseCategory extends StatelessWidget {
   final Future<List<CategoryModel>> categoryList = CategoryService.allCategory;
   @override
   Widget build(BuildContext context) {
+    final String groupKey = 'categoryQuestion';
     return QuestionScaffold(
       title: '카테고리를 고르세요.',
       body: FutureBuilder(
         future: this.categoryList,
         builder: (context, AsyncSnapshot snapshot) {
+          final FirstPageMakeGoalBloc _bloc =
+              FirstPageMakeGoalBloc.getBloc(context);
+          if (EasyStatefulBuilder.getState(groupKey) != null) {
+            // 새로 build 될때는 초기화 해야한다.
+            try {
+              EasyStatefulBuilder.setState(groupKey, (state) {
+                state.nextState = [];
+              });
+            } catch (e) {}
+          }
           if (snapshot?.hasData ?? false) {
-            return Wrap(
-              runSpacing: 10.0,
-              spacing: 10.0,
-              children: (snapshot.data as List<CategoryModel>)
-                  .map(
-                    (category) => Container(
+            List<CategoryModel> categories = snapshot.data;
+            return BlocBuilder(
+              bloc: _bloc,
+              builder: (context, FirstPageMakeGoalInfoSnapshot snapshot) =>
+                  Wrap(
+                runSpacing: 10.0,
+                spacing: 10.0,
+                children: [
+                  for (int i
+                      in List.generate(categories.length, (index) => index))
+                    Container(
                       height: 30.0,
                       child: SelectableGradientChip(
-                        title: category.title,
-                        groupKey: 'categoryQuestion',
+                        title: categories[i].title,
+                        groupKey: groupKey,
                         maxMultiSelectables: 1,
-                        value: category,
+                        value: categories[i],
+                        initialSelected: (snapshot?.goal?.category?.index ??
+                                GoalCategory.none) ==
+                            i,
                         onTap: (context, selected) {
-                          final FirstPageMakeGoalBloc _bloc =
-                              FirstPageMakeGoalBloc.getBloc(context);
                           final selectedList =
                               (selected as ImmutableState).currentState as List;
 
@@ -50,11 +68,10 @@ class ChooseCategory extends StatelessWidget {
                         },
                       ),
                     ),
-                  )
-                  .toList(),
+                ],
+              ),
             );
           } else {
-            print("Not yet loaded categories");
             return Container(
               child: Center(
                 child: RefreshProgressIndicator(),
