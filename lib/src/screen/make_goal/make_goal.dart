@@ -11,8 +11,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeGoalWidget extends StatelessWidget {
   final List<Widget> _pages = [
-    MakeGoalFirstPage(),
     MakeGoalSecondPage(),
+    MakeGoalFirstPage(),
   ];
 
   final PageController _pageController = PageController(initialPage: 0);

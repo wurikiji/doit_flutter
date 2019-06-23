@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:equatable/equatable.dart';
 
 enum MakeGoalSecondPageAction {
@@ -33,6 +34,9 @@ class MakeGoalSecondPageState<T> extends Equatable {
 
 class MakeGoalSecondPageBloc
     extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecondPageState> {
+  MakeGoalSecondPageBloc({this.makeGoalBloc});
+
+  final MakeGoalBloc makeGoalBloc;
   @override
   MakeGoalSecondPageState get initialState => MakeGoalSecondPageState();
 

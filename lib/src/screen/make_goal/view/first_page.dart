@@ -21,7 +21,7 @@ class MakeGoalFirstPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        FocusScope.of(context).requestFocus(new FocusNode());
+        FocusScope.of(context).requestFocus(FocusNode());
       },
       child: Container(
         padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 52.0),
