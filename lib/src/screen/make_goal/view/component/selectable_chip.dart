@@ -15,6 +15,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
     this.gradient,
     this.icon,
     this.groupKey,
+    this.unseletedGradient,
     this.maxMultiSelectables = 1,
   }) : super(key: key);
 
@@ -36,6 +37,9 @@ class SelectableGradientChip<T> extends StatelessWidget {
   /// 칩이 선택됐을 떄의 그라디언트
   final Gradient gradient;
 
+  /// 칩이 선택 안 됐을 떄의 그라디언트
+  final Gradient unseletedGradient;
+
   /// 제목 앞에 표시할 아이콘
   final Widget icon;
 
@@ -45,9 +49,12 @@ class SelectableGradientChip<T> extends StatelessWidget {
   /// 속한 그룹의 최대 동시 선택 가능 객체 값
   final int maxMultiSelectables;
 
+  String getStateIdentifier(SelectableGradientChip chip) =>
+      (chip.groupKey ?? 'none') + chip.title + 'chip' + chip.value.toString();
+
   @override
   Widget build(BuildContext context) {
-    String stateIdentifier = title + 'chip';
+    final String stateIdentifier = getStateIdentifier(this);
     if (initialSelected && EasyStatefulBuilder.getState(groupKey) != null) {
       Future(() async {
         EasyStatefulBuilder.setState(groupKey, (state) {
@@ -92,7 +99,8 @@ class SelectableGradientChip<T> extends StatelessWidget {
                         final List current = (state.currentState as List);
                         final SelectableGradientChip firstWidget = current[0];
 
-                        final String identifier = firstWidget.title + 'chip';
+                        final String identifier =
+                            getStateIdentifier(firstWidget);
                         EasyStatefulBuilder.setState(identifier, (state) {
                           state.nextState = false;
                         });
@@ -130,12 +138,13 @@ class SelectableGradientChip<T> extends StatelessWidget {
                                 Color(0xff771de4),
                               ],
                             ))
-                        : LinearGradient(
-                            colors: [
-                              Color(0xff2b2b2b),
-                              Color(0xff2b2b2b),
-                            ],
-                          ),
+                        : (this.unseletedGradient ??
+                            LinearGradient(
+                              colors: [
+                                Color(0xff2b2b2b),
+                                Color(0xff2b2b2b),
+                              ],
+                            )),
                   ),
                   child: IntrinsicWidth(
                     child: Center(

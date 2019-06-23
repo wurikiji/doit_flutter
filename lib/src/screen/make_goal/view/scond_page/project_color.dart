@@ -1,4 +1,5 @@
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
+import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:flutter/material.dart';
 
 List<Gradient> projectColors = [
@@ -53,25 +54,34 @@ List<Gradient> projectColors = [
 class ProjectColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    List<Widget> colorWidgets =
-        List.generate(projectColors.length * 2 - 1, (index) {
-      if (index % 2 == 1) return SizedBox(width: 10.0);
-      return Expanded(
-        child: LayoutBuilder(
-          builder: (context, constraint) {
-            return Container(
-              height: constraint.maxWidth,
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-                gradient: projectColors[index ~/ 2],
+    final String groupKey = 'projectColor';
+    List<Widget> colorWidgets = List.generate(
+      projectColors.length * 2 - 1,
+      (index) {
+        if (index % 2 == 1) return SizedBox(width: 10.0);
+        final LinearGradient gradient = projectColors[index ~/ 2];
+        return Expanded(
+          child: AspectRatio(
+            aspectRatio: 1.0,
+            child: SelectableGradientChip(
+              title: '',
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
               ),
-            );
-          },
-        ),
-      );
-    });
+              groupKey: groupKey,
+              gradient: gradient,
+              value: index ~/ 2,
+              unseletedGradient: LinearGradient(
+                colors: [
+                  gradient.colors[0].withOpacity(0.3),
+                  gradient.colors[1].withOpacity(0.3),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
     return QuestionScaffold(
       title: '프로젝트의 컬러를 선택하세요.',
       body: Row(

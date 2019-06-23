@@ -10,41 +10,52 @@ class HowMuchPenalty extends StatelessWidget {
       body: Row(
         children: <Widget>[
           Expanded(
-            child: Container(
-              height: 40.0,
-              child: SelectableGradientChip(
-                title: '5,000원',
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
+            child: SelectPenaltyButton(
+              title: '5,000원',
+              onTap: (context, value) {},
             ),
           ),
           SizedBox(width: 10.0),
           Expanded(
-            child: Container(
-              height: 40.0,
-              child: SelectableGradientChip(
-                title: '10,000원',
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
+            child: SelectPenaltyButton(
+              title: '10,000원',
+              onTap: (context, value) {},
             ),
           ),
           SizedBox(width: 10.0),
           Expanded(
-            child: Container(
-              height: 40.0,
-              child: SelectableGradientChip(
-                title: '선택안함',
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.0),
-                ),
-              ),
+            child: SelectPenaltyButton(
+              title: '제한 없음',
+              onTap: (context, value) {},
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class SelectPenaltyButton extends StatelessWidget {
+  const SelectPenaltyButton({
+    this.onTap,
+    this.title,
+    Key key,
+  }) : super(key: key);
+
+  final String title;
+  final SelectableChipOnTap onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40.0,
+      child: SelectableGradientChip(
+        title: title,
+        groupKey: 'HowMuchPenalty',
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(4.0),
+        ),
+        onTap: onTap,
       ),
     );
   }

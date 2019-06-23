@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
@@ -74,9 +76,28 @@ class MakeGoalCompleteButton extends StatelessWidget {
     return BlocBuilder(
       bloc: BlocProvider.of<MakeGoalSecondPageBloc>(context),
       builder: (context, MakeGoalSecondPageState snapshot) {
-        final bool didAnswerAll = true;
+        final bool didAnswerAll = false;
         return GestureDetector(
-          onTap: () {
+          onTap: () async {
+            await showGeneralDialog(
+              context: context,
+              barrierDismissible: true,
+              barrierColor: Colors.black.withAlpha(0x99),
+              barrierLabel: 'Make goal succeeded',
+              transitionBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return child;
+              },
+              transitionDuration: Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondAnimation) {
+                return BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                  child: Center(
+                    child: SuccessModal(),
+                  ),
+                );
+              },
+            );
             if (didAnswerAll) {
               final MakeGoalNavigationBloc _makeGoalNavBloc =
                   BlocProvider.of<MakeGoalNavigationBloc>(context);
@@ -123,6 +144,34 @@ class MakeGoalCompleteButton extends StatelessWidget {
           ),
         );
       },
+    );
+  }
+}
+
+class SuccessModal extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 27),
+      child: AspectRatio(
+        aspectRatio: 306 / 236,
+        child: Opacity(
+          opacity: 0.90,
+          child: Container(
+            decoration: ShapeDecoration(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.0),
+              ),
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xff5188fa),
+                  Color(0xff7526e6),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
