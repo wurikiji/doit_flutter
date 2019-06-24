@@ -49,8 +49,7 @@ class ChooseCategory extends StatelessWidget {
                                 GoalCategory.none) ==
                             i,
                         onTap: (context, selected) {
-                          final selectedList =
-                              (selected as ImmutableState).currentState as List;
+                          final selectedList = selected;
 
                           CategoryModel selectedCategory;
                           if (selectedList.isNotEmpty) {

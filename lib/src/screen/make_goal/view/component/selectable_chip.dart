@@ -2,7 +2,8 @@ import 'package:do_it/src/color/doit_theme.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 
-typedef SelectableChipOnTap = Function(BuildContext, dynamic);
+typedef SelectableChipOnTap = Function(
+    BuildContext, List<SelectableGradientChip>);
 
 class SelectableGradientChip<T> extends StatelessWidget {
   SelectableGradientChip({
@@ -17,6 +18,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
     this.groupKey,
     this.unseletedGradient,
     this.maxMultiSelectables = 1,
+    this.padding,
   }) : super(key: key);
 
   /// chip 에 표시할 제목
@@ -49,6 +51,8 @@ class SelectableGradientChip<T> extends StatelessWidget {
   /// 속한 그룹의 최대 동시 선택 가능 객체 값
   final int maxMultiSelectables;
 
+  final EdgeInsetsGeometry padding;
+
   String getStateIdentifier(SelectableGradientChip chip) =>
       (chip.groupKey ?? 'none') + chip.title + 'chip' + chip.value.toString();
 
@@ -64,7 +68,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
     }
     return EasyStatefulBuilder(
         identifier: groupKey,
-        initialValue: [],
+        initialValue: <SelectableGradientChip>[],
         keepAlive: false,
         builder: (context, List selectedChips) {
           return EasyStatefulBuilder(
@@ -113,17 +117,18 @@ class SelectableGradientChip<T> extends StatelessWidget {
                       });
                     }
                     if (this.onTap != null)
-                      this.onTap(
-                          context, EasyStatefulBuilder.getState(groupKey));
+                      this.onTap(context,
+                          EasyStatefulBuilder.getState(groupKey).currentState);
                   } else {
-                    if (this.onTap != null) this.onTap(context, this.value);
+                    if (this.onTap != null) this.onTap(context, [this]);
                     EasyStatefulBuilder.setState(stateIdentifier, (state) {
                       state.nextState = !state.currentState;
                     });
                   }
                 },
                 child: AnimatedContainer(
-                  padding: const EdgeInsets.symmetric(horizontal: 17.0),
+                  padding:
+                      this.padding ?? EdgeInsets.symmetric(horizontal: 17.0),
                   duration: const Duration(milliseconds: 200),
                   decoration: ShapeDecoration(
                     shape: this.shape ??

@@ -140,8 +140,7 @@ class WillUseTimerQuestionWidget extends StatelessWidget {
             onTap: (context, selected) {
               final FirstPageMakeGoalBloc _bloc =
                   FirstPageMakeGoalBloc.getBloc(context);
-              final selectedList =
-                  (selected as ImmutableState).currentState as List;
+              final selectedList = selected;
 
               bool useTimer = false;
               if (selectedList.isNotEmpty) {

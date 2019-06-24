@@ -88,7 +88,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
                   (context, animation, secondaryAnimation, child) {
                 return child;
               },
-              transitionDuration: Duration(milliseconds: 500),
+              transitionDuration: Duration(milliseconds: 300),
               pageBuilder: (context, animation, secondAnimation) {
                 return BackdropFilter(
                   filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
