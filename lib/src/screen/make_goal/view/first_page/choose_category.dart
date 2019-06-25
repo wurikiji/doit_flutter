@@ -23,7 +23,7 @@ class ChooseCategory extends StatelessWidget {
             // 새로 build 될때는 초기화 해야한다.
             try {
               EasyStatefulBuilder.setState(groupKey, (state) {
-                state.nextState = [];
+                state.nextState = <SelectableGradientChip>[];
               });
             } catch (e) {}
           }

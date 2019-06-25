@@ -27,60 +27,56 @@ class _HowManyPeopleState extends State<HowManyPeople> {
 
   @override
   Widget build(BuildContext context) {
+    MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
+    int numMembers = _bloc?.currentState?.data?.numMembers;
+
+    _textEditingController.text = numMembers?.toString() ?? '';
     return QuestionScaffold(
       title: "누구와 함께 할까요? (1명 이상)",
-      body: BlocListener<MakeGoalSecondPageEvent, MakeGoalSecondPageState>(
-        bloc: MakeGoalSecondPageBloc.getBloc(context),
-        listener: (context, snapshot) {
-          int numMembers = snapshot?.data?.numMembers;
-
-          _textEditingController.text = numMembers?.toString() ?? '';
-        },
-        child: Container(
-          height: 40.0,
-          decoration: ShapeDecoration(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            color: Color(0xff2b2b2b),
+      body: Container(
+        height: 40.0,
+        decoration: ShapeDecoration(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
           ),
-          child: Center(
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 30,
-                  child: TextField(
-                    controller: _textEditingController,
-                    style: DoitMainTheme.makeGoalUserInputTextStyle,
-                    maxLength: 2,
-                    maxLengthEnforced: true,
-                    decoration: InputDecoration(
-                      contentPadding: EdgeInsets.zero,
-                      border: InputBorder.none,
-                      counterText: "",
-                      hintText: '0',
-                      hintStyle: DoitMainTheme.makeGoalHintTextStyle,
-                    ),
-                    onChanged: (text) async {
-                      MakeGoalSecondPageBloc bloc =
-                          MakeGoalSecondPageBloc.getBloc(context);
-                      bloc.dispatch(
-                        MakeGoalSecondPageEvent(
-                          action: MakeGoalSecondPageAction.setNumMembers,
-                          data: text.length > 0 ? int.parse(text) : null,
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Text(
-                  '명',
+          color: Color(0xff2b2b2b),
+        ),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Container(
+                width: 30,
+                child: TextField(
+                  controller: _textEditingController,
                   style: DoitMainTheme.makeGoalUserInputTextStyle,
+                  maxLength: 2,
+                  maxLengthEnforced: true,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.zero,
+                    border: InputBorder.none,
+                    counterText: "",
+                    hintText: '0',
+                    hintStyle: DoitMainTheme.makeGoalHintTextStyle,
+                  ),
+                  onChanged: (text) async {
+                    MakeGoalSecondPageBloc bloc =
+                        MakeGoalSecondPageBloc.getBloc(context);
+                    bloc.dispatch(
+                      MakeGoalSecondPageEvent(
+                        action: MakeGoalSecondPageAction.setNumMembers,
+                        data: text.length > 0 ? int.parse(text) : null,
+                      ),
+                    );
+                  },
                 ),
-              ],
-            ),
+              ),
+              Text(
+                '명',
+                style: DoitMainTheme.makeGoalUserInputTextStyle,
+              ),
+            ],
           ),
         ),
       ),
