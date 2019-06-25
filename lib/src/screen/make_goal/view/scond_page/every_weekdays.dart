@@ -26,7 +26,7 @@ class EveryWeekdays extends StatelessWidget {
             child: SelectableGradientChip(
               title: '${weekdays[days]}',
               value: days,
-              groupKey: 'howManyDaysPerWeek',
+              groupKey: 'everyWeekdays',
               maxMultiSelectables: 7,
               onTap: (context, value) {},
               padding: EdgeInsets.zero,

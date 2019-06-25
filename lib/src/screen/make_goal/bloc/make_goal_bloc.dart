@@ -51,6 +51,5 @@ class MakeGoalBloc extends Bloc<MakeGoalEvent, MakeGoalState> {
         this.goalState.data.secondPage = event.data;
         break;
     }
-    yield null;
   }
 }

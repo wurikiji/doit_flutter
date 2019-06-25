@@ -76,7 +76,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
     return BlocBuilder(
       bloc: BlocProvider.of<MakeGoalSecondPageBloc>(context),
       builder: (context, MakeGoalSecondPageState snapshot) {
-        final bool didAnswerAll = false;
+        final bool didAnswerAll = (snapshot?.data?.isAllAnswered ?? false);
         return GestureDetector(
           onTap: () async {
             await showGeneralDialog(
