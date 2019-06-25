@@ -49,6 +49,7 @@ class _HowManyPeopleState extends State<HowManyPeople> {
               Container(
                 width: 30,
                 child: TextField(
+                  keyboardType: TextInputType.number,
                   controller: _textEditingController,
                   style: DoitMainTheme.makeGoalUserInputTextStyle,
                   maxLength: 2,
@@ -66,7 +67,7 @@ class _HowManyPeopleState extends State<HowManyPeople> {
                     bloc.dispatch(
                       MakeGoalSecondPageEvent(
                         action: MakeGoalSecondPageAction.setNumMembers,
-                        data: text.length > 0 ? int.parse(text) : null,
+                        data: text.length > 0 ? int.parse(text) : 0,
                       ),
                     );
                   },
