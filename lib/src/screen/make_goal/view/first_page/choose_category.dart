@@ -35,6 +35,7 @@ class ChooseCategory extends StatelessWidget {
                   Wrap(
                 runSpacing: 10.0,
                 spacing: 10.0,
+                alignment: WrapAlignment.center,
                 children: [
                   for (int i
                       in List.generate(categories.length, (index) => index))

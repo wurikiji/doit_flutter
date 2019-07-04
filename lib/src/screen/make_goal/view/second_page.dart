@@ -17,6 +17,7 @@ class MakeGoalSecondPage extends StatelessWidget {
     HowManyPeople(),
     HowMuchPenalty(),
     ProjectColor(),
+    MakeGoalCompleteButton(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -56,7 +57,6 @@ class MakeGoalSecondPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                MakeGoalCompleteButton(),
               ],
             ),
           ),
@@ -82,7 +82,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
             if (didAnswerAll) {
               await showGeneralDialog(
                 context: context,
-                barrierDismissible: false,
+                barrierDismissible: true,
                 barrierColor: Colors.black.withAlpha(0x99),
                 barrierLabel: 'Make goal succeeded',
                 transitionBuilder:
@@ -152,18 +152,68 @@ class SuccessModal extends StatelessWidget {
       child: AspectRatio(
         aspectRatio: 306 / 236,
         child: Opacity(
-          opacity: 0.90,
-          child: Container(
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              gradient: LinearGradient(
-                colors: [
-                  Color(0xff5188fa),
-                  Color(0xff7526e6),
-                ],
-              ),
+          opacity: 1.00,
+          child: Material(
+            color: Colors.transparent,
+            child: Stack(
+              children: <Widget>[
+                Container(
+                  decoration: ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4.0),
+                    ),
+                    gradient: LinearGradient(
+                      colors: [
+                        Color(0xff5188fa),
+                        Color(0xff7526e6),
+                      ],
+                    ),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 40.0,
+                      horizontal: 55.0,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Success!",
+                          style: DoitMainTheme.makeGoalQuestionTitleStyle
+                              .copyWith(fontSize: 30.0),
+                        ),
+                        SizedBox(height: 2.0),
+                        Text(
+                          '프로젝트 생성이 완료되었습니다.'
+                          '이제 두잇에서 목표를 이뤄보세요!',
+                          style: DoitMainTheme.makeGoalUserInputTextStyle
+                              .copyWith(fontSize: 14.0),
+                        ),
+                        Spacer(),
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          shape: StadiumBorder(),
+                          color: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 28.0,
+                            vertical: 15.0,
+                          ),
+                          child: Text(
+                            "프로젝트 홈 가기",
+                            style: DoitMainTheme.makeGoalQuestionTitleStyle
+                                .copyWith(
+                              fontSize: 14.0,
+                              color: Color(0xff222222),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ),

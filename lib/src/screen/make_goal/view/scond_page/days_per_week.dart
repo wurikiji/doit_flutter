@@ -38,8 +38,7 @@ class DaysPerWeek extends StatelessWidget {
               onTap: (context, value) {
                 MakeGoalSecondPageBloc _bloc =
                     MakeGoalSecondPageBloc.getBloc(context);
-                final int days =
-                    value.isEmpty ? invalidWorkCycle : value[0].value;
+                int days = value.isEmpty ? invalidWorkCycle : value[0].value;
                 _bloc.dispatch(
                   MakeGoalSecondPageEvent(
                     action: MakeGoalSecondPageAction.setWorkCycle,
@@ -47,6 +46,7 @@ class DaysPerWeek extends StatelessWidget {
                   ),
                 );
                 EasyStatefulBuilder.setState(counterKey, (state) {
+                  if (days == invalidWorkCycle) days = 0;
                   state.nextState = days;
                 });
               },
