@@ -91,12 +91,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
                 },
                 transitionDuration: Duration(milliseconds: 300),
                 pageBuilder: (context, animation, secondAnimation) {
-                  return BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                    child: Center(
-                      child: SuccessModal(),
-                    ),
-                  );
+                  return SuccessModal();
                 },
               );
               // TODO : 서버에 저장
@@ -147,73 +142,73 @@ class MakeGoalCompleteButton extends StatelessWidget {
 class SuccessModal extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 27),
-      child: AspectRatio(
-        aspectRatio: 306 / 236,
-        child: Opacity(
-          opacity: 1.00,
-          child: Material(
-            color: Colors.transparent,
-            child: Stack(
-              children: <Widget>[
-                Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0),
-                    ),
-                    gradient: LinearGradient(
-                      colors: [
-                        Color(0xff5188fa),
-                        Color(0xff7526e6),
-                      ],
-                    ),
+    return BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 27),
+        child: Center(
+          child: Opacity(
+            opacity: 1.00,
+            child: Material(
+              color: Colors.transparent,
+              child: Container(
+                width: 306.0,
+                height: 236.0,
+                decoration: ShapeDecoration(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      vertical: 40.0,
-                      horizontal: 55.0,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "Success!",
-                          style: DoitMainTheme.makeGoalQuestionTitleStyle
-                              .copyWith(fontSize: 30.0),
-                        ),
-                        SizedBox(height: 2.0),
-                        Text(
-                          '프로젝트 생성이 완료되었습니다.\n'
-                          '이제 두잇에서 목표를 이뤄보세요!',
-                          style: DoitMainTheme.makeGoalUserInputTextStyle
-                              .copyWith(fontSize: 14.0),
-                        ),
-                        Spacer(),
-                        RaisedButton(
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                          shape: StadiumBorder(),
-                          color: Colors.white,
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 28.0,
-                            vertical: 15.0,
-                          ),
-                          child: Text(
-                            "프로젝트 홈 가기",
-                            style: DoitMainTheme.makeGoalQuestionTitleStyle
-                                .copyWith(
-                              fontSize: 14.0,
-                              color: Color(0xff222222),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xff5188fa),
+                      Color(0xff7526e6),
+                    ],
                   ),
                 ),
-              ],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    vertical: 40.0,
+                    horizontal: 55.0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "Success!",
+                        style: DoitMainTheme.makeGoalQuestionTitleStyle
+                            .copyWith(fontSize: 30.0),
+                      ),
+                      SizedBox(height: 2.0),
+                      Text(
+                        '프로젝트 생성이 완료되었습니다.\n'
+                        '이제 두잇에서 목표를 이뤄보세요!',
+                        style: DoitMainTheme.makeGoalUserInputTextStyle
+                            .copyWith(fontSize: 14.0),
+                      ),
+                      Spacer(),
+                      RaisedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        shape: StadiumBorder(),
+                        color: Colors.white,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 28.0,
+                          vertical: 15.0,
+                        ),
+                        child: Text(
+                          "프로젝트 홈 가기",
+                          style:
+                              DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(
+                            fontSize: 14.0,
+                            color: Color(0xff222222),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
