@@ -1,6 +1,9 @@
 import 'package:equatable/equatable.dart';
 
 int _howManyGoalsForPageTwo = 4;
+const invalidPenalty = (1 << 31);
+const invalidWorkCycle = (1 << 31);
+const invalidColor = (1 << 31);
 
 class MakeGoalSecondPageModel extends Equatable {
   MakeGoalSecondPageModel({
@@ -29,9 +32,9 @@ class MakeGoalSecondPageModel extends Equatable {
   int get numOfGoalsSet {
     int ret = 0;
     if ((this.numMembers ?? 0) != 0) ret++;
-    if (this.penalty != null) ret++;
-    if (this.colorIndex != null) ret++;
-    if (this.workCycle != null) ret++;
+    if (this.penalty != null && this.penalty != invalidPenalty) ret++;
+    if (this.colorIndex != null && this.colorIndex != invalidColor) ret++;
+    if (this.workCycle != null && this.workCycle != invalidWorkCycle) ret++;
     return ret;
   }
 

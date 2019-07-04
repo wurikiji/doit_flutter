@@ -79,33 +79,28 @@ class MakeGoalCompleteButton extends StatelessWidget {
         final bool didAnswerAll = (snapshot?.data?.isAllAnswered ?? false);
         return GestureDetector(
           onTap: () async {
-            await showGeneralDialog(
-              context: context,
-              barrierDismissible: true,
-              barrierColor: Colors.black.withAlpha(0x99),
-              barrierLabel: 'Make goal succeeded',
-              transitionBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return child;
-              },
-              transitionDuration: Duration(milliseconds: 300),
-              pageBuilder: (context, animation, secondAnimation) {
-                return BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-                  child: Center(
-                    child: SuccessModal(),
-                  ),
-                );
-              },
-            );
             if (didAnswerAll) {
-              final MakeGoalNavigationBloc _makeGoalNavBloc =
-                  BlocProvider.of<MakeGoalNavigationBloc>(context);
-              _makeGoalNavBloc.dispatch(
-                MakeGoalNavigationEvent(
-                  action: MakeGoalNavigationAction.goNext,
-                ),
+              await showGeneralDialog(
+                context: context,
+                barrierDismissible: false,
+                barrierColor: Colors.black.withAlpha(0x99),
+                barrierLabel: 'Make goal succeeded',
+                transitionBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  return child;
+                },
+                transitionDuration: Duration(milliseconds: 300),
+                pageBuilder: (context, animation, secondAnimation) {
+                  return BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+                    child: Center(
+                      child: SuccessModal(),
+                    ),
+                  );
+                },
               );
+              // TODO : 서버에 저장
+              Navigator.of(context).pop();
             } else {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -127,7 +122,6 @@ class MakeGoalCompleteButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
               gradient: LinearGradient(
-                begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
                   didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),

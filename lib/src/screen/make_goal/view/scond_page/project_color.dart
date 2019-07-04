@@ -1,4 +1,5 @@
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
+import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:flutter/material.dart';
@@ -100,8 +101,7 @@ class ProjectColor extends StatelessWidget {
                 ],
               ),
               onTap: (context, List<SelectableGradientChip> value) {
-                final gIndex =
-                    value.isEmpty ? projectColors.length + 1 : value[0].value;
+                final gIndex = value.isEmpty ? invalidColor : value[0].value;
                 _bloc.dispatch(
                   MakeGoalSecondPageEvent(
                     action: MakeGoalSecondPageAction.setProjectColor,

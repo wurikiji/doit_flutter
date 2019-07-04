@@ -78,12 +78,11 @@ class SelectableGradientChip<T> extends StatelessWidget {
             builder: (context, selected) {
               return GestureDetector(
                 onTap: () {
-                  print("tapped ${this.title}");
                   if (groupKey != null) {
                     // TODO: 코드가 비슷하므로 refactor 가능성이 매우 높다.
                     if (selected) {
                       EasyStatefulBuilder.setState(groupKey, (state) {
-                        print((state.currentState as List).remove(this));
+                        (state.currentState as List).remove(this);
                         EasyStatefulBuilder.setState(stateIdentifier, (state) {
                           state.nextState = false;
                         });

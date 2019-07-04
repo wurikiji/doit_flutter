@@ -1,4 +1,5 @@
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
+import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/days_per_week.dart';
@@ -103,7 +104,7 @@ class _HowManyTimesState extends State<HowManyTimes>
                   sizeFactor: animationController,
                   child: Column(
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      SizedBox(height: 20.0),
                       additionalQuestionIndex == _AdditionalQuestion.daysPerWeek
                           ? DaysPerWeek()
                           : EveryWeekdays(),
@@ -121,21 +122,27 @@ class _HowManyTimesState extends State<HowManyTimes>
   }
 
   showAdditionalQuestion(List<SelectableGradientChip> value) async {
-    EasyStatefulBuilder.setState('additionalQuestion', (state) {
-      if (value.isEmpty) {
-        additionalQuestionIndex = _AdditionalQuestion.none;
-      } else {
-        MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-        _bloc.dispatch(
-          MakeGoalSecondPageEvent(
-            action: MakeGoalSecondPageAction.setWorkCycle,
-            data: value[0].value == _AdditionalQuestion.none ? 0 : 1 << 31,
-          ),
-        );
-        print("${value[0].value}");
-        additionalQuestionIndex = value[0].value;
-      }
-    });
+    MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
+    if (value.isEmpty) {
+      additionalQuestionIndex = _AdditionalQuestion.none;
+      _bloc.dispatch(
+        MakeGoalSecondPageEvent(
+          action: MakeGoalSecondPageAction.setWorkCycle,
+          data: invalidWorkCycle,
+        ),
+      );
+    } else {
+      additionalQuestionIndex = value[0].value;
+      _bloc.dispatch(
+        MakeGoalSecondPageEvent(
+          action: MakeGoalSecondPageAction.setWorkCycle,
+          data: additionalQuestionIndex == _AdditionalQuestion.none
+              ? 0
+              : invalidWorkCycle,
+        ),
+      );
+    }
+    EasyStatefulBuilder.setState('additionalQuestion', (state) {});
   }
 }
 

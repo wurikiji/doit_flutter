@@ -1,4 +1,5 @@
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
+import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
@@ -57,12 +58,11 @@ class HowMuchPenalty extends StatelessWidget {
   onSelectPenalty(
       BuildContext context, List<SelectableGradientChip> value) async {
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-    final int penalty = value.isEmpty ? 2020 : value[0].value;
-    print("Set value to $penalty");
+    final int penalty = value.isEmpty ? invalidPenalty : value[0].value;
     _bloc.dispatch(
       MakeGoalSecondPageEvent(
         action: MakeGoalSecondPageAction.setPenalty,
-        data: value.isEmpty ? 2020 : value[0].value,
+        data: penalty,
       ),
     );
   }
