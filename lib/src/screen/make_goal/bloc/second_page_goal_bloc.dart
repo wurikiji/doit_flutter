@@ -61,6 +61,7 @@ class MakeGoalSecondPageBloc
         nextModel = nextModel.copyWith(colorIndex: event.data);
         break;
       case MakeGoalSecondPageAction.setWorkCycle:
+        print("cycle: ${event.data}");
         nextModel = nextModel.copyWith(workCycle: event.data);
         break;
     }

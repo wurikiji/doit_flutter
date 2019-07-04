@@ -3,7 +3,6 @@ import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/progress_bloc.dart';
 import 'package:do_it/src/screen/make_goal/constant/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/diagnostics.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MakeGoalAppBar extends AppBar {

@@ -1,7 +1,5 @@
-import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/color/swatch.dart';
 import 'package:do_it/src/screen/main/doit_main.dart';
-import 'package:do_it/src/screen/make_goal/make_goal.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(DoIt());

@@ -127,6 +127,8 @@ class MakeGoalCompleteButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
               gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [
                   didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),
                   didAnswerAll ? Color(0xff771de4) : Color(0x33ffffff),
