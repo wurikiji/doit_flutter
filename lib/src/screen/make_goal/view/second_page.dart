@@ -184,7 +184,7 @@ class SuccessModal extends StatelessWidget {
                         ),
                         SizedBox(height: 2.0),
                         Text(
-                          '프로젝트 생성이 완료되었습니다.'
+                          '프로젝트 생성이 완료되었습니다.\n'
                           '이제 두잇에서 목표를 이뤄보세요!',
                           style: DoitMainTheme.makeGoalUserInputTextStyle
                               .copyWith(fontSize: 14.0),
