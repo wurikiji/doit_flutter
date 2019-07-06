@@ -16,6 +16,7 @@ class MakeGoalFirstPage extends StatelessWidget {
     DefineTitle(),
     ChoosePeriod(),
     ChooseConfirmMethod(),
+    MakeGoalNextStepButton(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,6 @@ class MakeGoalFirstPage extends StatelessWidget {
                   ),
                 ),
               ),
-              MakeGoalNextStepButton(),
             ],
           ),
         ),

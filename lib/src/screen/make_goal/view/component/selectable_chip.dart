@@ -62,7 +62,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
     if (initialSelected && EasyStatefulBuilder.getState(groupKey) != null) {
       Future(() async {
         EasyStatefulBuilder.setState(groupKey, (state) {
-          state.nextState = [this];
+          state.nextState = state.currentState?.add(this) ?? [this];
         });
       });
     }
@@ -78,24 +78,23 @@ class SelectableGradientChip<T> extends StatelessWidget {
             builder: (context, selected) {
               return GestureDetector(
                 onTap: () {
-                  print("tapped ${this.title}");
                   if (groupKey != null) {
                     // TODO: 코드가 비슷하므로 refactor 가능성이 매우 높다.
                     if (selected) {
-                      EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                        state.nextState = false;
-                      });
                       EasyStatefulBuilder.setState(groupKey, (state) {
                         (state.currentState as List).remove(this);
+                        EasyStatefulBuilder.setState(stateIdentifier, (state) {
+                          state.nextState = false;
+                        });
                         state.nextState = state.currentState;
                       });
                     } else if (selectedChips.length <
                         this.maxMultiSelectables) {
-                      EasyStatefulBuilder.setState(stateIdentifier, (state) {
-                        state.nextState = true;
-                      });
                       EasyStatefulBuilder.setState(groupKey, (state) {
                         (state.currentState as List).add(this);
+                        EasyStatefulBuilder.setState(stateIdentifier, (state) {
+                          state.nextState = true;
+                        });
                         state.nextState = state.currentState;
                       });
                     } else {
@@ -138,6 +137,8 @@ class SelectableGradientChip<T> extends StatelessWidget {
                     gradient: selected
                         ? (this.gradient ??
                             LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                               colors: [
                                 Color(0xff4d90fb),
                                 Color(0xff771de4),
@@ -145,6 +146,8 @@ class SelectableGradientChip<T> extends StatelessWidget {
                             ))
                         : (this.unseletedGradient ??
                             LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
                               colors: [
                                 Color(0xff2b2b2b),
                                 Color(0xff2b2b2b),
