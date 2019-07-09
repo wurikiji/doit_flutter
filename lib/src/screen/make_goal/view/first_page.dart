@@ -37,8 +37,7 @@ class MakeGoalFirstPage extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 30.0),
                   child: ListView.separated(
-                    separatorBuilder: (context, index) =>
-                        SizedBox(height: 50.0),
+                    separatorBuilder: (context, index) => SizedBox(height: 50.0),
                     itemCount: this.questionList.length,
                     itemBuilder: (context, index) => this.questionList[index],
                     physics: ClampingScrollPhysics(),
@@ -68,8 +67,7 @@ class MakeGoalNextStepButton extends StatelessWidget {
         return GestureDetector(
           onTap: () {
             if (didAnswerAll) {
-              final MakeGoalNavigationBloc _makeGoalNavBloc =
-                  BlocProvider.of<MakeGoalNavigationBloc>(context);
+              final MakeGoalNavigationBloc _makeGoalNavBloc = BlocProvider.of<MakeGoalNavigationBloc>(context);
               _makeGoalNavBloc.dispatch(
                 MakeGoalNavigationEvent(
                   action: MakeGoalNavigationAction.goNext,
@@ -96,6 +94,8 @@ class MakeGoalNextStepButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
               gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
                 colors: [
                   didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),
                   didAnswerAll ? Color(0xff771de4) : Color(0x33ffffff),

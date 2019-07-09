@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model.dart';
-import 'package:do_it/src/screen/make_goal/model/make_goal_model.dart';
+import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 enum MakeGoalAction { setFirstPageGoal, setSecondPageGoal }
 
@@ -52,4 +54,6 @@ class MakeGoalBloc extends Bloc<MakeGoalEvent, MakeGoalState> {
         break;
     }
   }
+
+  static MakeGoalBloc getBloc(BuildContext context) => BlocProvider.of<MakeGoalBloc>(context);
 }

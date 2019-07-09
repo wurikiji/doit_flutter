@@ -35,8 +35,7 @@ class MakeGoalSecondPageState extends Equatable {
   }
 }
 
-class MakeGoalSecondPageBloc
-    extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecondPageState> {
+class MakeGoalSecondPageBloc extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecondPageState> {
   MakeGoalSecondPageBloc({this.makeGoalBloc});
 
   final MakeGoalBloc makeGoalBloc;
@@ -47,8 +46,7 @@ class MakeGoalSecondPageBloc
       );
 
   @override
-  Stream<MakeGoalSecondPageState> mapEventToState(
-      MakeGoalSecondPageEvent event) async* {
+  Stream<MakeGoalSecondPageState> mapEventToState(MakeGoalSecondPageEvent event) async* {
     var nextModel = currentState.data;
     switch (event.action) {
       case MakeGoalSecondPageAction.setNumMembers:
@@ -76,6 +74,5 @@ class MakeGoalSecondPageBloc
     );
   }
 
-  static getBloc(BuildContext context) =>
-      BlocProvider.of<MakeGoalSecondPageBloc>(context);
+  static MakeGoalSecondPageBloc getBloc(BuildContext context) => BlocProvider.of<MakeGoalSecondPageBloc>(context);
 }

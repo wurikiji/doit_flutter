@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
+import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/how_many_people.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/how_many_times.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/how_much_penalty.dart';
@@ -23,8 +24,7 @@ class MakeGoalSecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final MakeGoalNavigationBloc _makeGoalNavBloc =
-            BlocProvider.of<MakeGoalNavigationBloc>(context);
+        final MakeGoalNavigationBloc _makeGoalNavBloc = BlocProvider.of<MakeGoalNavigationBloc>(context);
         _makeGoalNavBloc.dispatch(
           MakeGoalNavigationEvent(
             action: MakeGoalNavigationAction.goBack,
@@ -49,8 +49,7 @@ class MakeGoalSecondPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 30.0),
                     child: ListView.separated(
-                      separatorBuilder: (context, index) =>
-                          SizedBox(height: 50.0),
+                      separatorBuilder: (context, index) => SizedBox(height: 50.0),
                       itemCount: this.questionList.length,
                       itemBuilder: (context, index) => this.questionList[index],
                       physics: ClampingScrollPhysics(),
@@ -80,13 +79,12 @@ class MakeGoalCompleteButton extends StatelessWidget {
         return GestureDetector(
           onTap: () async {
             if (didAnswerAll) {
-              await showGeneralDialog(
+              final bool succeed = await showGeneralDialog(
                 context: context,
                 barrierDismissible: true,
                 barrierColor: Colors.black.withAlpha(0x99),
                 barrierLabel: 'Make goal succeeded',
-                transitionBuilder:
-                    (context, animation, secondaryAnimation, child) {
+                transitionBuilder: (context, animation, secondaryAnimation, child) {
                   return child;
                 },
                 transitionDuration: Duration(milliseconds: 300),
@@ -94,8 +92,10 @@ class MakeGoalCompleteButton extends StatelessWidget {
                   return SuccessModal();
                 },
               );
-              // TODO : 서버에 저장
-              Navigator.of(context).pop();
+              if (succeed ?? false) {
+                final MakeGoalModel goal = MakeGoalBloc.getBloc(context).goalState.data;
+                Navigator.of(context).pop(goal);
+              }
             } else {
               Scaffold.of(context).showSnackBar(
                 SnackBar(
@@ -117,6 +117,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(4.0),
               ),
               gradient: LinearGradient(
+                begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
                   didAnswerAll ? Color(0xff4d90fb) : Color(0x33ffffff),
@@ -158,12 +159,7 @@ class SuccessModal extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.0),
                   ),
-                  gradient: LinearGradient(
-                    colors: [
-                      Color(0xff5188fa),
-                      Color(0xff7526e6),
-                    ],
-                  ),
+                  color: Color(0xff222222),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
@@ -175,20 +171,18 @@ class SuccessModal extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         "Success!",
-                        style: DoitMainTheme.makeGoalQuestionTitleStyle
-                            .copyWith(fontSize: 30.0),
+                        style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 30.0),
                       ),
                       SizedBox(height: 2.0),
                       Text(
                         '프로젝트 생성이 완료되었습니다.\n'
                         '이제 두잇에서 목표를 이뤄보세요!',
-                        style: DoitMainTheme.makeGoalUserInputTextStyle
-                            .copyWith(fontSize: 14.0),
+                        style: DoitMainTheme.makeGoalUserInputTextStyle.copyWith(fontSize: 14.0),
                       ),
                       Spacer(),
                       RaisedButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          Navigator.of(context).pop(true);
                         },
                         shape: StadiumBorder(),
                         color: Colors.white,
@@ -198,8 +192,7 @@ class SuccessModal extends StatelessWidget {
                         ),
                         child: Text(
                           "프로젝트 홈 가기",
-                          style:
-                              DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(
+                          style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(
                             fontSize: 14.0,
                             color: Color(0xff222222),
                           ),

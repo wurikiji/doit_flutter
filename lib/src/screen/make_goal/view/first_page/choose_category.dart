@@ -17,8 +17,7 @@ class ChooseCategory extends StatelessWidget {
       body: FutureBuilder(
         future: this.categoryList,
         builder: (context, AsyncSnapshot snapshot) {
-          final FirstPageMakeGoalBloc _bloc =
-              FirstPageMakeGoalBloc.getBloc(context);
+          final FirstPageMakeGoalBloc _bloc = FirstPageMakeGoalBloc.getBloc(context);
           if (EasyStatefulBuilder.getState(groupKey) != null) {
             // 새로 build 될때는 초기화 해야한다.
             try {
@@ -31,14 +30,12 @@ class ChooseCategory extends StatelessWidget {
             List<CategoryModel> categories = snapshot.data;
             return BlocBuilder(
               bloc: _bloc,
-              builder: (context, FirstPageMakeGoalInfoSnapshot snapshot) =>
-                  Wrap(
+              builder: (context, FirstPageMakeGoalInfoSnapshot snapshot) => Wrap(
                 runSpacing: 10.0,
                 spacing: 10.0,
-                alignment: WrapAlignment.center,
+                // alignment: WrapAlignment.center,
                 children: [
-                  for (int i
-                      in List.generate(categories.length, (index) => index))
+                  for (int i in List.generate(categories.length, (index) => index))
                     Container(
                       height: 30.0,
                       child: SelectableGradientChip(
@@ -46,9 +43,7 @@ class ChooseCategory extends StatelessWidget {
                         groupKey: groupKey,
                         maxMultiSelectables: 1,
                         value: categories[i],
-                        initialSelected: (snapshot?.goal?.category?.index ??
-                                GoalCategory.none) ==
-                            i,
+                        initialSelected: (snapshot?.goal?.category?.index ?? GoalCategory.none) == i,
                         onTap: (context, selected) {
                           final selectedList = selected;
 

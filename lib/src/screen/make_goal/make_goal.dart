@@ -42,14 +42,12 @@ class MakeGoalWidget extends StatelessWidget {
               if (value < 0) value = 0;
               if (value >= this._pages.length) value = this._pages.length - 1;
 
-              print("Goto $value");
               this._pageController.animateToPage(
                     value,
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
-              MakeGoalProgressBloc bloc =
-                  BlocProvider.of<MakeGoalProgressBloc>(builderContext);
+              MakeGoalProgressBloc bloc = BlocProvider.of<MakeGoalProgressBloc>(builderContext);
               bloc.dispatch(
                 MakeGoalProgressEvent(
                   action: MakeGoalProgressAction.setProgress,

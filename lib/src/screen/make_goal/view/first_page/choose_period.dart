@@ -72,8 +72,7 @@ class SelectStartDateWidget extends StatelessWidget {
   final DateTime endDate;
   @override
   Widget build(BuildContext context) {
-    FirstPageMakeGoalBloc _bloc =
-        BlocProvider.of<FirstPageMakeGoalBloc>(context);
+    FirstPageMakeGoalBloc _bloc = BlocProvider.of<FirstPageMakeGoalBloc>(context);
 
     return EasyStatefulBuilder(
       identifier: startDateKey,
@@ -105,9 +104,7 @@ class SelectStartDateWidget extends StatelessWidget {
           child: Text(
             date == null ? "시작 날짜" : dateTimeToString(date),
             textAlign: TextAlign.end,
-            style: date == null
-                ? DoitMainTheme.makeGoalHintTextStyle
-                : DoitMainTheme.makeGoalUserInputTextStyle,
+            style: date == null ? DoitMainTheme.makeGoalHintTextStyle : DoitMainTheme.makeGoalUserInputTextStyle,
           ),
         );
       },
@@ -126,8 +123,7 @@ class SelectEndDateWidget extends StatelessWidget {
   final DateTime startDate;
   @override
   Widget build(BuildContext context) {
-    FirstPageMakeGoalBloc _bloc =
-        BlocProvider.of<FirstPageMakeGoalBloc>(context);
+    FirstPageMakeGoalBloc _bloc = BlocProvider.of<FirstPageMakeGoalBloc>(context);
     return EasyStatefulBuilder(
       identifier: endDateKey,
       initialValue: this.endDate,
@@ -135,8 +131,7 @@ class SelectEndDateWidget extends StatelessWidget {
       builder: (context, DateTime date) {
         return GestureDetector(
           onTap: () async {
-            DateTime date =
-                await selectDateTime(context, this.endDate, this.startDate);
+            DateTime date = await selectDateTime(context, this.endDate, this.startDate);
             if (date != null) {
               _bloc.dispatch(FirstPageMakeGoalInfoEvent(
                 action: FirstPageMakeGoalInfoAction.setEndDate,
@@ -149,9 +144,7 @@ class SelectEndDateWidget extends StatelessWidget {
           },
           child: Text(
             date == null ? "종료 날짜" : dateTimeToString(date),
-            style: date == null
-                ? DoitMainTheme.makeGoalHintTextStyle
-                : DoitMainTheme.makeGoalUserInputTextStyle,
+            style: date == null ? DoitMainTheme.makeGoalHintTextStyle : DoitMainTheme.makeGoalUserInputTextStyle,
           ),
         );
       },
@@ -163,12 +156,11 @@ String dateTimeToString(DateTime date) {
   return "${date.year}년 ${date.month}월 ${date.day}일";
 }
 
-selectDateTime(BuildContext context, DateTime currentDate,
-    [DateTime selectableDate]) async {
+selectDateTime(BuildContext context, DateTime currentDate, [DateTime selectableDate]) async {
   final DateTime now = DateTime.now();
   final DateTime dateTime = await showDatePicker(
     context: context,
-    initialDate: currentDate ?? now,
+    initialDate: selectableDate ?? currentDate ?? now,
     firstDate: DateTime(now.year, now.month),
     lastDate: DateTime(2999),
     builder: (context, child) {
@@ -185,8 +177,7 @@ selectDateTime(BuildContext context, DateTime currentDate,
       );
     },
     selectableDayPredicate: (date) => date.isAfter(
-      selectableDate?.subtract(Duration(days: 1)) ??
-          now.subtract(Duration(days: 1)),
+      selectableDate?.subtract(Duration(days: 1)) ?? now.subtract(Duration(days: 1)),
     ),
   );
   return dateTime;

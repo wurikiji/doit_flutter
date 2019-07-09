@@ -1,6 +1,13 @@
 import 'package:do_it/src/common_view/doit_bottom_widget.dart';
+import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/empty_goal_card.dart';
+import 'package:do_it/src/screen/main/view/goal_card.dart';
+import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+List<MakeGoalModel> goals = [];
 
 class DoitMainWidget extends StatelessWidget {
   final GlobalKey mainScaffoldKey = GlobalKey<ScaffoldState>();
@@ -14,8 +21,48 @@ class DoitMainWidget extends StatelessWidget {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30.0),
-        child: Center(
-          child: EmptyGoalCard(),
+        child: Consumer<GoalService>(
+          builder: (context, value, child) {
+            if (value == null) {
+              print("No goal service");
+              return child;
+            } else {
+              return StreamBuilder<MakeGoalModel>(
+                stream: value.goals,
+                initialData: null,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data != null) {
+                    print("snapshot data ${snapshot.data}");
+                    goals.add(snapshot.data);
+                  }
+                  return Center(
+                    child: goals.isEmpty
+                        ? EmptyGoalCard()
+                        : Container(
+                            height: 404,
+                            child: ListView.separated(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: goals.length + 1,
+                              padding: EdgeInsets.only(left: 30.0),
+                              separatorBuilder: (context, index) {
+                                return SizedBox(width: 18.0);
+                              },
+                              itemBuilder: (context, index) {
+                                if (index == goals.length) return EmptyGoalCard();
+                                return UserGoalCard(
+                                  goal: goals[index],
+                                );
+                              },
+                            ),
+                          ),
+                  );
+                },
+              );
+            }
+          },
+          child: Center(
+            child: EmptyGoalCard(),
+          ),
         ),
       ),
     );
@@ -39,17 +86,11 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: <Widget>[
           Text(
             "Do it",
-            style: Theme.of(context)
-                .appBarTheme
-                .textTheme
-                .title
-                .copyWith(fontSize: 30.0),
+            style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
           ),
           GestureDetector(
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 30.0,
+            child: Image.asset(
+              'assets/images/btn_goals_n.png',
             ),
             onTap: () {},
           ),

@@ -1,14 +1,18 @@
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/make_goal/make_goal.dart';
 import 'package:do_it/src/model/make_goal_model.dart';
+import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class EmptyGoalCard extends StatelessWidget {
-  const EmptyGoalCard({
+class UserGoalCard extends StatelessWidget {
+  const UserGoalCard({
     Key key,
+    this.goal,
   }) : super(key: key);
+
+  final MakeGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -50,12 +54,7 @@ class EmptyGoalCard extends StatelessWidget {
               ),
             ],
           ),
-          gradient: LinearGradient(
-            colors: [
-              Color(0xff28292a),
-              Color(0xff28292a),
-            ],
-          ),
+          gradient: projectColors[goal.secondPage.colorIndex],
         ),
       );
     });
