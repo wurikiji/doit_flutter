@@ -32,9 +32,6 @@ class MakeGoalWidget extends StatelessWidget {
       ],
       child: Scaffold(
         appBar: MakeGoalAppBar(),
-        bottomNavigationBar: DoitBottomAppBar(),
-        floatingActionButton: DoitFloatingActionButton(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         body: Builder(
           builder: (builderContext) => BlocListener(
             bloc: BlocProvider.of<MakeGoalNavigationBloc>(builderContext),
@@ -47,7 +44,8 @@ class MakeGoalWidget extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
-              MakeGoalProgressBloc bloc = BlocProvider.of<MakeGoalProgressBloc>(builderContext);
+              MakeGoalProgressBloc bloc =
+                  BlocProvider.of<MakeGoalProgressBloc>(builderContext);
               bloc.dispatch(
                 MakeGoalProgressEvent(
                   action: MakeGoalProgressAction.setProgress,

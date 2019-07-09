@@ -31,26 +31,29 @@ class _DefineTitleState extends State<DefineTitle> {
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
           color: Color(0xff2b2b2b),
         ),
-        child: TextField(
-          controller: this._controller,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: '주 3회 이상 운동하기',
-            hintStyle: DoitMainTheme.makeGoalHintTextStyle,
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+        child: Center(
+          child: TextField(
+            controller: this._controller,
+            decoration: InputDecoration(
+              border: InputBorder.none,
+              hintText: '주 3회 이상 운동하기',
+              hintStyle: DoitMainTheme.makeGoalHintTextStyle,
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+            ),
+            textAlign: TextAlign.center,
+            maxLines: 1,
+            style: DoitMainTheme.makeGoalUserInputTextStyle,
+            onChanged: (String title) async {
+              FirstPageMakeGoalBloc _bloc =
+                  FirstPageMakeGoalBloc.getBloc(context);
+              _bloc.dispatch(
+                FirstPageMakeGoalInfoEvent(
+                  action: FirstPageMakeGoalInfoAction.setTitle,
+                  data: title,
+                ),
+              );
+            },
           ),
-          maxLines: 1,
-          style: DoitMainTheme.makeGoalUserInputTextStyle,
-          onChanged: (String title) async {
-            FirstPageMakeGoalBloc _bloc =
-                FirstPageMakeGoalBloc.getBloc(context);
-            _bloc.dispatch(
-              FirstPageMakeGoalInfoEvent(
-                action: FirstPageMakeGoalInfoAction.setTitle,
-                data: title,
-              ),
-            );
-          },
         ),
       ),
     );

@@ -15,6 +15,18 @@ class CategoryService {
       CategoryModel(id: GoalCategory.etc, title: "기타"),
     ];
   }
+
+  static List<CategoryModel> getCategories() {
+    return [
+      CategoryModel(id: GoalCategory.sport, title: "운동"),
+      CategoryModel(id: GoalCategory.study, title: "공부"),
+      CategoryModel(id: GoalCategory.hobby, title: "취미"),
+      CategoryModel(id: GoalCategory.saveMoney, title: "저축"),
+      CategoryModel(id: GoalCategory.travel, title: "여행"),
+      CategoryModel(id: GoalCategory.diet, title: "다이어트"),
+      CategoryModel(id: GoalCategory.etc, title: "기타"),
+    ];
+  }
 }
 
 class CategoryModel {

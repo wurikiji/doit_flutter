@@ -1,7 +1,7 @@
 import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/empty_goal_card.dart';
-import 'package:do_it/src/screen/main/view/goal_card.dart';
+import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +43,13 @@ class DoitMainWidget extends StatelessWidget {
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
                               itemCount: goals.length + 1,
-                              padding: EdgeInsets.only(left: 30.0),
+                              padding: EdgeInsets.symmetric(horizontal: 30.0),
                               separatorBuilder: (context, index) {
                                 return SizedBox(width: 18.0);
                               },
                               itemBuilder: (context, index) {
-                                if (index == goals.length) return EmptyGoalCard();
+                                if (index == goals.length)
+                                  return EmptyGoalCard();
                                 return UserGoalCard(
                                   goal: goals[index],
                                 );
@@ -86,7 +87,11 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: <Widget>[
           Text(
             "Do it",
-            style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
+            style: Theme.of(context)
+                .appBarTheme
+                .textTheme
+                .title
+                .copyWith(fontSize: 30.0),
           ),
           GestureDetector(
             child: Image.asset(

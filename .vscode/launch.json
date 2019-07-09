@@ -7,23 +7,5 @@
         "name": "Flutter normal",
         "request": "launch",
         "type": "dart",
-    }, {
-        "name": "Flutter arm64",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main.dart",
-        "args": [
-            "--flavor",
-            "arm64_v8a"
-        ]
-    }, {
-        "name": "Flutter x86_64",
-        "type": "dart",
-        "request": "launch",
-        "program": "lib/main.dart",
-        "args": [
-            "--flavor",
-            "x86_64"
-        ]
-    },]
+    }]
 }
