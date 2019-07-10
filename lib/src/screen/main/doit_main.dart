@@ -9,16 +9,13 @@ import 'package:provider/provider.dart';
 
 List<MakeGoalModel> goals = [];
 
-class DoitMainWidget extends StatelessWidget {
+class DoitHome extends StatelessWidget {
   final GlobalKey mainScaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       key: mainScaffoldKey,
       appBar: DoitMainAppBar(topPadding: 20.0),
-      bottomNavigationBar: DoitBottomAppBar(),
-      floatingActionButton: DoitFloatingActionButton(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30.0),
         child: Consumer<GoalService>(

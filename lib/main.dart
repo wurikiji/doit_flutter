@@ -1,6 +1,8 @@
 import 'package:do_it/src/color/swatch.dart';
+import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/model/user_model.dart';
 import 'package:do_it/src/screen/main/doit_main.dart';
+import 'package:do_it/src/screen/profile/doit_profile.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -62,7 +64,29 @@ class DoIt extends StatelessWidget {
             ),
           ),
         ),
-        home: DoitMainWidget(),
+        home: DoitMain(),
+      ),
+    );
+  }
+}
+
+class DoitMain extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        bottomNavigationBar: DoitBottomAppBar(
+          key: ValueKey('mainBottomAppBar'),
+        ),
+        floatingActionButton: DoitFloatingActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: TabBarView(
+          children: <Widget>[
+            DoitHome(),
+            DoitProfile(),
+          ],
+        ),
       ),
     );
   }

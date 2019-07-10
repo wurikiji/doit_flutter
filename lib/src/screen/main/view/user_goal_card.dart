@@ -79,13 +79,12 @@ class CardCategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 48.0,
-      height: 24.0,
+      padding: EdgeInsets.symmetric(horizontal: 14.0, vertical: 5.0),
       decoration: ShapeDecoration(
         shape: StadiumBorder(),
         color: Color(0x26222222),
       ),
-      child: Center(
+      child: IntrinsicWidth(
         child: Text(
           CategoryService.getCategories()[goal.firstPage.category.index].title,
         ),

@@ -56,17 +56,19 @@ class DoitBottomAppBar extends StatelessWidget {
           ),
           color: doitMainSwatch,
         ),
-        child: Row(
-          children: <Widget>[
-            Expanded(
+        child: TabBar(
+          onTap: (int index) {
+            DefaultTabController.of(context).animateTo(index);
+          },
+          tabs: <Widget>[
+            Tab(
               child: Icon(
                 Icons.home,
                 color: Colors.white,
                 size: 23.0,
               ),
             ),
-            SizedBox(width: 20.0),
-            Expanded(
+            Tab(
               child: Icon(
                 Icons.person,
                 color: Colors.white,
