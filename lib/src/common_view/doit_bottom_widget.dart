@@ -60,6 +60,7 @@ class DoitBottomAppBar extends StatelessWidget {
           onTap: (int index) {
             DefaultTabController.of(context).animateTo(index);
           },
+
           tabs: <Widget>[
             Tab(
               child: Icon(

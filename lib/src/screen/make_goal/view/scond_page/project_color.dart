@@ -54,6 +54,8 @@ List<Gradient> projectColors = [
     ],
   ),
   LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
     colors: [
       Color(0xff4d90fb),
       Color(0xff771de4),

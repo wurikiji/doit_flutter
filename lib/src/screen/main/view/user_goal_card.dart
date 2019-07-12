@@ -61,7 +61,11 @@ class UserGoalCard extends StatelessWidget {
               ],
             ),
           ),
-          gradient: projectColors[goal.secondPage.colorIndex],
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: projectColors[goal.secondPage.colorIndex].colors,
+          ),
         ),
       );
     });
