@@ -36,7 +36,14 @@ class DoitProfile extends StatelessWidget {
               title: 'Info',
               children: <Widget>[
                 Text("버전 정보", style: menuTextStyle),
-                Text("오픈소스 라이브러리", style: menuTextStyle),
+                GestureDetector(
+                  onTap: () {
+                    showLicensePage(
+                      context: context,
+                    );
+                  },
+                  child: Text("오픈소스 라이브러리", style: menuTextStyle),
+                ),
               ],
             ),
           ],
