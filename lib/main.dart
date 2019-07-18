@@ -1,6 +1,7 @@
 import 'package:do_it/src/color/swatch.dart';
 import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/model/user_model.dart';
+import 'package:do_it/src/screen/login/doit_login.dart';
 import 'package:do_it/src/screen/main/doit_main.dart';
 import 'package:do_it/src/screen/profile/doit_profile.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
@@ -64,7 +65,8 @@ class DoIt extends StatelessWidget {
             ),
           ),
         ),
-        home: DoitMain(),
+        // home: DoitMain(),
+        home: DoitLogin(),
       ),
     );
   }

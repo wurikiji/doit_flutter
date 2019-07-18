@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/main/common/goal_card.dart';
+import 'package:do_it/src/screen/main/view/card_progress_indicator.dart';
 import 'package:do_it/src/screen/make_goal/make_goal.dart';
 import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
@@ -53,7 +56,16 @@ class UserGoalCard extends StatelessWidget {
                 CardGoalPeriod(goal: goal),
                 SizedBox(height: 10.0),
                 CardCategoryChip(goal: goal),
-                Spacer(),
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      right: 10.0,
+                      bottom: 25.0,
+                      top: 15.0,
+                    ),
+                    child: CardProgressIndicator(),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(right: 10.0),
                   child: CardInvitationButton(goal: goal),
@@ -117,6 +129,7 @@ class CardGoalPeriod extends StatelessWidget {
   }
 }
 
+// 친구 초대 버튼
 class CardInvitationButton extends StatelessWidget {
   const CardInvitationButton({
     Key key,
@@ -127,7 +140,7 @@ class CardInvitationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
+    return FlatButton(
       onPressed: () {},
       shape: StadiumBorder(),
       color: Colors.white,
@@ -168,12 +181,11 @@ class CardTitleBar extends StatelessWidget {
       children: <Widget>[
         Text(
           goal.firstPage.goalTitle,
-          style:
-              DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 24.0),
+          style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 24.0),
         ),
-        IconButton(
-          icon: Icon(Icons.menu),
-          onPressed: () async {
+        GestureDetector(
+          child: Image.asset('assets/images/btn_more_n.png'),
+          onTap: () async {
             await showCupertinoModalPopup(
               context: context,
               builder: (context) => CupertinoActionSheet(
@@ -195,7 +207,6 @@ class CardTitleBar extends StatelessWidget {
               ),
             );
           },
-          iconSize: 24.0,
         ),
       ],
     );

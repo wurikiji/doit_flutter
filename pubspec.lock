@@ -14,7 +14,7 @@ packages:
       name: bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.14.2"
+    version: "0.14.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -80,7 +80,7 @@ packages:
       name: font_awesome_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "8.4.0"
+    version: "8.5.0"
   intl:
     dependency: "direct main"
     description:
@@ -116,6 +116,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0+1"
+  percent_indicator:
+    dependency: "direct main"
+    description:
+      name: percent_indicator
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.1"
   provider:
     dependency: "direct main"
     description:
@@ -130,6 +137,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.3"
+  rest_api_test:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "188788a9da767c9c65e5e9e764cc8f8d4e22ad0b"
+      url: "https://github.com/wurikiji/flutter_kakao_sdk_test.git"
+    source: git
+    version: "1.0.0+1"
   rxdart:
     dependency: transitive
     description:
@@ -137,6 +153,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.22.0"
+  shared_preferences:
+    dependency: transitive
+    description:
+      name: shared_preferences
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.3+4"
   sky_engine:
     dependency: transitive
     description: flutter
@@ -198,5 +221,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
+  webview_flutter:
+    dependency: transitive
+    description:
+      name: webview_flutter
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.10+3"
 sdks:
   dart: ">=2.2.2 <3.0.0"
+  flutter: ">=1.5.0 <2.0.0"

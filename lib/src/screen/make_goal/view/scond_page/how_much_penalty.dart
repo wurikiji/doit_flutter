@@ -21,7 +21,7 @@ class HowMuchPenalty extends StatelessWidget {
       } catch (e) {}
     }
     return QuestionScaffold(
-      title: '벌금제를 원하면 선택해 주세요.(1인당)',
+      title: '벌금제을 선택해 주세요.(1인당)',
       body: Row(
         children: <Widget>[
           Expanded(
@@ -44,7 +44,7 @@ class HowMuchPenalty extends StatelessWidget {
           SizedBox(width: 10.0),
           Expanded(
             child: SelectPenaltyButton(
-              title: '제한 없음',
+              title: '기타',
               value: 0,
               selected: currentPenalty == 0,
               onTap: onSelectPenalty,
@@ -55,8 +55,7 @@ class HowMuchPenalty extends StatelessWidget {
     );
   }
 
-  onSelectPenalty(
-      BuildContext context, List<SelectableGradientChip> value) async {
+  onSelectPenalty(BuildContext context, List<SelectableGradientChip> value) async {
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     final int penalty = value.isEmpty ? invalidPenalty : value[0].value;
     _bloc.dispatch(
@@ -69,9 +68,7 @@ class HowMuchPenalty extends StatelessWidget {
 }
 
 class SelectPenaltyButton extends StatelessWidget {
-  const SelectPenaltyButton(
-      {this.onTap, this.title, Key key, this.value, this.selected})
-      : super(key: key);
+  const SelectPenaltyButton({this.onTap, this.title, Key key, this.value, this.selected}) : super(key: key);
 
   final String title;
   final SelectableChipOnTap onTap;

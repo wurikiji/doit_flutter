@@ -25,10 +25,14 @@ dependencies:
   easy_stateful_builder: ^0.4.0
   font_awesome_flutter: ^8.4.0
   intl: ^0.15.8
+  percent_indicator: ^2.1.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
+
+  rest_api_test:
+    git: https://github.com/wurikiji/flutter_kakao_sdk_test.git
 
 dev_dependencies:
   flutter_test:
