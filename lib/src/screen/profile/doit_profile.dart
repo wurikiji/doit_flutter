@@ -14,22 +14,61 @@ class DoitProfile extends StatelessWidget {
             ),
             SizedBox(height: 30.0),
             ProfileTitleBar(),
-            SizedBox(height: 35.0),
-            PushAlertSetting(),
-            ProfileMenuCategory(title: 'Goal'),
-            SizedBox(height: 20.0),
-            Text("종료 된 Goal 보기", style: menuTextStyle),
-            ProfileMenuCategory(title: 'Feedback'),
-            SizedBox(height: 20.0),
-            Text("앱스토어 리뷰 남기기", style: menuTextStyle),
-            SizedBox(height: 35.0),
-            ProfileMenuCategory(title: 'App'),
-            SizedBox(height: 20.0),
-            Text("버전 정보", style: menuTextStyle),
-            SizedBox(height: 25.0),
-            Text("오픈소스 라이브러리", style: menuTextStyle),
+            DoitProfileMenu(
+              title: 'Alert',
+              children: <Widget>[
+                Text("푸쉬 알림", style: menuTextStyle),
+              ],
+            ),
+            DoitProfileMenu(
+              title: 'Goal',
+              children: <Widget>[
+                Text("종료 된 Goal 보기", style: menuTextStyle),
+              ],
+            ),
+            DoitProfileMenu(
+              title: 'Feedback',
+              children: <Widget>[
+                Text("앱스토어 리뷰 남기기", style: menuTextStyle),
+              ],
+            ),
+            DoitProfileMenu(
+              title: 'Info',
+              children: <Widget>[
+                Text("버전 정보", style: menuTextStyle),
+                Text("오픈소스 라이브러리", style: menuTextStyle),
+              ],
+            ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class DoitProfileMenu extends StatelessWidget {
+  DoitProfileMenu({this.title, this.children});
+  final String title;
+  final List<Widget> children;
+  @override
+  Widget build(BuildContext context) {
+    final int len = children.length - 1;
+    for (int i = 0; i < len; i++) {
+      print("Insert padding");
+      children.insert(i * 2 + 1, SizedBox(height: 25.0));
+    }
+    return Padding(
+      padding: const EdgeInsets.only(top: 35.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          ProfileMenuCategory(
+            title: title,
+          ),
+          SizedBox(height: 20.0),
+          ...children,
+        ],
       ),
     );
   }
@@ -72,7 +111,6 @@ class PushAlertSetting extends StatelessWidget {
             ),
           ],
         ),
-        SizedBox(height: 35.0),
       ],
     );
   }
