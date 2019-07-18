@@ -79,7 +79,7 @@ class MakeGoalCompleteButton extends StatelessWidget {
         return GestureDetector(
           onTap: () async {
             if (didAnswerAll) {
-              final bool succeed = await showGeneralDialog(
+              await showGeneralDialog(
                 context: context,
                 barrierDismissible: true,
                 barrierColor: Colors.black.withAlpha(0x99),
@@ -92,10 +92,9 @@ class MakeGoalCompleteButton extends StatelessWidget {
                   return SuccessModal();
                 },
               );
-              if (succeed ?? false) {
-                final MakeGoalModel goal = MakeGoalBloc.getBloc(context).goalState.data;
-                Navigator.of(context).pop(goal);
-              }
+              final MakeGoalModel goal = MakeGoalBloc.getBloc(context).goalState.data;
+              print(goal);
+              Navigator.of(context).pop(goal);
             } else {
               Scaffold.of(context).showSnackBar(
                 SnackBar(

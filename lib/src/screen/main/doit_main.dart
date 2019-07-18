@@ -25,30 +25,31 @@ class DoitHome extends StatelessWidget {
               return child;
             } else {
               return StreamBuilder<MakeGoalModel>(
-                stream: value.goals,
+                stream: goalsInServer.stream,
                 initialData: null,
                 builder: (context, snapshot) {
+                  print("Build list");
+                  print(snapshot);
                   if (snapshot.hasData && snapshot.data != null) {
                     print("snapshot data ${snapshot.data}");
-                    goals.add(snapshot.data);
+                    goals.insert(0, snapshot.data);
                   }
                   return Center(
-                    child: goals.isEmpty
+                    child: hi.isEmpty
                         ? EmptyGoalCard()
                         : Container(
                             height: 404,
                             child: ListView.separated(
                               scrollDirection: Axis.horizontal,
-                              itemCount: goals.length + 1,
+                              itemCount: hi.length + 1,
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               separatorBuilder: (context, index) {
                                 return SizedBox(width: 18.0);
                               },
                               itemBuilder: (context, index) {
-                                if (index == goals.length)
-                                  return EmptyGoalCard();
+                                if (index == hi.length) return EmptyGoalCard();
                                 return UserGoalCard(
-                                  goal: goals[index],
+                                  goal: hi[index],
                                 );
                               },
                             ),
@@ -84,11 +85,7 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
         children: <Widget>[
           Text(
             "Do it",
-            style: Theme.of(context)
-                .appBarTheme
-                .textTheme
-                .title
-                .copyWith(fontSize: 30.0),
+            style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
           ),
           GestureDetector(
             child: Image.asset(
