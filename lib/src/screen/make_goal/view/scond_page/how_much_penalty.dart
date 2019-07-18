@@ -21,7 +21,7 @@ class HowMuchPenalty extends StatelessWidget {
       } catch (e) {}
     }
     return QuestionScaffold(
-      title: '벌금제을 선택해 주세요.(1인당)',
+      title: '벌금제을 선택해 주세요. (인당)',
       body: Row(
         children: <Widget>[
           Expanded(
@@ -57,7 +57,22 @@ class HowMuchPenalty extends StatelessWidget {
 
   onSelectPenalty(BuildContext context, List<SelectableGradientChip> value) async {
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-    final int penalty = value.isEmpty ? invalidPenalty : value[0].value;
+    int penalty = value.isEmpty ? invalidPenalty : value[0].value;
+    if (penalty == 0) {
+      penalty = await showGeneralDialog(
+        context: context,
+        barrierDismissible: true,
+        barrierColor: Colors.black.withAlpha(0x99),
+        barrierLabel: 'Make goal succeeded',
+        transitionBuilder: (context, animation, secondaryAnimation, child) {
+          return child;
+        },
+        transitionDuration: Duration(milliseconds: 300),
+        pageBuilder: (context, animation, secondAnimation) {
+          return Container();
+        },
+      );
+    }
     _bloc.dispatch(
       MakeGoalSecondPageEvent(
         action: MakeGoalSecondPageAction.setPenalty,

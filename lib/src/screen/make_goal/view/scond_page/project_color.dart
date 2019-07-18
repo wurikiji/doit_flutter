@@ -75,44 +75,19 @@ class ProjectColor extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final String groupKey = 'projectColor';
-    final MakeGoalSecondPageBloc _bloc =
-        MakeGoalSecondPageBloc.getBloc(context);
+    final MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     final prevIndex = _bloc.currentState.data.colorIndex;
     List<Widget> colorWidgets = List.generate(
       projectColors.length * 2 - 1,
       (index) {
         if (index % 2 == 1) return SizedBox(width: 10.0);
         final LinearGradient gradient = projectColors[index ~/ 2];
-        return Expanded(
-          child: AspectRatio(
-            aspectRatio: 1.0,
-            child: SelectableGradientChip(
-              title: '',
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(4.0),
-              ),
-              groupKey: groupKey,
-              gradient: gradient,
-              value: index ~/ 2,
-              maxMultiSelectables: 1,
-              initialSelected: (index ~/ 2) == prevIndex,
-              unseletedGradient: LinearGradient(
-                colors: [
-                  gradient.colors[0].withOpacity(0.3),
-                  gradient.colors[1].withOpacity(0.3),
-                ],
-              ),
-              onTap: (context, List<SelectableGradientChip> value) {
-                final gIndex = value.isEmpty ? invalidColor : value[0].value;
-                _bloc.dispatch(
-                  MakeGoalSecondPageEvent(
-                    action: MakeGoalSecondPageAction.setProjectColor,
-                    data: gIndex,
-                  ),
-                );
-              },
-            ),
-          ),
+        return new DoitColorButton(
+          index: index,
+          groupKey: groupKey,
+          gradient: gradient,
+          prevIndex: prevIndex,
+          bloc: _bloc,
         );
       },
     );
@@ -120,6 +95,75 @@ class ProjectColor extends StatelessWidget {
       title: '프로젝트의 컬러를 선택하세요.',
       body: Row(
         children: colorWidgets,
+      ),
+    );
+  }
+}
+
+class DoitColorButton extends StatelessWidget {
+  const DoitColorButton({
+    Key key,
+    @required this.index,
+    @required this.groupKey,
+    @required this.gradient,
+    @required this.prevIndex,
+    @required MakeGoalSecondPageBloc bloc,
+  })  : _bloc = bloc,
+        super(key: key);
+
+  final int index;
+  final String groupKey;
+  final LinearGradient gradient;
+  final int prevIndex;
+  final MakeGoalSecondPageBloc _bloc;
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: AspectRatio(
+        aspectRatio: 1.0,
+        child: SelectableGradientChip(
+          title: '',
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(4.0),
+          ),
+          groupKey: groupKey,
+          gradient: gradient,
+          value: index ~/ 2,
+          maxMultiSelectables: 1,
+          initialSelected: (index ~/ 2) == prevIndex,
+          unseletedGradient: LinearGradient(
+            colors: [
+              gradient.colors[0].withOpacity(0.3),
+              gradient.colors[1].withOpacity(0.3),
+            ],
+          ),
+          onTap: (context, List<SelectableGradientChip> value) {
+            final gIndex = value.isEmpty ? invalidColor : value[0].value;
+            _bloc.dispatch(
+              MakeGoalSecondPageEvent(
+                action: MakeGoalSecondPageAction.setProjectColor,
+                data: gIndex,
+              ),
+            );
+          },
+          duration: Duration.zero,
+          selectedDecoration: Container(
+            decoration: new BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+              border: Border.all(
+                color: const Color(0xffffffff),
+                width: 2,
+              ),
+            ),
+            child: Center(
+              child: Icon(
+                Icons.check,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -2,24 +2,26 @@ import 'package:do_it/src/color/doit_theme.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 
-typedef SelectableChipOnTap = Function(
-    BuildContext, List<SelectableGradientChip>);
+typedef SelectableChipOnTap = Function(BuildContext, List<SelectableGradientChip>);
 
 class SelectableGradientChip<T> extends StatelessWidget {
-  SelectableGradientChip({
-    @required this.title,
-    this.shape,
-    this.value,
-    Key key,
-    final this.initialSelected = false,
-    this.onTap,
-    this.gradient,
-    this.icon,
-    this.groupKey,
-    this.unseletedGradient,
-    this.maxMultiSelectables = 1,
-    this.padding,
-  }) : super(key: key);
+  SelectableGradientChip(
+      {@required this.title,
+      this.shape,
+      this.value,
+      Key key,
+      final this.initialSelected = false,
+      this.onTap,
+      this.gradient,
+      this.icon,
+      this.groupKey,
+      this.unseletedGradient,
+      this.maxMultiSelectables = 1,
+      this.padding,
+      this.selectedDecoration,
+      this.duration,
+      this.intrinsicSize})
+      : super(key: key);
 
   /// chip 에 표시할 제목
   final String title;
@@ -52,6 +54,12 @@ class SelectableGradientChip<T> extends StatelessWidget {
   final int maxMultiSelectables;
 
   final EdgeInsetsGeometry padding;
+
+  final Widget selectedDecoration;
+
+  final Duration duration;
+
+  final bool intrinsicSize;
 
   String getStateIdentifier(SelectableGradientChip chip) =>
       (chip.groupKey ?? 'none') + chip.title + 'chip' + chip.value.toString();
@@ -88,8 +96,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
                         });
                         state.nextState = state.currentState;
                       });
-                    } else if (selectedChips.length <
-                        this.maxMultiSelectables) {
+                    } else if (selectedChips.length < this.maxMultiSelectables) {
                       EasyStatefulBuilder.setState(groupKey, (state) {
                         (state.currentState as List).add(this);
                         EasyStatefulBuilder.setState(stateIdentifier, (state) {
@@ -102,8 +109,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
                         final List current = (state.currentState as List);
                         final SelectableGradientChip firstWidget = current[0];
 
-                        final String identifier =
-                            getStateIdentifier(firstWidget);
+                        final String identifier = getStateIdentifier(firstWidget);
                         EasyStatefulBuilder.setState(identifier, (state) {
                           state.nextState = false;
                         });
@@ -115,9 +121,7 @@ class SelectableGradientChip<T> extends StatelessWidget {
                         state.nextState = current;
                       });
                     }
-                    if (this.onTap != null)
-                      this.onTap(context,
-                          EasyStatefulBuilder.getState(groupKey).currentState);
+                    if (this.onTap != null) this.onTap(context, EasyStatefulBuilder.getState(groupKey).currentState);
                   } else {
                     if (this.onTap != null) this.onTap(context, [this]);
                     EasyStatefulBuilder.setState(stateIdentifier, (state) {
@@ -125,51 +129,56 @@ class SelectableGradientChip<T> extends StatelessWidget {
                     });
                   }
                 },
-                child: AnimatedContainer(
-                  padding:
-                      this.padding ?? EdgeInsets.symmetric(horizontal: 17.0),
-                  duration: const Duration(milliseconds: 200),
-                  decoration: ShapeDecoration(
-                    shape: this.shape ??
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20.0),
+                child: IntrinsicWidth(
+                  child: Stack(
+                    fit: (intrinsicSize ?? false) ? StackFit.loose : StackFit.expand,
+                    children: <Widget>[
+                      AnimatedContainer(
+                        padding: this.padding ?? EdgeInsets.symmetric(horizontal: 17.0),
+                        duration: duration ?? const Duration(milliseconds: 200),
+                        decoration: ShapeDecoration(
+                          shape: this.shape ??
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20.0),
+                              ),
+                          gradient: selected
+                              ? (this.gradient ??
+                                  LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xff4d90fb),
+                                      Color(0xff771de4),
+                                    ],
+                                  ))
+                              : (this.unseletedGradient ??
+                                  LinearGradient(
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                    colors: [
+                                      Color(0xff2b2b2b),
+                                      Color(0xff2b2b2b),
+                                    ],
+                                  )),
                         ),
-                    gradient: selected
-                        ? (this.gradient ??
-                            LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color(0xff4d90fb),
-                                Color(0xff771de4),
-                              ],
-                            ))
-                        : (this.unseletedGradient ??
-                            LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: [
-                                Color(0xff2b2b2b),
-                                Color(0xff2b2b2b),
-                              ],
-                            )),
-                  ),
-                  child: IntrinsicWidth(
-                    child: Center(
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          if (this.icon != null) this.icon,
-                          if (this.icon != null) SizedBox(width: 8.0),
-                          Text(
-                            this.title,
-                            style: selected
-                                ? DoitMainTheme.makeGoalSelectedCategory
-                                : DoitMainTheme.makeGoalUnselectedCategory,
+                        child: Center(
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              if (this.icon != null) this.icon,
+                              if (this.icon != null) SizedBox(width: 8.0),
+                              Text(
+                                this.title,
+                                style: selected
+                                    ? DoitMainTheme.makeGoalSelectedCategory
+                                    : DoitMainTheme.makeGoalUnselectedCategory,
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
-                    ),
+                      selected && selectedDecoration != null ? selectedDecoration : Container(),
+                    ],
                   ),
                 ),
               );

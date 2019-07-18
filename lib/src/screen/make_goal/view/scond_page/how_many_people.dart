@@ -32,7 +32,7 @@ class _HowManyPeopleState extends State<HowManyPeople> {
 
     _textEditingController.text = numMembers?.toString() ?? '';
     return QuestionScaffold(
-      title: "누구와 함께 할까요? (1명 이상)",
+      title: "몇명과 함께 할까요? (1명 이상)",
       body: Container(
         height: 40.0,
         decoration: ShapeDecoration(
@@ -62,8 +62,7 @@ class _HowManyPeopleState extends State<HowManyPeople> {
                     hintStyle: DoitMainTheme.makeGoalHintTextStyle,
                   ),
                   onChanged: (text) async {
-                    MakeGoalSecondPageBloc bloc =
-                        MakeGoalSecondPageBloc.getBloc(context);
+                    MakeGoalSecondPageBloc bloc = MakeGoalSecondPageBloc.getBloc(context);
                     bloc.dispatch(
                       MakeGoalSecondPageEvent(
                         action: MakeGoalSecondPageAction.setNumMembers,

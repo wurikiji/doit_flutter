@@ -39,6 +39,7 @@ class ChooseCategory extends StatelessWidget {
                     Container(
                       height: 30.0,
                       child: SelectableGradientChip(
+                        intrinsicSize: true,
                         title: categories[i].title,
                         groupKey: groupKey,
                         maxMultiSelectables: 1,
