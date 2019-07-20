@@ -7,7 +7,7 @@ packages:
       name: async
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.2.0"
+    version: "2.3.0"
   bloc:
     dependency: transitive
     description:
@@ -101,7 +101,7 @@ packages:
       name: meta
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.6"
+    version: "1.1.7"
   path:
     dependency: transitive
     description:
@@ -142,7 +142,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "188788a9da767c9c65e5e9e764cc8f8d4e22ad0b"
+      resolved-ref: "8d26b2afc2102aa96d193cb243b10bdf70950796"
       url: "https://github.com/wurikiji/flutter_kakao_sdk_test.git"
     source: git
     version: "1.0.0+1"

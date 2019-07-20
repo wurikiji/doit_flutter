@@ -2,20 +2,18 @@ import 'package:do_it/main.dart';
 import 'package:flutter/material.dart';
 import 'package:rest_api_test/kakao_users/kakao_users.dart';
 
-String clientId = 'ab8b947e7366f8cf7037d35eae899100';
-
 class DoitLogin extends StatefulWidget {
   @override
   _DoitLoginState createState() => _DoitLoginState();
 }
 
 class _DoitLoginState extends State<DoitLogin> {
-  Future<UserToken> loggedIn;
+  Future<KakaoUserToken> loggedIn;
 
   @override
   void initState() {
     super.initState();
-    KakaoUsersRestAPI.initialize(clientId: clientId);
+    print("Init login view");
     loggedIn = KakaoUsersRestAPI.checkLogin();
   }
 
@@ -105,7 +103,7 @@ class DoitLoginScreen extends StatelessWidget {
             color: Colors.white,
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
             onPressed: () async {
-              final UserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
+              final KakaoUserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
               if (token != null) {
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(

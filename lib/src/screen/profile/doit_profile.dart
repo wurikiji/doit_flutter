@@ -1,4 +1,7 @@
+import 'package:do_it/src/screen/login/doit_login.dart';
+import 'package:do_it/src/screen/profile/common/doit_profile_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:rest_api_test/kakao_users/kakao_users.dart';
 
 class DoitProfile extends StatelessWidget {
   @override
@@ -53,76 +56,6 @@ class DoitProfile extends StatelessWidget {
   }
 }
 
-class DoitProfileMenu extends StatelessWidget {
-  DoitProfileMenu({this.title, this.children});
-  final String title;
-  final List<Widget> children;
-  @override
-  Widget build(BuildContext context) {
-    final int len = children.length - 1;
-    for (int i = 0; i < len; i++) {
-      print("Insert padding");
-      children.insert(i * 2 + 1, SizedBox(height: 25.0));
-    }
-    return Padding(
-      padding: const EdgeInsets.only(top: 35.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          ProfileMenuCategory(
-            title: title,
-          ),
-          SizedBox(height: 20.0),
-          ...children,
-        ],
-      ),
-    );
-  }
-}
-
-class ProfileMenuCategory extends StatelessWidget {
-  const ProfileMenuCategory({
-    Key key,
-    @required this.title,
-  }) : super(key: key);
-
-  final String title;
-  @override
-  Widget build(BuildContext context) {
-    return Text(
-      title,
-      style: menuCategoryStyle,
-    );
-  }
-}
-
-class PushAlertSetting extends StatelessWidget {
-  const PushAlertSetting({
-    Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
-        ProfileMenuCategory(title: 'Alert'),
-        SizedBox(height: 20.0),
-        Row(
-          children: <Widget>[
-            Text(
-              "푸쉬 알림",
-              style: menuTextStyle,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
 class ProfileTitleBar extends StatelessWidget {
   const ProfileTitleBar({
     Key key,
@@ -146,21 +79,30 @@ class ProfileTitleBar extends StatelessWidget {
             style: logoutTextStyle,
           ),
           shape: StadiumBorder(),
-          onPressed: () {},
+          onPressed: () async {
+            final result = KakaoUsersRestAPI.logout();
+            if (result == null) {
+              print("Failed to logout kakao user");
+              Scaffold.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("카카오 계정 로그아웃에 실패하였습니다."),
+                ),
+              );
+            } else {
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(
+                  builder: (context) => DoitLogin(),
+                ),
+                (predicate) => predicate == null,
+              );
+            }
+          },
           color: Color(0xff2b2b2b),
         ),
       ],
     );
   }
 }
-
-TextStyle menuCategoryStyle = TextStyle(
-  color: Color(0xffffffff).withOpacity(0.6),
-  fontWeight: FontWeight.w700,
-  fontFamily: "SpoqaHanSans",
-  fontStyle: FontStyle.normal,
-  fontSize: 14.0,
-);
 
 TextStyle menuTextStyle = const TextStyle(
   color: const Color(0xffffffff),

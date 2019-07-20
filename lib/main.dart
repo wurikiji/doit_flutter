@@ -7,8 +7,13 @@ import 'package:do_it/src/screen/profile/doit_profile.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:rest_api_test/kakao_users/kakao_users.dart';
 
-void main() => runApp(DoIt());
+const String clientId = 'ab8b947e7366f8cf7037d35eae899100';
+void main() {
+  KakaoUsersRestAPI.initialize(clientId: clientId);
+  runApp(DoIt());
+}
 
 class DoIt extends StatelessWidget {
   // This widget is the root of your application.
