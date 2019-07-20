@@ -94,6 +94,12 @@ class CardCategoryChip extends StatelessWidget {
       child: IntrinsicWidth(
         child: Text(
           CategoryService.getCategories()[goal.firstPage.category.index].title,
+          style: TextStyle(
+            fontFamily: 'SpoqaHanSans',
+            fontSize: 10.0,
+            letterSpacing: 1.5,
+            color: Colors.white,
+          ),
         ),
       ),
     );

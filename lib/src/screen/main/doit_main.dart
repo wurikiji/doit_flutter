@@ -31,7 +31,7 @@ class DoitHome extends StatelessWidget {
                     goals.insert(0, snapshot.data.goal);
                   }
                   return Center(
-                    child: hi.isEmpty
+                    child: inProgressGoal.isEmpty
                         ? EmptyGoalCard()
                         : Container(
                             height: 404,
@@ -41,15 +41,15 @@ class DoitHome extends StatelessWidget {
                               ),
                               physics: PageScrollPhysics(),
                               scrollDirection: Axis.horizontal,
-                              itemCount: hi.length + 1,
+                              itemCount: inProgressGoal.length + 1,
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
                               separatorBuilder: (context, index) {
                                 return SizedBox(width: 18.0);
                               },
                               itemBuilder: (context, index) {
-                                if (index == hi.length) return EmptyGoalCard();
+                                if (index == inProgressGoal.length) return EmptyGoalCard();
                                 return UserGoalCard(
-                                  goal: hi[index].goal,
+                                  goal: inProgressGoal[index].goal,
                                 );
                               },
                             ),

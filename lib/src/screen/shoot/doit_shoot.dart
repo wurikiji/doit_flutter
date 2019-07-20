@@ -21,7 +21,7 @@ class DoitShoot extends StatelessWidget {
       ),
       body: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 90.0),
-        itemCount: hi.length,
+        itemCount: inProgressGoal.length,
         separatorBuilder: (context, index) => SizedBox(height: 60.0),
         itemBuilder: (context, index) {
           return GestureDetector(
@@ -31,7 +31,7 @@ class DoitShoot extends StatelessWidget {
             },
             child: Center(
               child: Text(
-                hi[index].goal.firstPage.goalTitle,
+                inProgressGoal[index].goal.firstPage.goalTitle,
                 style: const TextStyle(
                   color: const Color(0xffffffff),
                   fontWeight: FontWeight.w700,

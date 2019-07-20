@@ -6,7 +6,27 @@ import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model
 import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 
 StreamController<DoitGoal> goalsInServer = StreamController<DoitGoal>.broadcast();
-List<DoitGoal> hi = <DoitGoal>[
+List<DoitGoal> finishedGoals = <DoitGoal>[
+  DoitGoal(
+    goal: MakeGoalModel(
+      firstPage: MakeGoalFirstPageModel(
+        category: GoalCategory.study,
+        endDate: DateTime.now().subtract(Duration(days: 1)),
+        startDate: DateTime.now().subtract(Duration(days: 22)),
+        goalTitle: 'ended',
+        useTimer: false,
+      ),
+      secondPage: MakeGoalSecondPageModel(
+        colorIndex: 4,
+        numMembers: 3,
+        penalty: 10000,
+        workCycle: 4,
+      ),
+    ),
+  ),
+];
+
+List<DoitGoal> inProgressGoal = <DoitGoal>[
   DoitGoal(
     goal: MakeGoalModel(
       firstPage: MakeGoalFirstPageModel(

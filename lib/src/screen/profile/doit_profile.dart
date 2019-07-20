@@ -1,3 +1,4 @@
+import 'package:do_it/src/screen/ended_goal/doit_ended_goals.dart';
 import 'package:do_it/src/screen/profile/common/doit_profile_menu.dart';
 import 'package:do_it/src/screen/profile/view/profile_title_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -17,26 +18,8 @@ class DoitProfile extends StatelessWidget {
             ),
             SizedBox(height: 30.0),
             ProfileTitleBar(),
-            DoitProfileMenu(
-              title: 'Alert',
-              children: <Widget>[
-                Row(
-                  mainAxisSize: MainAxisSize.max,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Text("푸쉬 알림", style: menuTextStyle),
-                    DoitPushButton(),
-                  ],
-                ),
-              ],
-            ),
-            DoitProfileMenu(
-              title: 'Goal',
-              children: <Widget>[
-                Text("종료 된 Goal 보기", style: menuTextStyle),
-              ],
-            ),
+            DoitPushSetting(),
+            DoitShowFinshedGoals(),
             DoitProfileMenu(
               title: 'Feedback',
               children: <Widget>[
@@ -60,6 +43,55 @@ class DoitProfile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DoitShowFinshedGoals extends StatelessWidget {
+  const DoitShowFinshedGoals({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DoitProfileMenu(
+      title: 'Goal',
+      children: <Widget>[
+        GestureDetector(
+          onTap: () async {
+            await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DoitFinishedGoals(),
+              ),
+            );
+          },
+          child: Text("종료 된 Goal 보기", style: menuTextStyle),
+        ),
+      ],
+    );
+  }
+}
+
+class DoitPushSetting extends StatelessWidget {
+  const DoitPushSetting({
+    Key key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DoitProfileMenu(
+      title: 'Alert',
+      children: <Widget>[
+        Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text("푸쉬 알림", style: menuTextStyle),
+            DoitPushButton(),
+          ],
+        ),
+      ],
     );
   }
 }
