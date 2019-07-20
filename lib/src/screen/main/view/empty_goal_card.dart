@@ -21,7 +21,7 @@ class EmptyGoalCard extends StatelessWidget {
             ),
           );
           if (model != null) {
-            value.addGoal(model);
+            value.addGoal(DoitGoal(goal: model));
           }
         },
         child: DoitMainCard(

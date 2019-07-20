@@ -1,7 +1,7 @@
-import 'package:do_it/src/screen/login/doit_login.dart';
 import 'package:do_it/src/screen/profile/common/doit_profile_menu.dart';
+import 'package:do_it/src/screen/profile/view/profile_title_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:rest_api_test/kakao_users/kakao_users.dart';
 
 class DoitProfile extends StatelessWidget {
   @override
@@ -20,7 +20,15 @@ class DoitProfile extends StatelessWidget {
             DoitProfileMenu(
               title: 'Alert',
               children: <Widget>[
-                Text("푸쉬 알림", style: menuTextStyle),
+                Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text("푸쉬 알림", style: menuTextStyle),
+                    DoitPushButton(),
+                  ],
+                ),
               ],
             ),
             DoitProfileMenu(
@@ -56,50 +64,83 @@ class DoitProfile extends StatelessWidget {
   }
 }
 
-class ProfileTitleBar extends StatelessWidget {
-  const ProfileTitleBar({
+class DoitPushButton extends StatefulWidget {
+  const DoitPushButton({
     Key key,
   }) : super(key: key);
 
   @override
+  _DoitPushButtonState createState() => _DoitPushButtonState();
+}
+
+class _DoitPushButtonState extends State<DoitPushButton> {
+  bool pushOn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _getPushInfo();
+  }
+
+  _getPushInfo() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final bool pushInfo = prefs.getBool('pushOn');
+    if (pushInfo ?? false) {
+      setState(() {
+        pushOn = true;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: <Widget>[
-        CircleAvatar(
-          child: Icon(Icons.person),
-        ),
-        SizedBox(width: 15.0),
-        Text("taesong.lee"),
-        Spacer(),
-        FlatButton(
-          child: Text(
-            "로그아웃",
-            style: logoutTextStyle,
-          ),
+    return GestureDetector(
+      onTap: () async {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        setState(() {
+          pushOn = !pushOn;
+          prefs.setBool('pushOn', pushOn);
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 300),
+        height: 31.0,
+        width: 51.0,
+        decoration: ShapeDecoration(
           shape: StadiumBorder(),
-          onPressed: () async {
-            final result = KakaoUsersRestAPI.logout();
-            if (result == null) {
-              print("Failed to logout kakao user");
-              Scaffold.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("카카오 계정 로그아웃에 실패하였습니다."),
-                ),
-              );
-            } else {
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                  builder: (context) => DoitLogin(),
-                ),
-                (predicate) => predicate == null,
-              );
-            }
-          },
-          color: Color(0xff2b2b2b),
+          color: pushOn ? Color(0xff4d90fb) : Color(0xffdddddd),
         ),
-      ],
+        alignment: pushOn ? Alignment.centerRight : Alignment.centerLeft,
+        child: Padding(
+          padding: EdgeInsets.all(1.5),
+          child: Container(
+            height: 28.0,
+            width: 28.0,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              border: Border.all(width: 0.5, color: Color(0x1a000000)),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0x19000000),
+                  blurRadius: 1.0,
+                  offset: Offset(0.0, 3.0),
+                ),
+                BoxShadow(
+                  color: Color(0x28000000),
+                  blurRadius: 1.0,
+                  offset: Offset(0.0, 3.0),
+                ),
+                BoxShadow(
+                  color: Color(0x26000000),
+                  blurRadius: 1.0,
+                  offset: Offset(0.0, 3.0),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -118,11 +159,4 @@ TextStyle myPageTextStyle = const TextStyle(
   fontFamily: "SpoqaHanSans",
   fontStyle: FontStyle.normal,
   fontSize: 30.0,
-);
-TextStyle logoutTextStyle = const TextStyle(
-  color: const Color(0xff777777),
-  fontWeight: FontWeight.w400,
-  fontFamily: "SpoqaHanSans",
-  fontStyle: FontStyle.normal,
-  fontSize: 14.0,
 );

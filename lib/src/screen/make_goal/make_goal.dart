@@ -1,4 +1,3 @@
-import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/page_navigation_bloc.dart';
 import 'package:do_it/src/screen/make_goal/bloc/progress_bloc.dart';
@@ -44,8 +43,7 @@ class MakeGoalWidget extends StatelessWidget {
                     duration: Duration(milliseconds: 300),
                     curve: Curves.easeIn,
                   );
-              MakeGoalProgressBloc bloc =
-                  BlocProvider.of<MakeGoalProgressBloc>(builderContext);
+              MakeGoalProgressBloc bloc = BlocProvider.of<MakeGoalProgressBloc>(builderContext);
               bloc.dispatch(
                 MakeGoalProgressEvent(
                   action: MakeGoalProgressAction.setProgress,

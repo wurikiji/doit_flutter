@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/main/view/card_progress_indicator.dart';
@@ -36,16 +34,7 @@ class UserGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Consumer<GoalService>(builder: (context, value, child) {
       return GestureDetector(
-        onTap: () async {
-          final MakeGoalModel model = await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => MakeGoalWidget(),
-            ),
-          );
-          if (model != null) {
-            value.addGoal(model);
-          }
-        },
+        onTap: () async {},
         child: DoitMainCard(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
@@ -63,7 +52,9 @@ class UserGoalCard extends StatelessWidget {
                       bottom: 25.0,
                       top: 15.0,
                     ),
-                    child: CardProgressIndicator(),
+                    child: CardProgressIndicator(
+                      goal: goal,
+                    ),
                   ),
                 ),
                 Padding(
@@ -201,7 +192,9 @@ class CardTitleBar extends StatelessWidget {
                   ),
                 ],
                 cancelButton: CupertinoActionSheetAction(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
                   child: Text("취소"),
                 ),
               ),

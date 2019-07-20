@@ -1,12 +1,16 @@
 import 'dart:math';
 
+import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 class CardProgressIndicator extends StatelessWidget {
   const CardProgressIndicator({
     Key key,
+    @required this.goal,
   }) : super(key: key);
+
+  final MakeGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +34,35 @@ class CardProgressIndicator extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                Text("hi"),
-                Text("10%"),
+                Text(
+                  getDday(),
+                  style: TextStyle(
+                    fontFamily: 'SpoqaHanSans',
+                    fontSize: 12.0,
+                    color: Colors.white,
+                  ),
+                ),
+                Text(
+                  "10%",
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 34.0,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0xfffffff0),
+                  ),
+                ),
               ],
             ),
           ),
         ],
       );
     });
+  }
+
+  String getDday() {
+    DateTime now = DateTime.now();
+    return now.isBefore(goal.firstPage.startDate)
+        ? "D - ${goal.firstPage.startDate.difference(now.subtract(Duration(minutes: 60 * 24 - 1))).inDays}"
+        : '현재 진행률';
   }
 }

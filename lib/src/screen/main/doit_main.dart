@@ -1,8 +1,6 @@
-import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/empty_goal_card.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
-import 'package:do_it/src/screen/make_goal/bloc/make_goal_bloc.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -24,15 +22,13 @@ class DoitHome extends StatelessWidget {
               print("No goal service");
               return child;
             } else {
-              return StreamBuilder<MakeGoalModel>(
+              return StreamBuilder<DoitGoal>(
                 stream: goalsInServer.stream,
                 initialData: null,
                 builder: (context, snapshot) {
-                  print("Build list");
-                  print(snapshot);
                   if (snapshot.hasData && snapshot.data != null) {
                     print("snapshot data ${snapshot.data}");
-                    goals.insert(0, snapshot.data);
+                    goals.insert(0, snapshot.data.goal);
                   }
                   return Center(
                     child: hi.isEmpty
@@ -40,6 +36,10 @@ class DoitHome extends StatelessWidget {
                         : Container(
                             height: 404,
                             child: ListView.separated(
+                              controller: PageController(
+                                viewportFraction: 270.0 / MediaQuery.of(context).size.width,
+                              ),
+                              physics: PageScrollPhysics(),
                               scrollDirection: Axis.horizontal,
                               itemCount: hi.length + 1,
                               padding: EdgeInsets.symmetric(horizontal: 30.0),
@@ -49,7 +49,7 @@ class DoitHome extends StatelessWidget {
                               itemBuilder: (context, index) {
                                 if (index == hi.length) return EmptyGoalCard();
                                 return UserGoalCard(
-                                  goal: hi[index],
+                                  goal: hi[index].goal,
                                 );
                               },
                             ),
@@ -87,12 +87,12 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             "Do it",
             style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
           ),
-          GestureDetector(
-            child: Image.asset(
-              'assets/images/btn_goals_n.png',
-            ),
-            onTap: () {},
-          ),
+          // GestureDetector(
+          //   child: Image.asset(
+          //     'assets/images/btn_goals_n.png',
+          //   ),
+          //   onTap: () {},
+          // ),
         ],
       ),
     );

@@ -30,14 +30,12 @@ class MakeGoalPrevStepWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MakeGoalProgressBloc bloc =
-        BlocProvider.of<MakeGoalProgressBloc>(context);
+    final MakeGoalProgressBloc bloc = BlocProvider.of<MakeGoalProgressBloc>(context);
     return BlocBuilder(
       bloc: bloc,
       builder: (context, MakeGoalProgressSnapshot value) => GestureDetector(
         onTap: () {
-          MakeGoalNavigationBloc navBloc =
-              BlocProvider.of<MakeGoalNavigationBloc>(context);
+          MakeGoalNavigationBloc navBloc = BlocProvider.of<MakeGoalNavigationBloc>(context);
           navBloc.dispatch(
             MakeGoalNavigationEvent(
               action: MakeGoalNavigationAction.goBack,
@@ -63,7 +61,7 @@ class MakeGoalBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       child: Image.asset(
-        'assets/images/backButton.png',
+        'assets/images/outline_clear_24_px.png',
         height: 16,
       ),
       onTap: () {

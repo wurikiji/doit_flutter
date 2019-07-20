@@ -14,8 +14,7 @@ class HowManyTimes extends StatefulWidget {
 
 enum _AdditionalQuestion { daysPerWeek, everyWeekDays, none }
 
-class _HowManyTimesState extends State<HowManyTimes>
-    with SingleTickerProviderStateMixin {
+class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderStateMixin {
   _AdditionalQuestion additionalQuestionIndex = _AdditionalQuestion.none;
   AnimationController animationController;
 
@@ -37,8 +36,6 @@ class _HowManyTimesState extends State<HowManyTimes>
   @override
   Widget build(BuildContext context) {
     final String groupKey = 'howManyTimes';
-    final String title = '주별 횟수';
-    final Function onTap = (context, value) {};
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     int cycle = _bloc.currentState.data.workCycle;
     if ((cycle ?? 0) > 0 && cycle < (1 << 10)) {
@@ -48,13 +45,24 @@ class _HowManyTimesState extends State<HowManyTimes>
     } else if (cycle == null) {
       cycle = 1 << 23;
     }
-    print("Cycle: $cycle");
     return QuestionScaffold(
       title: '어떻게 진행할까요?',
       body: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
+              Expanded(
+                child: SelectHowOftenButton(
+                  groupKey: groupKey,
+                  title: '매일',
+                  value: _AdditionalQuestion.none,
+                  selected: cycle == 0,
+                  onTap: (context, value) {
+                    showAdditionalQuestion(value);
+                  },
+                ),
+              ),
+              SizedBox(width: 12.0),
               Expanded(
                 child: SelectHowOftenButton(
                   groupKey: groupKey,
@@ -78,18 +86,6 @@ class _HowManyTimesState extends State<HowManyTimes>
                   },
                 ),
               ),
-              SizedBox(width: 12.0),
-              Expanded(
-                child: SelectHowOftenButton(
-                  groupKey: groupKey,
-                  title: '제한 없음',
-                  value: _AdditionalQuestion.none,
-                  selected: cycle == 0,
-                  onTap: (context, value) {
-                    showAdditionalQuestion(value);
-                  },
-                ),
-              ),
             ],
           ),
           EasyStatefulBuilder(
@@ -105,9 +101,7 @@ class _HowManyTimesState extends State<HowManyTimes>
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0),
-                      additionalQuestionIndex == _AdditionalQuestion.daysPerWeek
-                          ? DaysPerWeek()
-                          : EveryWeekdays(),
+                      additionalQuestionIndex == _AdditionalQuestion.daysPerWeek ? DaysPerWeek() : EveryWeekdays(),
                     ],
                   ),
                 );
@@ -136,9 +130,7 @@ class _HowManyTimesState extends State<HowManyTimes>
       _bloc.dispatch(
         MakeGoalSecondPageEvent(
           action: MakeGoalSecondPageAction.setWorkCycle,
-          data: additionalQuestionIndex == _AdditionalQuestion.none
-              ? 0
-              : invalidWorkCycle,
+          data: additionalQuestionIndex == _AdditionalQuestion.none ? 0 : invalidWorkCycle,
         ),
       );
     }

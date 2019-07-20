@@ -1,10 +1,8 @@
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
-import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HowManyPeople extends StatefulWidget {
   @override

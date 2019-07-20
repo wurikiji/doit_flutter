@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
@@ -19,8 +17,7 @@ class EveryWeekdays extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final MakeGoalSecondPageBloc _bloc =
-        MakeGoalSecondPageBloc.getBloc(context);
+    final MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     const String counterKey = 'weekdayCounterKey';
     int counter = 0;
     int currentCycle = _bloc.currentState.data.workCycle ?? 0;
@@ -50,8 +47,7 @@ class EveryWeekdays extends StatelessWidget {
               initialSelected: (currentCycle & (1 << days + 10)) != 0,
               maxMultiSelectables: 7,
               onTap: (context, value) {
-                MakeGoalSecondPageBloc _bloc =
-                    MakeGoalSecondPageBloc.getBloc(context);
+                MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
                 int selectedDays = days + 10;
                 int currentCycle = _bloc.currentState.data.workCycle ?? 0;
                 if (currentCycle < (1 << 10) || currentCycle > (1 << 19)) {
@@ -112,10 +108,7 @@ class EveryWeekdays extends StatelessWidget {
                   keepAlive: false,
                   builder: (context, state) => Text(
                     "주 $state 회로 설정되었습니다.",
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontSize: 12.0),
+                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12.0),
                   ),
                 ),
               ],

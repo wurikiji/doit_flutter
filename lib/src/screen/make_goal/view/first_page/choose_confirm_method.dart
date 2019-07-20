@@ -1,10 +1,7 @@
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/first_page_goal_bloc.dart';
-import 'package:do_it/src/screen/make_goal/model/make_goal_first_page_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
-import 'package:do_it/src/service/api/category_service.dart';
-import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -85,16 +82,14 @@ class ConfirmMethodsNotice extends StatelessWidget {
               SizedBox(width: 4.0),
               Text(
                 "알려드려요",
-                style: DoitMainTheme.makeGoalQuestionTitleStyle
-                    .copyWith(fontSize: 12.0),
+                style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 12.0),
               ),
             ],
           ),
           SizedBox(height: 5.5),
           Text(
             "기본 인증방식은 글+사진 입니다.",
-            style: DoitMainTheme.makeGoalUserInputTextStyle
-                .copyWith(fontSize: 10.0),
+            style: DoitMainTheme.makeGoalUserInputTextStyle.copyWith(fontSize: 10.0),
           ),
         ],
       ),
@@ -133,13 +128,10 @@ class WillUseTimerQuestionWidget extends StatelessWidget {
             icon: Icon(
               method.icon,
               size: 18.0,
-              color: (snapshot?.goal?.useTimer ?? false)
-                  ? Color(0xffffffff)
-                  : Color(0x66ffffff),
+              color: (snapshot?.goal?.useTimer ?? false) ? Color(0xffffffff) : Color(0x66ffffff),
             ),
             onTap: (context, selected) {
-              final FirstPageMakeGoalBloc _bloc =
-                  FirstPageMakeGoalBloc.getBloc(context);
+              final FirstPageMakeGoalBloc _bloc = FirstPageMakeGoalBloc.getBloc(context);
               final selectedList = selected;
 
               bool useTimer = false;

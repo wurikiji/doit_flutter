@@ -10,3 +10,12 @@ class MakeGoalModel extends Equatable {
   MakeGoalFirstPageModel firstPage;
   MakeGoalSecondPageModel secondPage;
 }
+
+class DoitGoal {
+  DoitGoal({
+    this.goal,
+    this.userName,
+  });
+  final MakeGoalModel goal;
+  final String userName;
+}

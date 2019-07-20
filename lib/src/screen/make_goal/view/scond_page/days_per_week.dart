@@ -10,15 +10,14 @@ import 'package:flutter/material.dart';
 class DaysPerWeek extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final MakeGoalSecondPageBloc _bloc =
-        MakeGoalSecondPageBloc.getBloc(context);
+    final MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     const String counterKey = 'cycleCounterKey';
     const String groupKey = 'howManyDaysPerWeek';
     int cycle = _bloc.currentState.data.workCycle ?? 0;
     if (cycle > (1 << 9))
       cycle = 0;
     else
-      cycle = (log(cycle) / log(2)).toInt();
+      cycle = (log(cycle) ~/ log(2));
     final List<Widget> selectableDays = List.generate(
       13,
       (index) {
@@ -36,8 +35,7 @@ class DaysPerWeek extends StatelessWidget {
               initialSelected: cycle == days,
               maxMultiSelectables: 1,
               onTap: (context, value) {
-                MakeGoalSecondPageBloc _bloc =
-                    MakeGoalSecondPageBloc.getBloc(context);
+                MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
                 int days = value.isEmpty ? invalidWorkCycle : value[0].value;
                 _bloc.dispatch(
                   MakeGoalSecondPageEvent(
@@ -87,10 +85,7 @@ class DaysPerWeek extends StatelessWidget {
                   keepAlive: false,
                   builder: (context, state) => Text(
                     "주 $state 회로 설정되었습니다.",
-                    style: Theme.of(context)
-                        .textTheme
-                        .body1
-                        .copyWith(fontSize: 12.0),
+                    style: Theme.of(context).textTheme.body1.copyWith(fontSize: 12.0),
                   ),
                 ),
               ],

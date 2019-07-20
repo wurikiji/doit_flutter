@@ -1,4 +1,7 @@
+import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/color/swatch.dart';
+import 'package:do_it/src/screen/shoot/doit_shoot.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DoitFloatingActionButton extends StatelessWidget {
@@ -9,6 +12,12 @@ class DoitFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () async {
+        await showCupertinoModalPopup(
+          builder: (context) => DoitShoot(),
+          context: context,
+        );
+      },
       child: Container(
         width: 60.0,
         height: 60.0,
@@ -60,7 +69,6 @@ class DoitBottomAppBar extends StatelessWidget {
           onTap: (int index) {
             DefaultTabController.of(context).animateTo(index);
           },
-
           tabs: <Widget>[
             Tab(
               child: Icon(

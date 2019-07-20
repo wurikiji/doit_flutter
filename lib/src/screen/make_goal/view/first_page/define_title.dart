@@ -2,7 +2,6 @@ import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/first_page_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class DefineTitle extends StatefulWidget {
   @override
@@ -27,8 +26,7 @@ class _DefineTitleState extends State<DefineTitle> {
       body: Container(
         padding: EdgeInsets.symmetric(vertical: 10.0),
         decoration: ShapeDecoration(
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
           color: Color(0xff2b2b2b),
         ),
         child: Center(
@@ -44,8 +42,7 @@ class _DefineTitleState extends State<DefineTitle> {
             maxLines: 1,
             style: DoitMainTheme.makeGoalUserInputTextStyle,
             onChanged: (String title) async {
-              FirstPageMakeGoalBloc _bloc =
-                  FirstPageMakeGoalBloc.getBloc(context);
+              FirstPageMakeGoalBloc _bloc = FirstPageMakeGoalBloc.getBloc(context);
               _bloc.dispatch(
                 FirstPageMakeGoalInfoEvent(
                   action: FirstPageMakeGoalInfoAction.setTitle,
