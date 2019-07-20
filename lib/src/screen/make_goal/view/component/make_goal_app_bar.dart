@@ -87,6 +87,7 @@ class MakeGoalProgressBar extends StatelessWidget {
             double deviceWidth = MediaQuery.of(context).size.width;
             return AnimatedContainer(
               width: deviceWidth * snapshot.progress,
+              curve: Curves.easeInOutBack,
               duration: Duration(milliseconds: 300),
               decoration: ShapeDecoration(
                 shape: StadiumBorder(),
