@@ -10,35 +10,42 @@ class DoitProfile extends StatelessWidget {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.all(30.0),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
+            SizedBox(height: 30.0),
             Text(
               "My Page",
               style: myPageTextStyle,
             ),
-            SizedBox(height: 30.0),
-            ProfileTitleBar(),
-            DoitPushSetting(),
-            DoitShowFinshedGoals(),
-            DoitProfileMenu(
-              title: 'Feedback',
-              children: <Widget>[
-                Text("앱스토어 리뷰 남기기", style: menuTextStyle),
-              ],
-            ),
-            DoitProfileMenu(
-              title: 'Info',
-              children: <Widget>[
-                Text("버전 정보", style: menuTextStyle),
-                GestureDetector(
-                  onTap: () {
-                    showLicensePage(
-                      context: context,
-                    );
-                  },
-                  child: Text("오픈소스 라이브러리", style: menuTextStyle),
-                ),
-              ],
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  ProfileTitleBar(),
+                  DoitPushSetting(),
+                  DoitShowFinshedGoals(),
+                  DoitProfileMenu(
+                    title: 'Feedback',
+                    children: <Widget>[
+                      Text("앱스토어 리뷰 남기기", style: menuTextStyle),
+                    ],
+                  ),
+                  DoitProfileMenu(
+                    title: 'Info',
+                    children: <Widget>[
+                      Text("버전 정보", style: menuTextStyle),
+                      GestureDetector(
+                        onTap: () {
+                          showLicensePage(
+                            context: context,
+                          );
+                        },
+                        child: Text("오픈소스 라이브러리", style: menuTextStyle),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
