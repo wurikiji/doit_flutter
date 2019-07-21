@@ -13,7 +13,6 @@ class _DoitLoginState extends State<DoitLogin> {
   @override
   void initState() {
     super.initState();
-    print("Init login view");
     loggedIn = KakaoUsersRestAPI.checkLogin();
   }
 
@@ -32,12 +31,12 @@ class _DoitLoginState extends State<DoitLogin> {
             ],
           ),
         ),
-        child: FutureBuilder(
+        child: FutureBuilder<KakaoUserToken>(
           future: loggedIn,
-          initialData: null,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData && snapshot.data != null) {
+                print(snapshot.data);
                 return DoitMain();
               } else {
                 return DoitLoginScreen();

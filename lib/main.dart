@@ -8,11 +8,19 @@ import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_api_test/kakao_users/kakao_users.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
+final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 const String clientId = 'ab8b947e7366f8cf7037d35eae899100';
 void main() {
   KakaoUsersRestAPI.initialize(clientId: clientId);
+  test();
   runApp(DoIt());
+}
+
+test() async {
+  String token = await _firebaseMessaging.getToken();
+  print('firebase token is : $token');
 }
 
 class DoIt extends StatelessWidget {

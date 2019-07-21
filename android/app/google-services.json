@@ -1,0 +1,143 @@
+{
+  "project_info": {
+    "project_number": "186104066466",
+    "firebase_url": "https://doit-57ce5.firebaseio.com",
+    "project_id": "doit-57ce5",
+    "storage_bucket": "doit-57ce5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186104066466:android:6247d848f551d618",
+        "android_client_info": {
+          "package_name": "com.depromeet.do_it"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186104066466-ftqi1qdplrirl3oh52l6qq8vibona3ma.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.depromeet.do_it",
+            "certificate_hash": "e2a48dd8a98d56f509827a357cd539e8cc200e33"
+          }
+        },
+        {
+          "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdcaTUp0DeubxaXmuA7Q4bPJV9rQQK1hE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "186104066466-4ppo7u2j52vbuhoe7tad1rfjvneessr3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.depromeet.doit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186104066466:android:f5c5b0d783af76a3",
+        "android_client_info": {
+          "package_name": "com.depromeet.doit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186104066466-f82ghkdatvdfsm726q0l7akjovobtpm5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.depromeet.doit",
+            "certificate_hash": "e2a48dd8a98d56f509827a357cd539e8cc200e33"
+          }
+        },
+        {
+          "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdcaTUp0DeubxaXmuA7Q4bPJV9rQQK1hE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "186104066466-4ppo7u2j52vbuhoe7tad1rfjvneessr3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.depromeet.doit"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:186104066466:android:323ff743430df23b",
+        "android_client_info": {
+          "package_name": "com.depromeet.doit_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "186104066466-ijl9f7m1eerulsqjvm530od05eoug1pa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.depromeet.doit_test",
+            "certificate_hash": "e2a48dd8a98d56f509827a357cd539e8cc200e33"
+          }
+        },
+        {
+          "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdcaTUp0DeubxaXmuA7Q4bPJV9rQQK1hE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "186104066466-b3okbh219rgidasg4rfba0lptj18b5ka.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "186104066466-4ppo7u2j52vbuhoe7tad1rfjvneessr3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.depromeet.doit"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

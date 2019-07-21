@@ -37,7 +37,7 @@ List<DoitGoal> inProgressGoal = <DoitGoal>[
         useTimer: false,
       ),
       secondPage: MakeGoalSecondPageModel(
-        colorIndex: 0,
+        colorIndex: 3,
         numMembers: 2,
         penalty: 10000,
         workCycle: 2,
@@ -54,7 +54,7 @@ List<DoitGoal> inProgressGoal = <DoitGoal>[
         useTimer: false,
       ),
       secondPage: MakeGoalSecondPageModel(
-        colorIndex: 1,
+        colorIndex: 4,
         numMembers: 2,
         penalty: 5000,
         workCycle: 3,
