@@ -1,5 +1,8 @@
 import 'package:do_it/main.dart';
+import 'package:do_it/src/service/api/user_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:rest_api_test/kakao_users/kakao_users.dart';
 
 class DoitLogin extends StatefulWidget {
@@ -13,7 +16,10 @@ class _DoitLoginState extends State<DoitLogin> {
   @override
   void initState() {
     super.initState();
-    loggedIn = KakaoUsersRestAPI.checkLogin();
+    loggedIn = KakaoUsersRestAPI.checkLoginAndRefreshToken();
+    loggedIn.then((userToken) async {
+      gotoDoitMain(context, userToken);
+    });
   }
 
   @override
@@ -34,13 +40,8 @@ class _DoitLoginState extends State<DoitLogin> {
         child: FutureBuilder<KakaoUserToken>(
           future: loggedIn,
           builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasData && snapshot.data != null) {
-                print(snapshot.data);
-                return DoitMain();
-              } else {
-                return DoitLoginScreen();
-              }
+            if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
+              return DoitLoginScreen();
             } else {
               return Center(
                 child: RefreshProgressIndicator(),
@@ -104,11 +105,7 @@ class DoitLoginScreen extends StatelessWidget {
             onPressed: () async {
               final KakaoUserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
               if (token != null) {
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => DoitMain(),
-                  ),
-                );
+                gotoDoitMain(context, token);
               }
             },
             padding: EdgeInsets.symmetric(horizontal: 62.0, vertical: 15.0),
@@ -127,4 +124,14 @@ class DoitLoginScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+gotoDoitMain(BuildContext context, KakaoUserToken token) async {
+  final FirebaseMessaging firebaseMessaging = Provider.of<FirebaseMessaging>(context);
+  print(await DoitUserAPI.registerTokenAndGetMid(token, firebaseMessaging));
+  Navigator.of(context).pushReplacement(
+    MaterialPageRoute(
+      builder: (context) => DoitMain(),
+    ),
+  );
 }
