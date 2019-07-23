@@ -27,6 +27,12 @@ class CategoryService {
       CategoryModel(id: GoalCategory.etc, title: "기타"),
     ];
   }
+
+  static String getCategoryName(GoalCategory category) => getCategories()
+      .singleWhere(
+        (item) => item.id == category,
+      )
+      .title;
 }
 
 class CategoryModel {

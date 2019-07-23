@@ -30,7 +30,7 @@ class DoitUserAPI {
       print("[DOIT MEMBER API] Failed to register/refresh member: Code ${response.statusCode}");
       return DoitMember();
     }
-    memberInfo = DoitMember.fromJson(jsonDecode(response.body));
+    memberInfo = DoitMember.fromMap(jsonDecode(response.body));
     return memberInfo;
   }
 
@@ -48,7 +48,7 @@ class DoitUserAPI {
       print("[DOIT MEMBER API] Failed to refresh firebase token: Code ${response.statusCode}");
       return DoitMember();
     }
-    memberInfo = DoitMember.fromJson(jsonDecode(response.body));
+    memberInfo = DoitMember.fromMap(jsonDecode(response.body));
     return memberInfo;
   }
 }
@@ -59,8 +59,8 @@ class DoitMember {
   });
   final int memberId;
 
-  factory DoitMember.fromJson(Map json) => DoitMember(
-        memberId: json['mid'],
+  factory DoitMember.fromMap(Map map) => DoitMember(
+        memberId: map['mid'],
       );
 
   String toString() => 'Member ID: $memberId';

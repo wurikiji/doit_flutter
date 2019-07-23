@@ -10,7 +10,7 @@ class DoitShoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<DoitGoal> startedGoals = inProgressGoal
+    List<DoitGoal> startedGoals = <DoitGoal>[]
         .where(
           (goal) => goal.goal.firstPage.startDate.isBefore(
             DateTime.now(),

@@ -94,24 +94,19 @@ class DoIt extends StatelessWidget {
 class DoitMain extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider<GoalService>.value(
-      value: GoalService(
-        user: UserModel(),
-      ),
-      child: DefaultTabController(
-        length: 2,
-        child: Scaffold(
-          bottomNavigationBar: DoitBottomAppBar(
-            key: ValueKey('mainBottomAppBar'),
-          ),
-          floatingActionButton: DoitFloatingActionButton(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-          body: TabBarView(
-            children: <Widget>[
-              DoitHome(),
-              DoitProfile(),
-            ],
-          ),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        bottomNavigationBar: DoitBottomAppBar(
+          key: ValueKey('mainBottomAppBar'),
+        ),
+        floatingActionButton: DoitFloatingActionButton(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        body: TabBarView(
+          children: <Widget>[
+            DoitHome(),
+            DoitProfile(),
+          ],
         ),
       ),
     );

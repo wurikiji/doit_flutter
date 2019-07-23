@@ -28,50 +28,48 @@ class UserGoalCard extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<GoalService>(builder: (context, value, child) {
-      return GestureDetector(
-        onTap: () async {},
-        child: DoitMainCard(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                CardTitleBar(goal: goal),
-                CardGoalPeriod(goal: goal),
-                SizedBox(height: 10.0),
-                CardCategoryChip(goal: goal),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      right: 10.0,
-                      bottom: 25.0,
-                      top: 15.0,
-                    ),
-                    child: CardProgressIndicator(
-                      goal: goal,
-                    ),
+    return GestureDetector(
+      onTap: () async {},
+      child: DoitMainCard(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              CardTitleBar(goal: goal),
+              CardGoalPeriod(goal: goal),
+              SizedBox(height: 10.0),
+              CardCategoryChip(goal: goal),
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    right: 10.0,
+                    bottom: 25.0,
+                    top: 15.0,
+                  ),
+                  child: CardProgressIndicator(
+                    goal: goal,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: CardInvitationButton(goal: goal),
-                ),
-              ],
-            ),
-          ),
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: projectColors[goal.secondPage.colorIndex].colors,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 10.0),
+                child: CardInvitationButton(goal: goal),
+              ),
+            ],
           ),
         ),
-      );
-    });
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: projectColors[getProjectColorIndex(goal.goalColor)].colors,
+        ),
+      ),
+    );
   }
 }
 
@@ -81,7 +79,7 @@ class CardCategoryChip extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -93,7 +91,7 @@ class CardCategoryChip extends StatelessWidget {
       ),
       child: IntrinsicWidth(
         child: Text(
-          CategoryService.getCategories()[goal.firstPage.category.index].title,
+          goal.categoryName,
           style: TextStyle(
             fontFamily: 'SpoqaHanSans',
             fontSize: 10.0,
@@ -112,15 +110,15 @@ class CardGoalPeriod extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
-        Text(DateFormat('yyyy-MM-dd').format(goal.firstPage.startDate)),
+        Text(DateFormat('yyyy-MM-dd').format(goal.startDate)),
         Text(" ~ "),
-        Text(DateFormat('yyyy-MM-dd').format(goal.firstPage.endDate)),
+        Text(DateFormat('yyyy-MM-dd').format(goal.endDate)),
       ],
     );
   }
@@ -133,7 +131,7 @@ class CardInvitationButton extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -146,14 +144,14 @@ class CardInvitationButton extends StatelessWidget {
         children: <Widget>[
           Icon(
             Icons.person_add,
-            color: buttonColors[goal.secondPage.colorIndex],
+            color: buttonColors[getProjectColorIndex(goal.goalColor)],
           ),
           SizedBox(width: 4.0),
           Text(
             "같이 할 친구 초대하기",
             style: TextStyle(
               fontFamily: "SpoqaHanSans",
-              color: buttonColors[goal.secondPage.colorIndex],
+              color: buttonColors[getProjectColorIndex(goal.goalColor)],
             ),
           ),
         ],
@@ -162,13 +160,32 @@ class CardInvitationButton extends StatelessWidget {
   }
 }
 
+int getProjectColorIndex(String stringColors) {
+  List<String> stringColorList = stringColors.split(RegExp(':')).toList();
+  List<Color> colorList = stringColorList.map((color) {
+    String refine = color.substring(1);
+    int colorInt = int.parse(refine, radix: 16);
+    return Color(colorInt | 0xff000000);
+  }).toList();
+  for (var gradient in projectColors) {
+    int count = 0;
+    for (var pcolor in gradient.colors) {
+      for (var color in colorList) {
+        if (pcolor == color) count++;
+      }
+    }
+    if (count >= 2) return projectColors.indexOf(gradient);
+  }
+  return 0;
+}
+
 class CardTitleBar extends StatelessWidget {
   const CardTitleBar({
     Key key,
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -177,7 +194,7 @@ class CardTitleBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          goal.firstPage.goalTitle,
+          goal.goalName,
           style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 24.0),
         ),
         GestureDetector(

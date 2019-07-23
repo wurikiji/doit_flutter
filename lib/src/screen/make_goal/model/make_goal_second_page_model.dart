@@ -1,3 +1,4 @@
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:equatable/equatable.dart';
 
 int _howManyGoalsForPageTwo = 4;
@@ -11,23 +12,27 @@ class MakeGoalSecondPageModel extends Equatable {
     this.penalty,
     this.colorIndex,
     this.workCycle,
+    this.repeatType,
   }) : super([numMembers, penalty, colorIndex, workCycle]);
   final int numMembers;
   final int penalty;
   final int colorIndex;
   final int workCycle;
+  final DoitGoalRepeatType repeatType;
 
   MakeGoalSecondPageModel copyWith({
     int numMembers,
     int penalty,
     int colorIndex,
     int workCycle,
+    DoitGoalRepeatType repeatType,
   }) =>
       MakeGoalSecondPageModel(
         numMembers: numMembers ?? this.numMembers,
         penalty: penalty ?? this.penalty,
         colorIndex: colorIndex ?? this.colorIndex,
         workCycle: workCycle ?? this.workCycle,
+        repeatType: repeatType ?? this.repeatType,
       );
   int get numOfGoalsSet {
     int ret = 0;

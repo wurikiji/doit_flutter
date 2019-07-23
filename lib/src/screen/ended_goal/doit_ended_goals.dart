@@ -9,6 +9,13 @@ import 'package:percent_indicator/linear_percent_indicator.dart';
 class DoitFinishedGoals extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    List<DoitGoalModel> finishedGoals = DoitGoalService.goalList
+        .where(
+          (goal) => goal.endDate.isBefore(
+            DateTime.now(),
+          ),
+        )
+        .toList();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -40,7 +47,7 @@ class DoitFinishedGoalCard extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final DoitGoal goal;
+  final DoitGoalModel goal;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -64,7 +71,7 @@ class DoitFinishedGoalCard extends StatelessWidget {
           children: <Widget>[
             DoitFinishedGoalCardTitleBar(goal: goal),
             SizedBox(height: 4.0),
-            DoitFinishedGoalCardPeriod(goal: goal.goal),
+            DoitFinishedGoalCardPeriod(goal: goal),
             Spacer(),
             Row(
               mainAxisSize: MainAxisSize.max,
@@ -99,7 +106,7 @@ class DoitFinishedGoalCard extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(right: 6.0),
                   child: CardCategoryChip(
-                    goal: goal.goal,
+                    goal: goal,
                   ),
                 ),
               ],
@@ -117,7 +124,7 @@ class DoitFinishedGoalCardTitleBar extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final DoitGoal goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +134,7 @@ class DoitFinishedGoalCardTitleBar extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          goal.goal.firstPage.goalTitle,
+          goal.goalName,
           style: const TextStyle(
             color: const Color(0xffccccc0),
             fontWeight: FontWeight.w700,
@@ -151,19 +158,19 @@ class DoitFinishedGoalCardPeriod extends StatelessWidget {
     @required this.goal,
   }) : super(key: key);
 
-  final MakeGoalModel goal;
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: <Widget>[
         Text(
-          DateFormat('yyyy-MM-dd').format(goal.firstPage.startDate),
+          DateFormat('yyyy-MM-dd').format(goal.startDate),
           style: periodTextStyle,
         ),
         Text(" ~ "),
         Text(
-          DateFormat('yyyy-MM-dd').format(goal.firstPage.endDate),
+          DateFormat('yyyy-MM-dd').format(goal.endDate),
           style: periodTextStyle,
         ),
       ],

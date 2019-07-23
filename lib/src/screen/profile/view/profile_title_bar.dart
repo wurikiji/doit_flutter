@@ -30,7 +30,6 @@ class _ProfileTitleBarState extends State<ProfileTitleBar> {
           KakaoUserInfo info;
           if (snapshot.hasData) {
             info = snapshot.data;
-            print(info);
           }
           return Row(
             mainAxisSize: MainAxisSize.max,

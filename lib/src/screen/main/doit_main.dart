@@ -2,13 +2,32 @@ import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/empty_goal_card.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
+import 'package:do_it/src/service/api/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 List<MakeGoalModel> goals = [];
 
-class DoitHome extends StatelessWidget {
+class DoitHome extends StatefulWidget {
+  @override
+  _DoitHomeState createState() => _DoitHomeState();
+}
+
+class _DoitHomeState extends State<DoitHome> {
   final GlobalKey mainScaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    DoitGoalService.initialize();
+  }
+
+  @override
+  void dispose() {
+    DoitGoalService.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,52 +35,51 @@ class DoitHome extends StatelessWidget {
       appBar: DoitMainAppBar(topPadding: 20.0),
       body: Padding(
         padding: const EdgeInsets.only(bottom: 30.0),
-        child: Consumer<GoalService>(
-          builder: (context, value, child) {
-            if (value == null) {
-              print("No goal service");
-              return child;
+        child: StreamBuilder<int>(
+          stream: DoitGoalService.notifyStream.stream,
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              print("Loading goal Service");
+              DoitGoalService.getGoalsFromServer(context, DoitUserAPI.memberInfo.memberId);
+              return Center(
+                child: RefreshProgressIndicator(),
+              );
             } else {
-              return StreamBuilder<DoitGoal>(
-                stream: goalsInServer.stream,
-                initialData: null,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data != null) {
-                    print("snapshot data ${snapshot.data}");
-                    goals.insert(0, snapshot.data.goal);
-                  }
-                  return Center(
-                    child: inProgressGoal.isEmpty
-                        ? EmptyGoalCard()
-                        : Container(
-                            height: 404,
-                            child: ListView.separated(
-                              controller: PageController(
-                                viewportFraction: 270.0 / MediaQuery.of(context).size.width,
-                              ),
-                              physics: PageScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              itemCount: inProgressGoal.length + 1,
-                              padding: EdgeInsets.symmetric(horizontal: 30.0),
-                              separatorBuilder: (context, index) {
-                                return SizedBox(width: 18.0);
-                              },
-                              itemBuilder: (context, index) {
-                                if (index == inProgressGoal.length) return EmptyGoalCard();
-                                return UserGoalCard(
-                                  goal: inProgressGoal[index].goal,
-                                );
-                              },
-                            ),
+              print("Goal loaded");
+              List<DoitGoalModel> inProgressGoals = DoitGoalService.goalList
+                  .where(
+                    (goal) => goal.endDate.isAfter(
+                      DateTime.now().subtract(Duration(days: 1)),
+                    ),
+                  )
+                  .toList();
+              return Center(
+                child: inProgressGoals.isEmpty
+                    ? EmptyGoalCard()
+                    : Container(
+                        height: 404,
+                        child: ListView.separated(
+                          controller: PageController(
+                            viewportFraction: (270.0 + 18.0) / MediaQuery.of(context).size.width,
                           ),
-                  );
-                },
+                          physics: PageScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: inProgressGoals.length + 1,
+                          padding: EdgeInsets.symmetric(horizontal: 30.0),
+                          separatorBuilder: (context, index) {
+                            return SizedBox(width: 18.0);
+                          },
+                          itemBuilder: (context, index) {
+                            if (index == inProgressGoals.length) return EmptyGoalCard();
+                            return UserGoalCard(
+                              goal: inProgressGoals[index],
+                            );
+                          },
+                        ),
+                      ),
               );
             }
           },
-          child: Center(
-            child: EmptyGoalCard(),
-          ),
         ),
       ),
     );
