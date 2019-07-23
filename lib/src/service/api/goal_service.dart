@@ -40,6 +40,7 @@ class DoitGoalService {
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT GOAL API] Failed to get goals: Code ${response.statusCode}");
+      print(response.body);
       if (context != null) {
         Scaffold.of(context).showSnackBar(
           SnackBar(
@@ -63,13 +64,14 @@ class DoitGoalService {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     };
-    var response = await http.put(
+    var response = await http.post(
       _createCreateGoalUrl(),
       headers: headers,
       body: jsonEncode(goal.toJsonForServerWithMid(memberId)),
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT GOAL API] Failed to create goal: Code ${response.statusCode}");
+      print(response.body);
       return false;
     }
     goalList.add(DoitGoalModel.fromMap(jsonDecode(response.body)));
@@ -136,7 +138,7 @@ class DoitGoalModel {
         'name': goalName,
         'penalty': penalty,
         'progressCount': repeatDays,
-        'progressType': repeatType.index,
+        'progressType': repeatType?.index ?? 1,
         'timerCheck': useTimer,
       };
 
