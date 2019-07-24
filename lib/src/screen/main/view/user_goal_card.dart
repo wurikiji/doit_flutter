@@ -2,17 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/main/view/card_progress_indicator.dart';
-import 'package:do_it/src/screen/make_goal/make_goal.dart';
-import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
-import 'package:do_it/src/service/api/category_service.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
 import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:rest_api_test/kakao_link/kakao_link.dart';
 
 const buttonColors = <Color>[
   Color(0xfff63b7c),
@@ -24,6 +21,14 @@ const buttonColors = <Color>[
   Color(0xff7031e8),
   Color(0xffab20d0),
 ];
+
+void inviteToGoal(BuildContext context, DoitGoalModel goal) async {
+  final String link = await DoitGoalService.getInvitationLink(goal);
+  print("INVITATION LINK IS $link");
+  KakaoLinkAPI.createLink(
+    context,
+  );
+}
 
 class UserGoalCard extends StatelessWidget {
   const UserGoalCard({
@@ -267,7 +272,9 @@ class CardInvitationButton extends StatelessWidget {
       height: 24,
       width: 160.0,
       child: FlatButton(
-        onPressed: () {},
+        onPressed: () {
+          inviteToGoal(context, goal);
+        },
         shape: StadiumBorder(),
         color: Colors.white,
         child: Row(
@@ -340,7 +347,9 @@ class CardTitleBar extends StatelessWidget {
                 actions: <Widget>[
                   CupertinoActionSheetAction(
                     child: Text("친구 초대 링크 보내기"),
-                    onPressed: () {},
+                    onPressed: () {
+                      inviteToGoal(context, goal);
+                    },
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () {},

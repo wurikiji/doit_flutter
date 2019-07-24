@@ -22,3 +22,7 @@ progressCount는 몇회 또는 어느 요일에 하는지로
 
 ex) 1111111(127) 매일
      1000001 (65) 월,일요일 마다
+
+
+flutter pub get
+flutter pub run flutter_launcher_icons:main

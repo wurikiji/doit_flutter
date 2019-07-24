@@ -18,7 +18,9 @@ class _DoitLoginState extends State<DoitLogin> {
     super.initState();
     loggedIn = KakaoUsersRestAPI.checkLoginAndRefreshToken();
     loggedIn.then((userToken) async {
-      gotoDoitMain(context, userToken);
+      if (userToken != null) {
+        gotoDoitMain(context, userToken);
+      }
     });
   }
 
@@ -128,8 +130,6 @@ class DoitLoginScreen extends StatelessWidget {
 
 gotoDoitMain(BuildContext context, KakaoUserToken token) async {
   final FirebaseMessaging firebaseMessaging = Provider.of<FirebaseMessaging>(context);
-  print(token);
-  print(await firebaseMessaging.getToken());
   print(await DoitUserAPI.registerTokenAndGetMid(token, firebaseMessaging));
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
