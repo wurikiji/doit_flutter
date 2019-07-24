@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/make_goal/make_goal.dart';
 import 'package:do_it/src/model/make_goal_model.dart';
@@ -29,8 +31,7 @@ class EmptyGoalCard extends StatelessWidget {
           ),
         );
         if (model != null) {
-          DoitGoalService.createGoal(
-            DoitUserAPI.memberInfo.memberId,
+          await DoitGoalService.createGoal(
             DoitGoalModel(
               categoryName: CategoryService.getCategoryName(model.firstPage.category),
               endDate: model.firstPage.endDate,
@@ -46,6 +47,7 @@ class EmptyGoalCard extends StatelessWidget {
               useTimer: model.firstPage.useTimer,
             ),
           );
+          await DoitGoalService.getGoalsFromServer(context);
         }
       },
       child: DoitMainCard(

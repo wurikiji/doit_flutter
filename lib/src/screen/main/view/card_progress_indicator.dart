@@ -26,7 +26,7 @@ class CardProgressIndicator extends StatelessWidget {
             circularStrokeCap: CircularStrokeCap.round,
             backgroundColor: Colors.white.withOpacity(0.15),
             lineWidth: 9.0,
-            percent: 0.5,
+            percent: goal.progressRate / 100.0,
             animation: true,
             animateFromLastPercent: true,
             animationDuration: 500,

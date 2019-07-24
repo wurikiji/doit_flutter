@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/main/view/card_progress_indicator.dart';
@@ -6,6 +7,8 @@ import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
 import 'package:do_it/src/service/api/category_service.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
+import 'package:do_it/src/service/api/user_service.dart';
+import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -36,7 +39,7 @@ class UserGoalCard extends StatelessWidget {
       onTap: () async {},
       child: DoitMainCard(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 20.0),
+          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 22.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
@@ -44,22 +47,30 @@ class UserGoalCard extends StatelessWidget {
               CardGoalPeriod(goal: goal),
               SizedBox(height: 10.0),
               CardCategoryChip(goal: goal),
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    right: 10.0,
-                    bottom: 25.0,
-                    top: 15.0,
-                  ),
-                  child: CardProgressIndicator(
-                    goal: goal,
-                  ),
+              SizedBox(height: 20.0),
+              Container(
+                height: 190,
+                padding: const EdgeInsets.only(
+                  right: 10.0,
+                ),
+                child: CardProgressIndicator(
+                  goal: goal,
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(right: 10.0),
-                child: CardInvitationButton(goal: goal),
-              ),
+              SizedBox(height: 30.0),
+              if (!isStarted(goal))
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Center(child: CardInvitationButton(goal: goal)),
+                ),
+              if (isStarted(goal))
+                Padding(
+                  padding: const EdgeInsets.only(right: 10.0),
+                  child: Container(
+                    height: 20.0,
+                    child: DoitGoalMemberListBar(goal: goal),
+                  ),
+                ),
             ],
           ),
         ),
@@ -67,6 +78,124 @@ class UserGoalCard extends StatelessWidget {
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
           colors: projectColors[getProjectColorIndex(goal.goalColor)].colors,
+        ),
+      ),
+    );
+  }
+}
+
+class DoitGoalMemberListBar extends StatefulWidget {
+  const DoitGoalMemberListBar({
+    Key key,
+    @required this.goal,
+  }) : super(key: key);
+
+  final DoitGoalModel goal;
+
+  @override
+  _DoitGoalMemberListBarState createState() => _DoitGoalMemberListBarState();
+}
+
+class _DoitGoalMemberListBarState extends State<DoitGoalMemberListBar> {
+  Future<List<DoitMember>> memberList;
+
+  @override
+  void initState() {
+    super.initState();
+    memberList = DoitGoalService.getMembers(widget.goal);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<DoitMember>>(
+      future: memberList,
+      builder: (context, memberList) {
+        if (memberList.hasData) {
+          final int numMembers = memberList.data.length;
+          final double leftPadding = 17.0;
+          return Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              for (int i = numMembers - 1; i >= 0; i--)
+                Positioned(
+                  left: i * leftPadding,
+                  top: 0.0,
+                  child: DoitMemberThumbnail(
+                    profileUrl: memberList.data[0]?.profileImageUrl,
+                  ),
+                ),
+              Positioned(
+                left: leftPadding * (numMembers - 1) + 20.0 + 8.0,
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '${memberList.data[0].name} ',
+                          style: nameTextStyle,
+                        ),
+                        TextSpan(
+                          text: '외 ',
+                          style: etcTextStyle,
+                        ),
+                        TextSpan(
+                          text: '$numMembers',
+                          style: nameTextStyle,
+                        ),
+                        TextSpan(
+                          text: '명 참여중',
+                          style: etcTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          );
+        } else {
+          return Center(
+            child: RefreshProgressIndicator(),
+          );
+        }
+      },
+    );
+  }
+}
+
+const TextStyle nameTextStyle = TextStyle(
+  fontFamily: 'SpoqaHanSans',
+  fontWeight: FontWeight.w700,
+  fontSize: 10.0,
+  fontStyle: FontStyle.normal,
+);
+const TextStyle etcTextStyle = TextStyle(
+  fontFamily: 'SpoqaHanSans',
+  fontWeight: FontWeight.w400,
+  fontSize: 10.0,
+  fontStyle: FontStyle.normal,
+);
+
+class DoitMemberThumbnail extends StatelessWidget {
+  const DoitMemberThumbnail({
+    Key key,
+    @required this.profileUrl,
+  }) : super(key: key);
+
+  final String profileUrl;
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 20.0,
+      height: 20.0,
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        child: ClipOval(
+          child: profileUrl != null
+              ? Image(
+                  image: CachedNetworkImageProvider(profileUrl),
+                )
+              : Icon(Icons.person, size: 14.0),
         ),
       ),
     );
@@ -95,7 +224,6 @@ class CardCategoryChip extends StatelessWidget {
           style: TextStyle(
             fontFamily: 'SpoqaHanSans',
             fontSize: 10.0,
-            letterSpacing: 1.5,
             color: Colors.white,
           ),
         ),
@@ -135,26 +263,32 @@ class CardInvitationButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      onPressed: () {},
-      shape: StadiumBorder(),
-      color: Colors.white,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Icon(
-            Icons.person_add,
-            color: buttonColors[getProjectColorIndex(goal.goalColor)],
-          ),
-          SizedBox(width: 4.0),
-          Text(
-            "같이 할 친구 초대하기",
-            style: TextStyle(
-              fontFamily: "SpoqaHanSans",
+    return Container(
+      height: 24,
+      width: 160.0,
+      child: FlatButton(
+        onPressed: () {},
+        shape: StadiumBorder(),
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(
+              Icons.person_add,
               color: buttonColors[getProjectColorIndex(goal.goalColor)],
+              size: 14.0,
             ),
-          ),
-        ],
+            SizedBox(width: 4.0),
+            Text(
+              "같이 할 친구 초대하기",
+              style: TextStyle(
+                  fontFamily: "SpoqaHanSans",
+                  color: buttonColors[getProjectColorIndex(goal.goalColor)],
+                  fontSize: 10.0),
+            ),
+          ],
+        ),
       ),
     );
   }

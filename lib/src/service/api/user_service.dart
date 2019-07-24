@@ -43,7 +43,6 @@ class DoitUserAPI {
       getRefreshFirebaseTokenAPIUrl(firebaseToken),
       headers: headers,
     );
-    print(response.body);
     if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT MEMBER API] Failed to refresh firebase token: Code ${response.statusCode}");
       return DoitMember();
@@ -56,12 +55,25 @@ class DoitUserAPI {
 class DoitMember {
   DoitMember({
     this.memberId,
+    this.name,
+    this.profileImageUrl,
+    this.kakaoId,
+    this.progressRate,
   });
   final int memberId;
+  final String name;
+  final String kakaoId;
+  final String profileImageUrl;
+  final int progressRate;
 
   factory DoitMember.fromMap(Map map) => DoitMember(
         memberId: map['mid'],
+        name: map['name'],
+        kakaoId: map['kakaoId'],
+        profileImageUrl: map['profileImgUrl'] ?? map['imageUrl'],
+        progressRate: map['progressRate'],
       );
 
-  String toString() => 'Member ID: $memberId';
+  String toString() =>
+      'ID: $memberId, NAME: $name, KAKAO: $kakaoId, PROFILE: $profileImageUrl, progress: $progressRate';
 }

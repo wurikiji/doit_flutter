@@ -1,6 +1,4 @@
-import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
-import 'package:do_it/src/service/api/category_service.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -73,47 +71,61 @@ class DoitFinishedGoalCard extends StatelessWidget {
             SizedBox(height: 4.0),
             DoitFinishedGoalCardPeriod(goal: goal),
             Spacer(),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: 155.5,
-                  child: LinearPercentIndicator(
-                    padding: EdgeInsets.zero,
-                    animateFromLastPercent: true,
-                    lineHeight: 6.0,
-                    animation: true,
-                    animationDuration: 300,
-                    linearStrokeCap: LinearStrokeCap.roundAll,
-                    progressColor: Color(0xffccccc0),
-                    backgroundColor: Color(0x33ffffff),
-                    percent: 0.5,
-                  ),
-                ),
-                SizedBox(width: 12.5),
-                Text(
-                  '27% 달성',
-                  style: TextStyle(
-                    fontFamily: 'SpoqaHanSans',
-                    fontSize: 12.0,
-                    letterSpacing: 0.09,
-                    color: Color(0xffccccc0),
-                  ),
-                ),
-                Spacer(),
-                Padding(
-                  padding: EdgeInsets.only(right: 6.0),
-                  child: CardCategoryChip(
-                    goal: goal,
-                  ),
-                ),
-              ],
-            ),
+            DoitFinishedGoalProgress(goal: goal),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DoitFinishedGoalProgress extends StatelessWidget {
+  const DoitFinishedGoalProgress({
+    Key key,
+    @required this.goal,
+  }) : super(key: key);
+
+  final DoitGoalModel goal;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: 155.5,
+          child: LinearPercentIndicator(
+            padding: EdgeInsets.zero,
+            animateFromLastPercent: true,
+            lineHeight: 6.0,
+            animation: true,
+            animationDuration: 300,
+            linearStrokeCap: LinearStrokeCap.roundAll,
+            progressColor: Color(0xffccccc0),
+            backgroundColor: Color(0x33ffffff),
+            percent: 0.5,
+          ),
+        ),
+        SizedBox(width: 12.5),
+        Text(
+          '27% 달성',
+          style: TextStyle(
+            fontFamily: 'SpoqaHanSans',
+            fontSize: 12.0,
+            letterSpacing: 0.09,
+            color: Color(0xffccccc0),
+          ),
+        ),
+        Spacer(),
+        Padding(
+          padding: EdgeInsets.only(right: 6.0),
+          child: CardCategoryChip(
+            goal: goal,
+          ),
+        ),
+      ],
     );
   }
 }

@@ -10,6 +10,9 @@ import 'dart:async';
 class DoitGoalService {
   static String _createGetGoalsUrl(int mid) => 'http://13.125.252.156:8080/api/goals/$mid';
   static String _createCreateGoalUrl() => 'http://13.125.252.156:8080/api/goals/create';
+  static String _createGetGoalMembersUrl(int gid) => 'http://13.125.252.156:8080/api/goal/$gid';
+  static String _createCreateInvitationLinkUrl(int mid, int gid) =>
+      'http://13.125.252.156:8080/api/goal/invite/from/$mid/goal/$gid';
 
   static StreamController<int> notifyStream;
   static List<DoitGoalModel> goalList = <DoitGoalModel>[];
@@ -17,10 +20,9 @@ class DoitGoalService {
 
   static initialize() {
     notifyStream = StreamController<int>();
-    refreshTimer = Timer.periodic(Duration(seconds: 2), (timer) async {
+    refreshTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
       getGoalsFromServer(
         null,
-        DoitUserAPI.memberInfo.memberId,
       );
     });
   }
@@ -30,12 +32,12 @@ class DoitGoalService {
     refreshTimer.cancel();
   }
 
-  static Future<bool> getGoalsFromServer(BuildContext context, int memberId) async {
+  static Future<bool> getGoalsFromServer(BuildContext context) async {
     Map headers = <String, String>{
       'Accept': 'application/json',
     };
     var response = await http.get(
-      _createGetGoalsUrl(memberId),
+      _createGetGoalsUrl(DoitUserAPI.memberInfo.memberId),
       headers: headers,
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
@@ -59,7 +61,7 @@ class DoitGoalService {
     return true;
   }
 
-  static Future<bool> createGoal(int memberId, DoitGoalModel goal) async {
+  static Future<bool> createGoal(DoitGoalModel goal) async {
     Map headers = <String, String>{
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ class DoitGoalService {
     var response = await http.post(
       _createCreateGoalUrl(),
       headers: headers,
-      body: jsonEncode(goal.toJsonForServerWithMid(memberId)),
+      body: jsonEncode(goal.toJsonForServerWithMid(DoitUserAPI.memberInfo.memberId)),
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT GOAL API] Failed to create goal: Code ${response.statusCode}");
@@ -77,6 +79,47 @@ class DoitGoalService {
     goalList.add(DoitGoalModel.fromMap(jsonDecode(response.body)));
     notifyStream.add(0);
     return true;
+  }
+
+  static Future<List<DoitMember>> getMembers(DoitGoalModel goal) async {
+    Map headers = <String, String>{
+      'Accept': 'application/json',
+    };
+    var response = await http.get(
+      _createGetGoalMembersUrl(goal.goalId),
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to get goal members: Code ${response.statusCode}");
+      print(response.body);
+      return null;
+    }
+    Map responseMap = jsonDecode(response.body);
+    List members = responseMap['memberDtoList'];
+    return members
+        ?.where((user) => user is Map)
+        ?.map(
+          (user) => DoitMember.fromMap(user),
+        )
+        ?.toList();
+  }
+
+  static Future<String> getInvitationLink(DoitGoalModel goal) async {
+    Map headers = <String, String>{
+      'Accept': 'application/json',
+    };
+    var response = await http.get(
+      _createCreateInvitationLinkUrl(DoitUserAPI.memberInfo.memberId, goal.goalId),
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to create invitation link: Code ${response.statusCode}");
+      print(response.body);
+      return null;
+    }
+    print(response.body);
+    final int invitationCode = int.parse(response.body);
+    return 'depromeetDoit://goal/join/$invitationCode';
   }
 }
 
@@ -131,8 +174,8 @@ class DoitGoalModel {
   Map<String, dynamic> toJsonForServerWithMid(int memberId) => {
         'category': categoryName,
         'color': goalColor,
-        'endDate': endDate.millisecondsSinceEpoch / (60 * 60 * 24 * 1000),
-        'startDate': startDate.millisecondsSinceEpoch / (60 * 60 * 24 * 1000),
+        'endDate': endDate.millisecondsSinceEpoch ~/ (60 * 60 * 24 * 1000),
+        'startDate': startDate.millisecondsSinceEpoch ~/ (60 * 60 * 24 * 1000),
         'memberCount': memberCount,
         'mid': memberId,
         'name': goalName,

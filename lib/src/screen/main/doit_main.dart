@@ -39,13 +39,11 @@ class _DoitHomeState extends State<DoitHome> {
           stream: DoitGoalService.notifyStream.stream,
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              print("Loading goal Service");
-              DoitGoalService.getGoalsFromServer(context, DoitUserAPI.memberInfo.memberId);
+              DoitGoalService.getGoalsFromServer(context);
               return Center(
                 child: RefreshProgressIndicator(),
               );
             } else {
-              print("Goal loaded");
               List<DoitGoalModel> inProgressGoals = DoitGoalService.goalList
                   .where(
                     (goal) => goal.endDate.isAfter(
