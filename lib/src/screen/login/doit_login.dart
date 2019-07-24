@@ -29,25 +29,13 @@ class _DoitLoginState extends State<DoitLogin> {
     return Scaffold(
       body: Container(
         width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color.fromRGBO(77, 144, 251, 1.0),
-              Color.fromRGBO(119, 29, 228, 1.0),
-            ],
-          ),
-        ),
         child: FutureBuilder<KakaoUserToken>(
           future: loggedIn,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done && !snapshot.hasData) {
               return DoitLoginScreen();
             } else {
-              return Center(
-                child: RefreshProgressIndicator(),
-              );
+              return DoitLoginScreen(isLoading: true);
             }
           },
         ),
@@ -59,7 +47,10 @@ class _DoitLoginState extends State<DoitLogin> {
 class DoitLoginScreen extends StatelessWidget {
   const DoitLoginScreen({
     Key key,
+    this.isLoading = false,
   }) : super(key: key);
+
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -77,51 +68,71 @@ class DoitLoginScreen extends StatelessWidget {
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text(
-                  'Do it',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w900,
-                    fontFamily: "SpoqaHanSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 36.0,
+                Container(
+                  width: 120.0,
+                  height: 50.0,
+                  child: Image.asset(
+                    'assets/images/img_logo.png',
                   ),
                 ),
-                SizedBox(height: 40.0),
-                Text(
-                  '쿨 워터 향 폴폴폴 멘트~',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontFamily: "SpoqaHanSans",
-                    fontStyle: FontStyle.normal,
-                    fontSize: 18.0,
+                SizedBox(height: 20.0),
+                RichText(
+                  text: TextSpan(
+                    children: [
+                      TextSpan(
+                        text: '오늘 할 일을 미루지 말고, ',
+                        style: const TextStyle(
+                          color: Color(0xff9b9b9b),
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "SpoqaHanSans",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14.0,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                      TextSpan(
+                        text: '두잇',
+                        style: const TextStyle(
+                          color: Color(0xffffffff),
+                          fontWeight: FontWeight.w400,
+                          fontFamily: "SpoqaHanSans",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14.0,
+                          letterSpacing: -0.2,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
           ),
-          FlatButton(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
-            onPressed: () async {
-              final KakaoUserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
-              if (token != null) {
-                gotoDoitMain(context, token);
-              }
-            },
-            padding: EdgeInsets.symmetric(horizontal: 62.0, vertical: 15.0),
-            child: Text(
-              "카카오톡으로 로그인 하기",
-              style: const TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.w700,
-                fontFamily: "SpoqaHanSans",
-                fontStyle: FontStyle.normal,
-                fontSize: 18.0,
+          if (isLoading)
+            Center(
+              child: RefreshProgressIndicator(),
+            ),
+          if (!isLoading)
+            FlatButton(
+              color: Color(0xff333333),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
+              onPressed: () async {
+                final KakaoUserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
+                if (token != null) {
+                  gotoDoitMain(context, token);
+                }
+              },
+              padding: EdgeInsets.symmetric(horizontal: 62.0, vertical: 15.0),
+              child: Text(
+                "카카오톡으로 로그인 하기",
+                style: const TextStyle(
+                  color: Color(0xffdddddd),
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "SpoqaHanSans",
+                  fontStyle: FontStyle.normal,
+                  fontSize: 14.0,
+                ),
               ),
             ),
-          ),
         ],
       ),
     );

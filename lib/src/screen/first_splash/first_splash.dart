@@ -15,7 +15,11 @@ class FirstSplashScreen extends StatelessWidget {
         } else {
           return Scaffold(
             body: Center(
-              child: RefreshProgressIndicator(),
+              child: Container(
+                width: 120.0,
+                height: 50.0,
+                child: Image.asset('assets/images/img_logo.png'),
+              ),
             ),
           );
         }
