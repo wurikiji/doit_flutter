@@ -40,7 +40,11 @@ class DoitGoalService {
       _createGetGoalsUrl(DoitUserAPI.memberInfo.memberId),
       headers: headers,
     );
-    if (response.statusCode != 201 && response.statusCode != 200) {
+    if (response.statusCode == 400) {
+      goalList = <DoitGoalModel>[];
+      notifyStream.add(0);
+      return true;
+    } else if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT GOAL API] Failed to get goals: Code ${response.statusCode}");
       print(response.body);
       if (context != null) {

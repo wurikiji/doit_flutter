@@ -67,7 +67,7 @@ class DoitMember {
   final int progressRate;
 
   factory DoitMember.fromMap(Map map) => DoitMember(
-        memberId: 1, // map['mid'],
+        memberId: map['mid'],
         name: map['name'],
         kakaoId: map['kakaoId'],
         profileImageUrl: map['profileImgUrl'] ?? map['imageUrl'],
