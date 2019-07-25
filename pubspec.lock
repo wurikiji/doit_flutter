@@ -247,7 +247,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: acf705ea6e9acff9ee2979efe5bc318c08d84512
+      resolved-ref: "3ca2c08aace85cc94b7c07097d71caf6a2f08aeb"
       url: "https://github.com/wurikiji/flutter_kakao_sdk_test.git"
     source: git
     version: "1.0.0+1"

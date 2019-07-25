@@ -39,7 +39,7 @@ class _ProfileTitleBarState extends State<ProfileTitleBar> {
                 child: ClipOval(
                   child: (info?.thumbnailImageUrl != null)
                       ? Image(
-                          image: CachedNetworkImageProvider(info.thumbnailImageUrl),
+                          image: CachedNetworkImageProvider(info.thumbnailImageUrl, errorListener: () {}),
                         )
                       : Icon(Icons.person),
                 ),

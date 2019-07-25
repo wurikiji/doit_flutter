@@ -54,7 +54,7 @@ class DoitUserAPI {
 
 class DoitMember {
   DoitMember({
-    this.memberId,
+    this.memberId = 1,
     this.name,
     this.profileImageUrl,
     this.kakaoId,
@@ -67,7 +67,7 @@ class DoitMember {
   final int progressRate;
 
   factory DoitMember.fromMap(Map map) => DoitMember(
-        memberId: map['mid'],
+        memberId: 1, // map['mid'],
         name: map['name'],
         kakaoId: map['kakaoId'],
         profileImageUrl: map['profileImgUrl'] ?? map['imageUrl'],

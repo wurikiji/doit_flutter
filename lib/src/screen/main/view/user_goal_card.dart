@@ -24,9 +24,18 @@ const buttonColors = <Color>[
 
 void inviteToGoal(BuildContext context, DoitGoalModel goal) async {
   final String link = await DoitGoalService.getInvitationLink(goal);
+  final String start = (DateFormat('yyyy-MM-dd').format(goal.startDate));
+  final String end = (DateFormat('yyyy-MM-dd').format(goal.endDate));
+  final String range = '$start ~ $end';
   print("INVITATION LINK IS $link");
-  KakaoLinkAPI.createLink(
+
+  await KakaoLinkAPI.createLink(
     context,
+    jsApiKey: 'd1e9c1de1d0217411077aa58ca4fa26a',
+    androidUrl: link,
+    title: goal.goalName,
+    description: '${DoitUserAPI.memberInfo.name}이 Doit으로 초대합니다! ($range)',
+    imageUrl: 'https://dl.dropbox.com/s/190w2y9vw47elfs/img_app_icon.png',
   );
 }
 
@@ -198,7 +207,7 @@ class DoitMemberThumbnail extends StatelessWidget {
         child: ClipOval(
           child: profileUrl != null
               ? Image(
-                  image: CachedNetworkImageProvider(profileUrl),
+                  image: CachedNetworkImageProvider(profileUrl, errorListener: () {}),
                 )
               : Icon(Icons.person, size: 14.0),
         ),
