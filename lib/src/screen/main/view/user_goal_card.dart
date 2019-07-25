@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/src/color/doit_theme.dart';
+import 'package:do_it/src/screen/goal_timeline.dart/goal_timeline.dart';
 import 'package:do_it/src/screen/main/common/goal_card.dart';
 import 'package:do_it/src/screen/main/view/card_progress_indicator.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
@@ -50,7 +51,15 @@ class UserGoalCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () async {},
+      onTap: () async {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DoitTimeline(
+              goal: goal,
+            ),
+          ),
+        );
+      },
       child: DoitMainCard(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 22.0),

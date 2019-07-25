@@ -1,18 +1,20 @@
 import 'package:do_it/src/model/make_goal_model.dart';
+import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
 
 class DoitShootTimer extends StatelessWidget {
   DoitShootTimer({
     @required this.goal,
   });
-  final DoitGoal goal;
+  final DoitGoalModel goal;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: projectColors[goal.goal.secondPage.colorIndex],
+          gradient: projectColors[getProjectColorIndex(goal.goalColor)],
         ),
         padding: EdgeInsets.only(bottom: 46.0, left: 20.0, right: 20.0),
         child: SafeArea(

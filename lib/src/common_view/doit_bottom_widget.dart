@@ -1,20 +1,25 @@
-import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/color/swatch.dart';
 import 'package:do_it/src/screen/shoot/doit_shoot.dart';
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DoitFloatingActionButton extends StatelessWidget {
   const DoitFloatingActionButton({
     Key key,
+    this.goal,
   }) : super(key: key);
+
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         await showCupertinoModalPopup(
-          builder: (context) => DoitShoot(),
+          builder: (context) => DoitShoot(
+            goal: goal,
+          ),
           context: context,
         );
       },

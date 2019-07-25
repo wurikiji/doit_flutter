@@ -6,14 +6,23 @@ import 'package:flutter/material.dart';
 class DoitShoot extends StatelessWidget {
   const DoitShoot({
     Key key,
+    this.goal,
   }) : super(key: key);
+
+  final DoitGoalModel goal;
 
   @override
   Widget build(BuildContext context) {
-    List<DoitGoal> startedGoals = <DoitGoal>[]
+    if (goal != null) return DoitShootTimer(goal: goal);
+    List<DoitGoalModel> startedGoals = DoitGoalService.goalList
         .where(
-          (goal) => goal.goal.firstPage.startDate.isBefore(
+          (goal) => goal.startDate.isBefore(
             DateTime.now(),
+          ),
+        )
+        .where(
+          (goal) => goal.endDate.isAfter(
+            DateTime.now().subtract(Duration(days: 1)),
           ),
         )
         .toList();
@@ -45,7 +54,7 @@ class DoitShoot extends StatelessWidget {
             },
             child: Center(
               child: Text(
-                startedGoals[index].goal.firstPage.goalTitle,
+                startedGoals[index].goalName,
                 style: const TextStyle(
                   color: const Color(0xffffffff),
                   fontWeight: FontWeight.w700,

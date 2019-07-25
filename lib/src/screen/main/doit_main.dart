@@ -103,12 +103,6 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
             "Do it",
             style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
           ),
-          // GestureDetector(
-          //   child: Image.asset(
-          //     'assets/images/btn_goals_n.png',
-          //   ),
-          //   onTap: () {},
-          // ),
         ],
       ),
     );
