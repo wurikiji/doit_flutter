@@ -10,6 +10,7 @@ enum MakeGoalSecondPageAction {
   setNumMembers,
   setPenalty,
   setProjectColor,
+  setWorkType,
 }
 
 class MakeGoalSecondPageEvent<T> extends Equatable {
@@ -61,7 +62,11 @@ class MakeGoalSecondPageBloc extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecon
       case MakeGoalSecondPageAction.setWorkCycle:
         nextModel = nextModel.copyWith(workCycle: event.data);
         break;
+      case MakeGoalSecondPageAction.setWorkType:
+        nextModel = nextModel.copyWith(repeatType: event.data, workCycle: 0);
+        break;
     }
+    print('${nextModel.repeatType}-${nextModel.workCycle} : ${nextModel.penalty}');
     makeGoalBloc.dispatch(
       MakeGoalEvent(
         action: MakeGoalAction.setSecondPageGoal,

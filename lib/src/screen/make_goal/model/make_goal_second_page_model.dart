@@ -39,7 +39,11 @@ class MakeGoalSecondPageModel extends Equatable {
     if ((this.numMembers ?? 0) != 0) ret++;
     if (this.penalty != null && this.penalty != invalidPenalty) ret++;
     if (this.colorIndex != null && this.colorIndex != invalidColor) ret++;
-    if (this.workCycle != null && this.workCycle != invalidWorkCycle) ret++;
+    if ((this.repeatType ?? DoitGoalRepeatType.invalid) != DoitGoalRepeatType.invalid) {
+      if (this.repeatType == DoitGoalRepeatType.everyDay)
+        ret++;
+      else if ((this.workCycle ?? 0) != 0) ret++;
+    }
     return ret;
   }
 

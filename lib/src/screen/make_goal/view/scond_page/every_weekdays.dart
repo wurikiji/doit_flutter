@@ -22,10 +22,7 @@ class EveryWeekdays extends StatelessWidget {
     int counter = 0;
     int currentCycle = _bloc.currentState.data.workCycle ?? 0;
 
-    if (currentCycle < (1 << 10) || currentCycle > (1 << 19)) {
-      currentCycle = 0;
-    }
-    for (int i = 9; i < 20; i++) {
+    for (int i = 0; i < 7; i++) {
       if ((currentCycle & (1 << i)) != 0) {
         counter++;
       }
@@ -42,19 +39,15 @@ class EveryWeekdays extends StatelessWidget {
             aspectRatio: 1.0,
             child: SelectableGradientChip(
               title: '${weekdays[days]}',
-              value: days + 10,
+              value: days,
               groupKey: 'everyWeekdays',
-              initialSelected: (currentCycle & (1 << days + 10)) != 0,
+              initialSelected: (currentCycle & (1 << days)) != 0,
               maxMultiSelectables: 7,
               onTap: (context, value) {
                 MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-                int selectedDays = days + 10;
+                int selectedDays = days;
                 int currentCycle = _bloc.currentState.data.workCycle ?? 0;
-                if (currentCycle < (1 << 10) || currentCycle > (1 << 19)) {
-                  currentCycle = 0;
-                }
                 currentCycle = (currentCycle ^ (1 << selectedDays));
-                if (currentCycle == 0) currentCycle = invalidWorkCycle;
                 _bloc.dispatch(
                   MakeGoalSecondPageEvent(
                     action: MakeGoalSecondPageAction.setWorkCycle,
@@ -62,7 +55,7 @@ class EveryWeekdays extends StatelessWidget {
                   ),
                 );
                 int counter = 0;
-                for (int i = 9; i < 20; i++) {
+                for (int i = 0; i < 7; i++) {
                   if ((currentCycle & (1 << i)) != 0) {
                     counter++;
                   }

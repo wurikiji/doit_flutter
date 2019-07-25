@@ -4,6 +4,7 @@ import 'package:do_it/src/screen/make_goal/view/component/question_scaffold.dart
 import 'package:do_it/src/screen/make_goal/view/component/selectable_chip.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/days_per_week.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/every_weekdays.dart';
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:easy_stateful_builder/easy_stateful_builder.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +16,7 @@ class HowManyTimes extends StatefulWidget {
 enum _AdditionalQuestion { daysPerWeek, everyWeekDays, none }
 
 class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderStateMixin {
-  _AdditionalQuestion additionalQuestionIndex = _AdditionalQuestion.none;
+  DoitGoalRepeatType additionalQuestionIndex = DoitGoalRepeatType.invalid;
   AnimationController animationController;
 
   @override
@@ -37,14 +38,9 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final String groupKey = 'howManyTimes';
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-    int cycle = _bloc.currentState.data.workCycle;
-    if ((cycle ?? 0) > 0 && cycle < (1 << 10)) {
-      additionalQuestionIndex = _AdditionalQuestion.daysPerWeek;
-    } else if ((cycle ?? 0) > (1 << 8) && cycle < (1 << 20)) {
-      additionalQuestionIndex = _AdditionalQuestion.everyWeekDays;
-    } else if (cycle == null) {
-      cycle = 1 << 23;
-    }
+    DoitGoalRepeatType repeatType = _bloc.currentState.data.repeatType;
+    additionalQuestionIndex = repeatType;
+    print(repeatType);
     return QuestionScaffold(
       title: '어떻게 진행할까요?',
       body: Column(
@@ -55,8 +51,8 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
                 child: SelectHowOftenButton(
                   groupKey: groupKey,
                   title: '매일',
-                  value: _AdditionalQuestion.none,
-                  selected: cycle == 0,
+                  value: DoitGoalRepeatType.everyDay,
+                  selected: repeatType == DoitGoalRepeatType.everyDay,
                   onTap: (context, value) {
                     showAdditionalQuestion(value);
                   },
@@ -67,8 +63,8 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
                 child: SelectHowOftenButton(
                   groupKey: groupKey,
                   title: '주별 횟수',
-                  value: _AdditionalQuestion.daysPerWeek,
-                  selected: cycle < (1 << 10) && cycle > 0,
+                  value: DoitGoalRepeatType.perWeek,
+                  selected: repeatType == DoitGoalRepeatType.perWeek,
                   onTap: (context, value) {
                     showAdditionalQuestion(value);
                   },
@@ -79,8 +75,8 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
                 child: SelectHowOftenButton(
                   groupKey: groupKey,
                   title: '요일별',
-                  selected: cycle < (1 << 20) && cycle > (1 << 8),
-                  value: _AdditionalQuestion.everyWeekDays,
+                  selected: repeatType == DoitGoalRepeatType.perDay,
+                  value: DoitGoalRepeatType.perDay,
                   onTap: (context, value) {
                     showAdditionalQuestion(value);
                   },
@@ -91,9 +87,10 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
           EasyStatefulBuilder(
             identifier: 'additionalQuestion',
             keepAlive: false,
-            initialValue: _AdditionalQuestion.none,
+            initialValue: DoitGoalRepeatType.invalid,
             builder: (context, state) {
-              if (additionalQuestionIndex != _AdditionalQuestion.none) {
+              if (additionalQuestionIndex != DoitGoalRepeatType.invalid &&
+                  additionalQuestionIndex != DoitGoalRepeatType.everyDay) {
                 animationController.reset();
                 animationController.forward();
                 return SizeTransition(
@@ -101,7 +98,7 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0),
-                      additionalQuestionIndex == _AdditionalQuestion.daysPerWeek ? DaysPerWeek() : EveryWeekdays(),
+                      additionalQuestionIndex == DoitGoalRepeatType.perWeek ? DaysPerWeek() : EveryWeekdays(),
                     ],
                   ),
                 );
@@ -118,19 +115,19 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
   showAdditionalQuestion(List<SelectableGradientChip> value) async {
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
     if (value.isEmpty) {
-      additionalQuestionIndex = _AdditionalQuestion.none;
+      additionalQuestionIndex = DoitGoalRepeatType.invalid;
       _bloc.dispatch(
         MakeGoalSecondPageEvent(
-          action: MakeGoalSecondPageAction.setWorkCycle,
-          data: invalidWorkCycle,
+          action: MakeGoalSecondPageAction.setWorkType,
+          data: additionalQuestionIndex,
         ),
       );
     } else {
       additionalQuestionIndex = value[0].value;
       _bloc.dispatch(
         MakeGoalSecondPageEvent(
-          action: MakeGoalSecondPageAction.setWorkCycle,
-          data: additionalQuestionIndex == _AdditionalQuestion.none ? 0 : invalidWorkCycle,
+          action: MakeGoalSecondPageAction.setWorkType,
+          data: additionalQuestionIndex,
         ),
       );
     }

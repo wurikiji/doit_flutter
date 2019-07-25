@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/make_goal/bloc/second_page_goal_bloc.dart';
 import 'package:do_it/src/screen/make_goal/model/make_goal_second_page_model.dart';
@@ -14,10 +12,6 @@ class DaysPerWeek extends StatelessWidget {
     const String counterKey = 'cycleCounterKey';
     const String groupKey = 'howManyDaysPerWeek';
     int cycle = _bloc.currentState.data.workCycle ?? 0;
-    if (cycle > (1 << 9))
-      cycle = 0;
-    else
-      cycle = (log(cycle) ~/ log(2));
     final List<Widget> selectableDays = List.generate(
       13,
       (index) {
@@ -36,15 +30,14 @@ class DaysPerWeek extends StatelessWidget {
               maxMultiSelectables: 1,
               onTap: (context, value) {
                 MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-                int days = value.isEmpty ? invalidWorkCycle : value[0].value;
+                int days = value.isEmpty ? 0 : value[0].value;
                 _bloc.dispatch(
                   MakeGoalSecondPageEvent(
                     action: MakeGoalSecondPageAction.setWorkCycle,
-                    data: (1 << (days)),
+                    data: days,
                   ),
                 );
                 EasyStatefulBuilder.setState(counterKey, (state) {
-                  if (days == invalidWorkCycle) days = 0;
                   state.nextState = days;
                 });
               },
