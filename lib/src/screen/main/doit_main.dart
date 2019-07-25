@@ -44,10 +44,11 @@ class _DoitHomeState extends State<DoitHome> {
                 child: RefreshProgressIndicator(),
               );
             } else {
+              DateTime now = DateTime.now();
               List<DoitGoalModel> inProgressGoals = DoitGoalService.goalList
                   .where(
                     (goal) => goal.endDate.isAfter(
-                      DateTime.now().subtract(Duration(days: 1)),
+                      DateTime(now.year, now.month, now.day, 23, 59, 59),
                     ),
                   )
                   .toList();

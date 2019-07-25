@@ -52,13 +52,15 @@ class UserGoalCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => DoitTimeline(
-              goal: goal,
+        if (isStarted(goal)) {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => DoitTimeline(
+                goal: goal,
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
       child: DoitMainCard(
         child: Padding(

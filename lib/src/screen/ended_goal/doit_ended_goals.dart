@@ -105,12 +105,12 @@ class DoitFinishedGoalProgress extends StatelessWidget {
             linearStrokeCap: LinearStrokeCap.roundAll,
             progressColor: Color(0xffccccc0),
             backgroundColor: Color(0x33ffffff),
-            percent: 0.5,
+            percent: goal.progressRate / 100,
           ),
         ),
         SizedBox(width: 12.5),
         Text(
-          '27% 달성',
+          '${goal.progressRate}% 달성',
           style: TextStyle(
             fontFamily: 'SpoqaHanSans',
             fontSize: 12.0,

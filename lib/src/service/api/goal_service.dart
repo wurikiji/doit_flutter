@@ -163,8 +163,8 @@ class DoitGoalModel {
 
   factory DoitGoalModel.fromMap(Map map) => DoitGoalModel(
         categoryName: map['category'],
-        endDate: DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000)),
-        startDate: DateTime.fromMillisecondsSinceEpoch(map['epochStartDate'] * (60 * 60 * 24 * 1000)),
+        endDate: DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000 + 100)),
+        startDate: DateTime.fromMillisecondsSinceEpoch(map['epochStartDate'] * (60 * 60 * 24 * 1000 + 100)),
         goalId: map['gid'],
         goalName: map['goalName'],
         penalty: map['penalty'],

@@ -38,7 +38,7 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final String groupKey = 'howManyTimes';
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-    DoitGoalRepeatType repeatType = _bloc.currentState.data.repeatType;
+    DoitGoalRepeatType repeatType = _bloc.currentState.data.repeatType ?? DoitGoalRepeatType.invalid;
     additionalQuestionIndex = repeatType;
     print(repeatType);
     return QuestionScaffold(

@@ -7,6 +7,12 @@ bool isStarted(DoitGoalModel goal) {
   return goal.startDate.isBefore(tomorrow);
 }
 
+bool isEnded(DoitGoalModel goal) {
+  DateTime now = DateTime.now();
+  DateTime midnight = DateTime(now.year, now.month, now.day);
+  return goal.endDate.isBefore(midnight);
+}
+
 String getDateRange(DoitGoalModel goal) {
   final String start = (DateFormat('yyyy-MM-dd').format(goal.startDate));
   final String end = (DateFormat('yyyy-MM-dd').format(goal.endDate));
