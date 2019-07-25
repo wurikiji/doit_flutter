@@ -93,7 +93,6 @@ class MakeGoalCompleteButton extends StatelessWidget {
                 },
               );
               final MakeGoalModel goal = MakeGoalBloc.getBloc(context).goalState.data;
-              print(goal);
               Navigator.of(context).pop(goal);
             } else {
               Scaffold.of(context).showSnackBar(
