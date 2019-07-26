@@ -24,7 +24,8 @@ class MakeGoalSecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        final MakeGoalNavigationBloc _makeGoalNavBloc = BlocProvider.of<MakeGoalNavigationBloc>(context);
+        final MakeGoalNavigationBloc _makeGoalNavBloc =
+            BlocProvider.of<MakeGoalNavigationBloc>(context);
         _makeGoalNavBloc.dispatch(
           MakeGoalNavigationEvent(
             action: MakeGoalNavigationAction.goBack,
@@ -139,6 +140,13 @@ class MakeGoalCompleteButton extends StatelessWidget {
 }
 
 class SuccessModal extends StatelessWidget {
+  SuccessModal({
+    this.desc,
+    this.title,
+  });
+
+  final String title;
+  final String desc;
   @override
   Widget build(BuildContext context) {
     return BackdropFilter(
@@ -173,7 +181,7 @@ class SuccessModal extends StatelessWidget {
                       ),
                       SizedBox(height: 2.0),
                       Text(
-                        '프로젝트 생성이 완료되었습니다.\n'
+                        '${title ?? '프로젝트'} 생성이 완료되었습니다.\n'
                         '이제 두잇에서 목표를 이뤄보세요!',
                         style: DoitMainTheme.makeGoalUserInputTextStyle.copyWith(fontSize: 14.0),
                       ),

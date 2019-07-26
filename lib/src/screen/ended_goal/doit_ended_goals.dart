@@ -1,5 +1,6 @@
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
+import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
@@ -9,9 +10,7 @@ class DoitFinishedGoals extends StatelessWidget {
   Widget build(BuildContext context) {
     List<DoitGoalModel> finishedGoals = DoitGoalService.goalList
         .where(
-          (goal) => goal.endDate.isBefore(
-            DateTime.now(),
-          ),
+          (goal) => isEnded(goal),
         )
         .toList();
     return Scaffold(

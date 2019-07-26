@@ -3,6 +3,7 @@ import 'package:do_it/src/screen/main/view/empty_goal_card.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
+import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,9 +48,7 @@ class _DoitHomeState extends State<DoitHome> {
               DateTime now = DateTime.now();
               List<DoitGoalModel> inProgressGoals = DoitGoalService.goalList
                   .where(
-                    (goal) => goal.endDate.isAfter(
-                      DateTime(now.year, now.month, now.day, 23, 59, 59),
-                    ),
+                    (goal) => !isEnded(goal),
                   )
                   .toList();
               return Center(

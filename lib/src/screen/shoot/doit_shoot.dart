@@ -1,6 +1,7 @@
 import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/shoot/shoot_timer/doit_shoot_timer.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
+import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/material.dart';
 
 class DoitShoot extends StatelessWidget {
@@ -16,14 +17,7 @@ class DoitShoot extends StatelessWidget {
     if (goal != null) return DoitShootTimer(goal: goal);
     List<DoitGoalModel> startedGoals = DoitGoalService.goalList
         .where(
-          (goal) => goal.startDate.isBefore(
-            DateTime.now(),
-          ),
-        )
-        .where(
-          (goal) => goal.endDate.isAfter(
-            DateTime.now().subtract(Duration(days: 1)),
-          ),
+          (goal) => isStarted(goal) && !isEnded(goal),
         )
         .toList();
     return Scaffold(
@@ -35,7 +29,7 @@ class DoitShoot extends StatelessWidget {
           child: Image.asset('assets/images/outline_clear_24_px.png'),
         ),
         centerTitle: true,
-        title: Text("Goals"),
+        title: Text("Shoot!"),
       ),
       body: ListView.separated(
         padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 90.0),
@@ -44,9 +38,7 @@ class DoitShoot extends StatelessWidget {
         itemBuilder: (context, index) {
           return GestureDetector(
             onTap: () {
-              // TODO: 슛 화면으로 바로가기
-              print("SHoooooot");
-              Navigator.of(context).push(
+              Navigator.of(context).pushReplacement(
                 MaterialPageRoute(
                   builder: (context) => DoitShootTimer(goal: startedGoals[index]),
                 ),

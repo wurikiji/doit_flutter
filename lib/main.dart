@@ -1,13 +1,17 @@
+import 'dart:async';
+
 import 'package:do_it/src/color/swatch.dart';
 import 'package:do_it/src/common_view/doit_bottom_widget.dart';
-import 'package:do_it/src/model/user_model.dart';
 import 'package:do_it/src/screen/first_splash/first_splash.dart';
-import 'package:do_it/src/screen/login/doit_login.dart';
 import 'package:do_it/src/screen/main/doit_main.dart';
+import 'package:do_it/src/screen/make_goal/view/second_page.dart';
 import 'package:do_it/src/screen/profile/doit_profile.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:photo_manager/photo_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:rest_api_test/kakao_users/kakao_users.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -33,13 +37,12 @@ void main() async {
 }
 
 class DoIt extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return Provider<FirebaseMessaging>.value(
       value: _firebaseMessaging,
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Doit',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: doitMainSwatch,
@@ -91,12 +94,107 @@ class DoIt extends StatelessWidget {
   }
 }
 
-class DoitMain extends StatelessWidget {
+class DoitMain extends StatefulWidget {
+  @override
+  _DoitMainState createState() => _DoitMainState();
+}
+
+class _DoitMainState extends State<DoitMain> with WidgetsBindingObserver {
+  Timer _linkTimer;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  @override
+  void initState() {
+    super.initState();
+    initDynamicLinks();
+    getPermission();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _linkTimer?.cancel();
+    print("Disposing this widget");
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      print('[[[]]][][][]State is $state');
+      // initDynamicLinks();
+    }
+  }
+
+  getPermission() async {
+    var result = await PhotoManager.requestPermission();
+    if (!result) {
+      PhotoManager.openSetting();
+    }
+  }
+
+  initDynamicLinks() async {
+    // final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+
+    // final Uri deeplink = data?.link;
+    // print('[[[[[[[[[[[[[[[[[hhhhh]]]]]]]]]]]]]]]: $data');
+    // if (deeplink != null) {
+    //   final Map query = deeplink.queryParameters;
+    //   final int goalId = int.parse(query['goalId']);
+    //   final int joinId = int.parse(query['joinId']);
+    //   print('[[[[[[[[[[[[[[[[[hhhhh22]]]]]]]]]]]]]]]: ${deeplink.queryParameters}');
+    //   if (goalId != null && joinId != null) {
+    //     var result = await DoitGoalService.joinGoal(goalId, joinId);
+    //     print('[[[[[[[[[[[[[[]]]]]]]]]]]]]]]$goalId, $joinId result: $result');
+    //   }
+    // }
+    FirebaseDynamicLinks.instance.onLink(
+      onSuccess: (PendingDynamicLinkData dynamiclink) async {
+        final Uri link = dynamiclink.link;
+        print(link);
+        try {
+          List<String> path = link.path.split('/');
+          int goalId = int.parse(path[3]);
+          int joinId = int.parse(path[5]);
+
+          print(path);
+          if (goalId != null && joinId != null) {
+            var result = await DoitGoalService.joinGoal(goalId, joinId);
+            if (result != null) {
+              await showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (context) {
+                  return SuccessModal(
+                    title: result.goalName,
+                  );
+                },
+              );
+            } else {
+              scaffoldKey.currentState.showSnackBar(
+                SnackBar(
+                  content: Text('Failed to join goal.'),
+                ),
+              );
+            }
+          }
+        } catch (e) {
+          print(e);
+        }
+      },
+      onError: (OnLinkErrorException e) async {
+        print(e.message);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        key: scaffoldKey,
         bottomNavigationBar: DoitBottomAppBar(
           key: ValueKey('mainBottomAppBar'),
         ),

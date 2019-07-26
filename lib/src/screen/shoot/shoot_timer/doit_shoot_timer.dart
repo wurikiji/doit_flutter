@@ -1,14 +1,36 @@
 import 'package:do_it/src/model/make_goal_model.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
+import 'package:do_it/src/screen/shoot/shoot_timer/doit_timer.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
+import 'package:do_it/src/service/api/shoot_service.dart';
 import 'package:flutter/material.dart';
+
+class ShootTimerModel {
+  ShootTimerModel({
+    this.elapsed,
+    this.target,
+  });
+  Duration target;
+  Duration elapsed;
+  ShootTimerModel copyWith({
+    Duration target,
+    Duration elapse,
+  }) =>
+      ShootTimerModel(
+        target: target ?? this.target,
+        elapsed: elapse ?? this.elapsed,
+      );
+}
 
 class DoitShootTimer extends StatelessWidget {
   DoitShootTimer({
     @required this.goal,
   });
   final DoitGoalModel goal;
+  final ShootTimerModel timerModel = ShootTimerModel(
+    target: Duration(minutes: 10),
+  );
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,21 +45,40 @@ class DoitShootTimer extends StatelessWidget {
             children: <Widget>[
               DoitTimerAppBar(),
               SizedBox(height: 80.0),
-              DoitTimerTimes(),
+              DoitTimerTimes(
+                setTimer: _setTargetTime,
+              ),
               SizedBox(height: 60.0),
-              DoitTimerStartButton(),
+              DoitTimerStartButton(
+                goal: goal,
+                timer: timerModel,
+              ),
             ],
           ),
         ),
       ),
     );
   }
+
+  _setTargetTime(Duration duration) {
+    timerModel.target = duration;
+  }
 }
 
+typedef SetTimerCallBack = void Function(Duration);
+
 class DoitTimerTimes extends StatelessWidget {
-  const DoitTimerTimes({
-    Key key,
-  }) : super(key: key);
+  DoitTimerTimes({Key key, this.setTimer}) : super(key: key);
+
+  final SetTimerCallBack setTimer;
+
+  final List<Duration> times = [
+    const Duration(minutes: 10),
+    const Duration(minutes: 20),
+    const Duration(minutes: 30),
+    const Duration(minutes: 60),
+    const Duration(minutes: 120),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,17 +87,18 @@ class DoitTimerTimes extends StatelessWidget {
         children: [
           ListWheelScrollView(
             physics: FixedExtentScrollPhysics(),
-            children: <Widget>[
-              DoitTimersTimeText(title: '10'),
-              DoitTimersTimeText(title: '20'),
-              DoitTimersTimeText(title: '30'),
-              DoitTimersTimeText(title: '60'),
-              DoitTimersTimeText(title: '120'),
-            ],
+            children: times
+                .map((duration) => DoitTimersTimeText(
+                      title: '${duration.inMinutes}',
+                    ))
+                .toList(),
             itemExtent: 92.0,
+            onSelectedItemChanged: (int index) {
+              setTimer(times[index]);
+            },
           ),
           Align(
-            alignment: Alignment.center.add(Alignment(0.5, 0)),
+            alignment: Alignment.center.add(Alignment(0.5, -0.03)),
             child: Text("min", style: minTextStyle),
           ),
         ],
@@ -126,15 +168,28 @@ class DoitTimerAppBar extends StatelessWidget {
 class DoitTimerStartButton extends StatelessWidget {
   const DoitTimerStartButton({
     Key key,
+    @required this.goal,
+    @required this.timer,
   }) : super(key: key);
 
+  final DoitGoalModel goal;
+  final ShootTimerModel timer;
   @override
   Widget build(BuildContext context) {
     return Container(
       width: 320.0,
       height: 50.0,
       child: FlatButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => DoitTimer(
+                goal: goal,
+                timer: timer,
+              ),
+            ),
+          );
+        },
         color: Colors.white.withOpacity(0.15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
         child: Text(

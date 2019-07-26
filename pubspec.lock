@@ -99,6 +99,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.4.0+8"
+  firebase_dynamic_links:
+    dependency: "direct main"
+    description:
+      name: firebase_dynamic_links
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.5.0"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -186,6 +193,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.7"
+  package_info:
+    dependency: "direct main"
+    description:
+      name: package_info
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.0+6"
   path:
     dependency: transitive
     description:
@@ -221,6 +235,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.4.0"
+  photo_manager:
+    dependency: "direct main"
+    description:
+      name: photo_manager
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.3.4"
   platform:
     dependency: transitive
     description:
@@ -247,7 +268,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "3ca2c08aace85cc94b7c07097d71caf6a2f08aeb"
+      resolved-ref: ac9075a739a5abff25de6408662c27a0f2a449ec
       url: "https://github.com/wurikiji/flutter_kakao_sdk_test.git"
     source: git
     version: "1.0.0+1"

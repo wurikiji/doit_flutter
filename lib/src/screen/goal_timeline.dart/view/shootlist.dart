@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:do_it/src/screen/goal_timeline.dart/view/shootlist_view.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -87,14 +88,9 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList> with Sing
               children: <Widget>[
                 DoitShootlistTopTouchArea(animationController: _animationController),
                 Expanded(
-                  child: FutureBuilder(builder: (context, snapshot) {
-                    return RefreshIndicator(
-                      onRefresh: () async {
-                        await Future.delayed(Duration(seconds: 2), () {});
-                      },
-                      child: ListView(),
-                    );
-                  }),
+                  child: ShootlistView(
+                    goal: widget.goal,
+                  ),
                 ),
               ],
             ),

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:do_it/src/screen/main/doit_main.dart' as prefix0;
 import 'package:do_it/src/service/api/user_service.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ class DoitGoalService {
   static String _createGetGoalMembersUrl(int gid) => 'http://13.125.252.156:8080/api/goal/$gid';
   static String _createCreateInvitationLinkUrl(int mid, int gid) =>
       'http://13.125.252.156:8080/api/goal/invite/from/$mid/goal/$gid';
+  static String _joinGaolUrl() => 'http://13.125.252.156:8080/api/goal/participate/';
 
   static StreamController<int> notifyStream;
   static List<DoitGoalModel> goalList = <DoitGoalModel>[];
@@ -47,13 +49,6 @@ class DoitGoalService {
     } else if (response.statusCode != 201 && response.statusCode != 200) {
       print("[DOIT GOAL API] Failed to get goals: Code ${response.statusCode}");
       print(response.body);
-      if (context != null) {
-        Scaffold.of(context).showSnackBar(
-          SnackBar(
-            content: Text("Failed to load goals: CODE ${response.statusCode}"),
-          ),
-        );
-      }
       return false;
     }
     List goals = jsonDecode(response.body);
@@ -121,9 +116,45 @@ class DoitGoalService {
       print(response.body);
       return null;
     }
-    print(response.body);
     final int invitationCode = int.parse(response.body);
-    return 'depromeetDoit://goal/join/$invitationCode';
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://depromeetdoit.page.link/',
+      link: Uri.parse('https://depromeet.com/doit/goal/${goal.goalId}/join/$invitationCode'),
+      androidParameters: AndroidParameters(
+        packageName: 'com.depromeet.do_it',
+        minimumVersion: 1,
+      ),
+    );
+
+    final Uri dynamicUrl = await parameters.buildUrl();
+    return Uri.decodeFull(dynamicUrl.toString());
+  }
+
+  static Future<DoitGoalModel> joinGoal(int goalId, int inviteId) async {
+    Map headers = <String, String>{
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    };
+    var response = await http.post(
+      _joinGaolUrl(),
+      headers: headers,
+      body: jsonEncode(
+        {
+          'gid': goalId,
+          'mid': DoitUserAPI.memberInfo.memberId,
+          'inviteId': inviteId,
+        },
+      ),
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to create invitation link: Code ${response.statusCode}");
+      print(response.body);
+      return null;
+    }
+    DoitGoalModel goal = DoitGoalModel.fromMap(jsonDecode(response.body)['goal']);
+    goalList.add(goal);
+    notifyStream.add(0);
+    return goal;
   }
 }
 
@@ -147,6 +178,7 @@ class DoitGoalModel {
     this.useTimer,
     this.progressRate,
     this.memberCount,
+    this.createMid,
   });
   final int goalId;
   final String goalName;
@@ -160,11 +192,14 @@ class DoitGoalModel {
   final DateTime endDate;
   final int progressRate;
   final int memberCount;
+  final int createMid;
 
   factory DoitGoalModel.fromMap(Map map) => DoitGoalModel(
         categoryName: map['category'],
-        endDate: DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000 + 100)),
-        startDate: DateTime.fromMillisecondsSinceEpoch(map['epochStartDate'] * (60 * 60 * 24 * 1000 + 100)),
+        endDate:
+            DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000 + 100)),
+        startDate: DateTime.fromMillisecondsSinceEpoch(
+            map['epochStartDate'] * (60 * 60 * 24 * 1000 + 100)),
         goalId: map['gid'],
         goalName: map['goalName'],
         penalty: map['penalty'],

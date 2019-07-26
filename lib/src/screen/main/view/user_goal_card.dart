@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:do_it/src/color/doit_theme.dart';
 import 'package:do_it/src/screen/goal_timeline.dart/goal_timeline.dart';
@@ -24,19 +26,27 @@ const buttonColors = <Color>[
 ];
 
 void inviteToGoal(BuildContext context, DoitGoalModel goal) async {
+  const List imageList = <String>[
+    'https://dl.dropbox.com/s/8826i1rofclmgob/kakao_invitation_1.png',
+    'https://dl.dropbox.com/s/y50hu91999v6my5/kakao_invitation_2.png',
+    'https://dl.dropbox.com/s/uwpy2jiego4v8ui/kakao_invitation_3.png',
+  ];
   final String link = await DoitGoalService.getInvitationLink(goal);
   final String start = (DateFormat('yyyy-MM-dd').format(goal.startDate));
   final String end = (DateFormat('yyyy-MM-dd').format(goal.endDate));
   final String range = '$start ~ $end';
+  final Random random = Random();
+  final int imageIndex = random.nextInt(3);
   print("INVITATION LINK IS $link");
 
   await KakaoLinkAPI.createLink(
     context,
     jsApiKey: 'd1e9c1de1d0217411077aa58ca4fa26a',
-    androidUrl: link,
+    webUrl: link,
+    mobileWebUrl: link,
     title: goal.goalName,
-    description: '${DoitUserAPI.memberInfo.name}이 Doit으로 초대합니다! ($range)',
-    imageUrl: 'https://dl.dropbox.com/s/190w2y9vw47elfs/img_app_icon.png',
+    description: '${DoitUserAPI.memberInfo.name}님이 Doit으로 초대합니다!\\n기간: $range\\n링크: $link',
+    imageUrl: imageList[imageIndex],
   );
 }
 
@@ -373,7 +383,7 @@ class CardTitleBar extends StatelessWidget {
                   ),
                   CupertinoActionSheetAction(
                     onPressed: () {},
-                    child: Text("Goal 나가기"),
+                    child: Text("Goal 삭제하기"),
                     isDestructiveAction: true,
                   ),
                 ],

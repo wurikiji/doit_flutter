@@ -1,20 +1,22 @@
 import 'dart:convert';
 import 'dart:async';
 
+import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
 class DoitShootService {
   static _createShootUrl() => 'http://13.125.252.156:8080/api/shoot/create';
+  static _getShootsUrl(int gid, int mid) => 'http://13.125.252.156:8080/api/shoot/get/mid/$mid/gid/$gid';
   static List<DoitShootModel> shootList = <DoitShootModel>[];
   static StreamController<int> shootNotifier;
 
-  initialize() {
+  static initialize() {
     shootNotifier = StreamController<int>();
   }
 
-  dispose() {
+  static dispose() {
     shootNotifier.close();
   }
 
@@ -34,6 +36,32 @@ class DoitShootService {
       return false;
     }
     shootList.add(DoitShootModel.fromMap(jsonDecode(response.body)));
+    shootNotifier.add(0);
+    return true;
+  }
+
+  static getShoots(DoitGoalModel goalModel) async {
+    Map headers = <String, String>{'Accept': 'application/json'};
+    var response = await http.get(
+      _getShootsUrl(goalModel.goalId, DoitUserAPI.memberInfo.memberId),
+      headers: headers,
+    );
+    if (response.statusCode == 400) {
+      shootList = <DoitShootModel>[];
+      shootNotifier.add(0);
+      return true;
+    }
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to create goal: Code ${response.statusCode}");
+      print(response.body);
+      return false;
+    }
+    print(response.body);
+    List shoots = jsonDecode(response.body);
+    shootList = shoots.map((map) => DoitShootModel.fromMap(map)).toList();
+    if (shootList == null) {
+      shootList = <DoitShootModel>[];
+    }
     shootNotifier.add(0);
     return true;
   }

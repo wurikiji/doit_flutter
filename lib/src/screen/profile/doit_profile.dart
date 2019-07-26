@@ -1,6 +1,7 @@
 import 'package:do_it/src/screen/ended_goal/doit_ended_goals.dart';
 import 'package:do_it/src/screen/profile/common/doit_profile_menu.dart';
 import 'package:do_it/src/screen/profile/view/profile_title_bar.dart';
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +34,13 @@ class DoitProfile extends StatelessWidget {
                   DoitProfileMenu(
                     title: 'Info',
                     children: <Widget>[
-                      Text("버전 정보", style: menuTextStyle),
+                      Row(
+                        children: <Widget>[
+                          Text("버전 정보", style: menuTextStyle),
+                          Spacer(),
+                          DoitVersion(),
+                        ],
+                      ),
                       GestureDetector(
                         onTap: () {
                           showLicensePage(
@@ -50,6 +57,35 @@ class DoitProfile extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DoitVersion extends StatelessWidget {
+  final Future<PackageInfo> packageInfo = PackageInfo.fromPlatform();
+
+  final TextStyle versionTextStyle = TextStyle(
+    fontFamily: 'SpoqaHanSans',
+    fontSize: 16.0,
+    color: Colors.white.withOpacity(0.6),
+  );
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: packageInfo,
+      builder: (context, snapshot) {
+        String text = 'loading...';
+        if (snapshot.hasData) {
+          PackageInfo info = snapshot.data;
+          String version = info.version;
+          String buildNumber = info.buildNumber;
+          text = '$version+$buildNumber';
+        }
+        return Text(
+          text,
+          style: versionTextStyle,
+        );
+      },
     );
   }
 }

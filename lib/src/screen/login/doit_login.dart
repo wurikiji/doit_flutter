@@ -141,7 +141,7 @@ class DoitLoginScreen extends StatelessWidget {
 
 gotoDoitMain(BuildContext context, KakaoUserToken token) async {
   final FirebaseMessaging firebaseMessaging = Provider.of<FirebaseMessaging>(context);
-  print(await DoitUserAPI.registerTokenAndGetMid(token, firebaseMessaging));
+  await DoitUserAPI.registerTokenAndGetMid(token, firebaseMessaging);
   Navigator.of(context).pushReplacement(
     MaterialPageRoute(
       builder: (context) => DoitMain(),
