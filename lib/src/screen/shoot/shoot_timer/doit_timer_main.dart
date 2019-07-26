@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:do_it/src/screen/goal_timeline.dart/view/timeline_title.dart';
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
+import 'package:do_it/src/screen/shoot/shoot_post/doit_shoot_post.dart';
 import 'package:do_it/src/screen/shoot/shoot_timer/doit_shoot_timer.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:flutter/material.dart';
@@ -76,25 +77,7 @@ class _DoitTimerMainState extends State<DoitTimerMain> {
                       ),
                       Align(
                         alignment: Alignment.topCenter,
-                        child: Container(
-                          width: 40.0,
-                          height: 40.0,
-                          decoration: ShapeDecoration(
-                            shape: CircleBorder(),
-                            color: Colors.white,
-                          ),
-                          child: Center(
-                            child: Text(
-                              '${(percent * 100).toInt()}%',
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 14.0,
-                                color: projectColors[getProjectColorIndex(widget.goal.goalColor)]
-                                    .colors[1],
-                              ),
-                            ),
-                          ),
-                        ),
+                        child: DoitTimerPercentIndicator(percent: percent, widget: widget),
                       ),
                     ],
                   ),
@@ -115,7 +98,15 @@ class _DoitTimerMainState extends State<DoitTimerMain> {
 
   onStop() {
     _timer?.cancel();
-    Navigator.of(context).pop();
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(
+        builder: (context) => DoitShootPost(
+          goal: widget.goal,
+          postStatus: DoitShootPostStatus.create,
+          timer: widget.timer,
+        ),
+      ),
+    );
   }
 
   onStart() {
@@ -130,6 +121,39 @@ class _DoitTimerMainState extends State<DoitTimerMain> {
 
   onPause() {
     _timer?.cancel();
+  }
+}
+
+class DoitTimerPercentIndicator extends StatelessWidget {
+  const DoitTimerPercentIndicator({
+    Key key,
+    @required this.percent,
+    @required this.widget,
+  }) : super(key: key);
+
+  final double percent;
+  final DoitTimerMain widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40.0,
+      height: 40.0,
+      decoration: ShapeDecoration(
+        shape: CircleBorder(),
+        color: Colors.white,
+      ),
+      child: Center(
+        child: Text(
+          '${(percent * 100).toInt()}%',
+          style: TextStyle(
+            fontFamily: 'Roboto',
+            fontSize: 14.0,
+            color: projectColors[getProjectColorIndex(widget.goal.goalColor)].colors[1],
+          ),
+        ),
+      ),
+    );
   }
 }
 
