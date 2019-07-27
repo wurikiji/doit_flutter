@@ -22,7 +22,7 @@ class DoitTimelineCard extends StatelessWidget {
         if (index < 3)
           Stack(
             children: <Widget>[
-              Image.asset('assets/images/ic_medal_1.png'),
+              Image.asset('assets/images/ic_medal_${index + 1}.png'),
               Positioned(
                 left: 7.0,
                 top: 2.0,

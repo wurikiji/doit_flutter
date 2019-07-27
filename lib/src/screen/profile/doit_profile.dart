@@ -4,6 +4,7 @@ import 'package:do_it/src/screen/profile/view/profile_title_bar.dart';
 import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class DoitProfile extends StatelessWidget {
   @override
@@ -28,7 +29,14 @@ class DoitProfile extends StatelessWidget {
                   DoitProfileMenu(
                     title: 'Feedback',
                     children: <Widget>[
-                      Text("앱스토어 리뷰 남기기", style: menuTextStyle),
+                      GestureDetector(
+                        onTap: () {
+                          launch(
+                            'market://details?id=com.depromeet.do_it',
+                          );
+                        },
+                        child: Text("앱스토어 리뷰 남기기", style: menuTextStyle),
+                      ),
                     ],
                   ),
                   DoitProfileMenu(

@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -6,10 +7,13 @@ import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/shoot_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
 import 'package:do_it/src/service/date_utils.dart';
+import 'package:esys_flutter_share/esys_flutter_share.dart' as prefix0;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:screenshot/screenshot.dart';
+import 'package:share/share.dart';
 
 class ShootlistView extends StatefulWidget {
   ShootlistView({
@@ -76,30 +80,39 @@ class _ShootlistViewState extends State<ShootlistView> {
   }
 }
 
-class DoitShootCard extends StatelessWidget {
+class DoitShootCard extends StatefulWidget {
   DoitShootCard({
     @required this.shoot,
     @required this.index,
   });
   final DoitShootModel shoot;
   final int index;
+
+  @override
+  _DoitShootCardState createState() => _DoitShootCardState();
+}
+
+class _DoitShootCardState extends State<DoitShootCard> {
+  ScreenshotController screenshotController = ScreenshotController();
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         DoitShootPostTitleBar(
-          shoot: shoot,
-          index: index,
+          shoot: widget.shoot,
+          index: widget.index,
+          screenshotController: screenshotController,
         ),
         SizedBox(height: 10.0),
         DoitShootPostBody(
-          key: GlobalObjectKey(shoot),
-          shoot: shoot,
+          screenshotController: screenshotController,
+          key: GlobalObjectKey(widget.shoot),
+          shoot: widget.shoot,
         ),
         SizedBox(height: 10.0),
         DoitPostSocialBar(
-          shoot: shoot,
-          index: index,
+          shoot: widget.shoot,
+          index: widget.index,
         ),
       ],
     );
@@ -242,10 +255,12 @@ class DoitShootPostTitleBar extends StatelessWidget {
     Key key,
     @required this.shoot,
     @required this.index,
+    @required this.screenshotController,
   }) : super(key: key);
 
   final int index;
   final DoitShootModel shoot;
+  final ScreenshotController screenshotController;
 
   @override
   Widget build(BuildContext context) {
@@ -320,7 +335,17 @@ class DoitShootPostTitleBar extends StatelessWidget {
                       ),
                       CupertinoActionSheetAction(
                         child: Text('공유'),
-                        onPressed: () {},
+                        onPressed: () {
+                          screenshotController.capture().then((File image) async {
+                            await prefix0.Share.file(
+                              'My Doit',
+                              'doit.jpg',
+                              await image.readAsBytes(),
+                              'image/jpg',
+                            );
+                          });
+                          Navigator.of(context).pop();
+                        },
                       ),
                       if (shoot.shooter.memberId == DoitUserAPI.memberInfo.memberId)
                         CupertinoActionSheetAction(
@@ -352,77 +377,87 @@ class DoitShootPostTitleBar extends StatelessWidget {
   }
 }
 
-class DoitShootPostBody extends StatelessWidget {
+class DoitShootPostBody extends StatefulWidget {
   const DoitShootPostBody({
     Key key,
     @required this.shoot,
+    @required this.screenshotController,
   }) : super(key: key);
 
   final DoitShootModel shoot;
+  final ScreenshotController screenshotController;
 
+  @override
+  _DoitShootPostBodyState createState() => _DoitShootPostBodyState();
+}
+
+class _DoitShootPostBodyState extends State<DoitShootPostBody> {
   @override
   Widget build(BuildContext context) {
     final Random random = Random();
-    return Container(
-      height: 270.0,
+    return Screenshot(
+      controller: widget.screenshotController,
       child: Container(
-        decoration: BoxDecoration(
-          gradient: shoot.imageUrl == null ? projectColors[random.nextInt(7)] : null,
-          image: shoot.imageUrl != null
-              ? DecorationImage(
-                  image: CachedNetworkImageProvider(
-                    shoot.imageUrl,
-                  ),
-                )
-              : null,
-        ),
-        child: Stack(
-          children: <Widget>[
-            if (shoot.timerElapsed != null) Container(),
-            Center(
-              child: Text(
-                shoot.text,
-                style: TextStyle(
-                    fontFamily: 'SpoqaHanSans',
-                    fontSize: 18.0,
-                    height: 24.0 / 18.0,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        blurRadius: 1.0,
-                        offset: Offset(0.0, 2.0),
-                        color: Color(0x19000000),
-                      ),
-                    ]),
+        height: 270.0,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: widget.shoot.imageUrl == null ? projectColors[random.nextInt(7)] : null,
+            image: widget.shoot.imageUrl != null
+                ? DecorationImage(
+                    image: CachedNetworkImageProvider(
+                      widget.shoot.imageUrl,
+                    ),
+                  )
+                : null,
+          ),
+          child: Stack(
+            children: <Widget>[
+              if (widget.shoot.timerElapsed != null) Container(),
+              Center(
+                child: Text(
+                  widget.shoot.text,
+                  style: TextStyle(
+                      fontFamily: 'SpoqaHanSans',
+                      fontSize: 18.0,
+                      height: 24.0 / 18.0,
+                      color: Colors.white,
+                      shadows: [
+                        Shadow(
+                          blurRadius: 1.0,
+                          offset: Offset(0.0, 2.0),
+                          color: Color(0x19000000),
+                        ),
+                      ]),
+                ),
               ),
-            ),
-            if (shoot.timerElapsed != null)
-              Column(
-                children: [
-                  Spacer(),
-                  Center(
-                    child: Text(
-                      getTimeFromDuration(Duration(seconds: shoot.timerElapsed)),
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 30.0,
-                        color: Colors.white,
-                        shadows: [
-                          Shadow(
-                            blurRadius: 1.0,
-                            offset: Offset(0.0, 2.0),
-                            color: Color(0x19000000),
-                          ),
-                        ],
+              if (widget.shoot.timerElapsed != null)
+                Column(
+                  children: [
+                    Spacer(),
+                    Center(
+                      child: Text(
+                        getTimeFromDuration(Duration(seconds: widget.shoot.timerElapsed)),
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 30.0,
+                          color: Colors.white,
+                          shadows: [
+                            Shadow(
+                              blurRadius: 1.0,
+                              offset: Offset(0.0, 2.0),
+                              color: Color(0x19000000),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 32.0,
-                  ),
-                ],
-              ),
-          ],
+                    SizedBox(
+                      height: 32.0,
+                    ),
+                  ],
+                ),
+            ],
+          ),
         ),
       ),
     );
