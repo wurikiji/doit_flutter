@@ -50,7 +50,7 @@ class _HowManyPeopleState extends State<HowManyPeople> {
                   keyboardType: TextInputType.number,
                   controller: _textEditingController,
                   style: DoitMainTheme.makeGoalUserInputTextStyle,
-                  maxLength: 2,
+                  maxLength: 1,
                   maxLengthEnforced: true,
                   decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,

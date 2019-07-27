@@ -8,7 +8,8 @@ import 'package:http/http.dart' as http;
 
 class DoitShootService {
   static _createShootUrl() => 'http://13.125.252.156:8080/api/shoot/create';
-  static _getShootsUrl(int gid, int mid) => 'http://13.125.252.156:8080/api/shoot/get/mid/$mid/gid/$gid';
+  static _getShootsUrl(int gid, int mid) =>
+      'http://13.125.252.156:8080/api/shoot/get/mid/$mid/gid/$gid';
   static List<DoitShootModel> shootList = <DoitShootModel>[];
   static StreamController<int> shootNotifier;
 
@@ -35,7 +36,12 @@ class DoitShootService {
       print(response.body);
       return false;
     }
-    shootList.add(DoitShootModel.fromMap(jsonDecode(response.body)));
+    print(response.body);
+    shootList.add(DoitShootModel.fromMap({
+      'shoot': jsonDecode(response.body),
+      'likeBoolean': false,
+      'unLikeBoolean': false,
+    }));
     shootNotifier.add(0);
     return true;
   }
@@ -80,7 +86,7 @@ class DoitShootModel {
     this.text,
     this.goalId,
     this.timerElapsed = 0,
-    this.timerTargetMinutes = 0,
+    this.timerTarget = 0,
     @required this.shootName,
   });
   final bool didILike;
@@ -94,11 +100,11 @@ class DoitShootModel {
   final int shootId;
   final String text;
   final int goalId;
-  final int timerTargetMinutes;
+  final int timerTarget;
   final int timerElapsed;
 
   Map<String, dynamic> toJsonToShoot() => {
-        'baseTime': timerTargetMinutes,
+        'baseTime': timerTarget,
         'gid': goalId,
         'likeCount': 0,
         'mid': shooter.memberId,
@@ -110,9 +116,16 @@ class DoitShootModel {
 
   factory DoitShootModel.fromMap(Map map) {
     Map shoot = map['shoot'];
-    List<Map> body = map['shootConfirmList'];
-    String text = body.singleWhere((Map check) => check['shootConfirmType'] == 'TEXT')['content'];
-    String timer = body.singleWhere((Map check) => check['shootConfirmType'] == 'BASE_TIMER')['content'];
+    List body = shoot['shootConfirmList'];
+    Map textMap = body?.singleWhere((check) => check['shootConfirmType'] == 'TEXT');
+    String text = textMap != null ? textMap['content'] : '';
+    Map timerMap =
+        body?.singleWhere((check) => check['shootConfirmType'] == 'BASE_TIMER', orElse: () {
+      return null;
+    });
+    String timer = timerMap != null ? timerMap['content'] : null;
+    List<String> times = timer?.split('/');
+
     return DoitShootModel(
       shootName: shoot['shootName'],
       shootId: shoot['sid'],
@@ -123,8 +136,8 @@ class DoitShootModel {
       overWorked: shoot['exceeded'],
       didIdislike: map['likeBoolean'],
       didILike: map['unLikeBoolean'],
-      timerTargetMinutes: int.parse(timer?.split('/')[1]),
-      timerElapsed: int.parse(timer?.split('/')[0]),
+      timerTarget: times != null ? int.parse(times[1]) : 0,
+      timerElapsed: times != null ? int.parse(times[0]) : 0,
       text: text,
     );
   }

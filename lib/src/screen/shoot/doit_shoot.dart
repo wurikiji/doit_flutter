@@ -1,4 +1,5 @@
 import 'package:do_it/src/model/make_goal_model.dart';
+import 'package:do_it/src/screen/shoot/shoot_post/doit_shoot_post.dart';
 import 'package:do_it/src/screen/shoot/shoot_timer/doit_shoot_timer.dart';
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/date_utils.dart';
@@ -14,7 +15,18 @@ class DoitShoot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (goal != null) return DoitShootTimer(goal: goal);
+    if (goal != null) {
+      if (goal.useTimer) {
+        return DoitShootTimer(
+          goal: goal,
+        );
+      } else {
+        return DoitShootPost(
+          goal: goal,
+          postStatus: DoitShootPostStatus.create,
+        );
+      }
+    }
     List<DoitGoalModel> startedGoals = DoitGoalService.goalList
         .where(
           (goal) => isStarted(goal) && !isEnded(goal),

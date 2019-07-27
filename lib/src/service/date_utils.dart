@@ -25,3 +25,7 @@ int getDdayToEnd(DoitGoalModel goal) {
   final Duration remain = goal.endDate.difference(now);
   return remain.inDays + 1;
 }
+
+String getTimeFromDuration(Duration duration) {
+  return DateFormat('HH:mm:ss').format(DateTime(0, 0, 0, 0, 0, duration.inSeconds));
+}

@@ -14,8 +14,10 @@ class CardProgressIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('Percent: ${goal.progressRate}');
     return LayoutBuilder(builder: (context, constraints) {
       double diameter = min(constraints.maxWidth, constraints.maxHeight) - 10.0;
+      double progress = goal.progressRate / 100.0 > 1.0 ? 1.0 : goal.progressRate / 100.0;
       return Stack(
         alignment: Alignment.center,
         fit: StackFit.expand,
@@ -26,7 +28,7 @@ class CardProgressIndicator extends StatelessWidget {
             circularStrokeCap: CircularStrokeCap.round,
             backgroundColor: Colors.white.withOpacity(0.15),
             lineWidth: 9.0,
-            percent: goal.progressRate / 100.0,
+            percent: progress,
             animation: true,
             animateFromLastPercent: true,
             animationDuration: 500,
@@ -43,7 +45,7 @@ class CardProgressIndicator extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "${goal.progressRate}%",
+                  "${progress * 100}%",
                   style: TextStyle(
                     fontFamily: 'Roboto',
                     fontSize: 34.0,
