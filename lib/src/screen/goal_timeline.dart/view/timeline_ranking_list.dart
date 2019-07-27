@@ -29,7 +29,10 @@ class _DoitTimelineRankingState extends State<DoitTimelineRanking> {
     members.sort((member1, member2) => (member2.progressRate - member1.progressRate));
     rankings = members.map((member) {
       final int index = members.indexOf(member);
-      return DoitTimelineCard(index: index, member: member);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 28.0),
+        child: DoitTimelineCard(index: index, member: member),
+      );
     }).toList();
     setState(() {});
   }

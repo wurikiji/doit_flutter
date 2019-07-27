@@ -1,15 +1,30 @@
 import 'dart:convert';
 import 'dart:async';
+import 'dart:io';
 
 import 'package:do_it/src/service/api/goal_service.dart';
 import 'package:do_it/src/service/api/user_service.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 
+enum DoitSocialType { likeUp, likeDown, dislikeUp, dislikeDown }
+
 class DoitShootService {
   static _createShootUrl() => 'http://13.125.252.156:8080/api/shoot/create';
   static _getShootsUrl(int gid, int mid) =>
       'http://13.125.252.156:8080/api/shoot/get/mid/$mid/gid/$gid';
+  static _createShootImageUrl(int sid) => 'http://13.125.252.156:8080/api/shoot/$sid/image/create';
+  static _likeDownUrl(int mid, int sid) =>
+      'http://13.125.252.156:8080/api/shoot/down/likecount/mid/$mid/sid/$sid';
+  static _likeUpUrl(int mid, int sid) =>
+      'http://13.125.252.156:8080/api/shoot/up/likecount/mid/$mid/sid/$sid/';
+  static _dislikeUpUrl(int mid, int sid) =>
+      'http://13.125.252.156:8080/api/shoot/up/unlikecount/mid/$mid/sid/$sid';
+  static _dislikeDownUrl(int mid, int sid) =>
+      'http://13.125.252.156:8080/api/shoot/down/unlikecount/mid/$mid/sid/$sid';
+
+  static _deleteShootUrl(int sid) => 'http://13.125.252.156:8080/api/shoot/$sid';
+
   static List<DoitShootModel> shootList = <DoitShootModel>[];
   static StreamController<int> shootNotifier;
 
@@ -21,7 +36,7 @@ class DoitShootService {
     shootNotifier.close();
   }
 
-  static createShoot(DoitShootModel shoot) async {
+  static createShoot(DoitShootModel shoot, {File image}) async {
     Map headers = <String, String>{
       'Accept': 'application/json',
       'Content-Type': 'application/json',
@@ -32,17 +47,71 @@ class DoitShootService {
       body: jsonEncode(shoot.toJsonToShoot()),
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
-      print("[DOIT GOAL API] Failed to create goal: Code ${response.statusCode}");
+      print("[DOIT GOAL API] Failed to create shoot: Code ${response.statusCode}");
       print(response.body);
       return false;
     }
-    print(response.body);
-    shootList.add(DoitShootModel.fromMap({
+    DoitShootModel newShoot = DoitShootModel.fromMap({
       'shoot': jsonDecode(response.body),
       'likeBoolean': false,
       'unLikeBoolean': false,
-    }));
+    });
+    if (image != null) {}
+    getShoots(DoitGoalModel(goalId: shoot.goalId));
+    // shootList.add(newShoot);
+    // shootNotifier.add(0);
+    return true;
+  }
+
+  static deleteShoot(DoitShootModel shoot, int index) async {
+    Map headers = <String, String>{
+      'Accept': 'text/plan',
+    };
+    var response = await http.delete(
+      _deleteShootUrl(shoot.shootId),
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to delete shoot: Code ${response.statusCode}");
+      print(response.body);
+      return false;
+    }
+    shootList.removeAt(index);
     shootNotifier.add(0);
+    return true;
+  }
+
+  static setSocialCounter(DoitSocialType type, DoitShootModel shoot, int index) async {
+    Map headers = <String, String>{
+      'Accept': 'application/json',
+    };
+    String url;
+    switch (type) {
+      case DoitSocialType.dislikeDown:
+        url = _dislikeDownUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+        break;
+      case DoitSocialType.likeDown:
+        url = _likeDownUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+        break;
+      case DoitSocialType.likeUp:
+        url = _likeUpUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+        break;
+      case DoitSocialType.dislikeUp:
+        url = _dislikeUpUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+        break;
+    }
+    var response = await http.put(
+      url,
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to social count: Code ${response.statusCode}");
+      print(response.body);
+      return false;
+    }
+    DoitShootModel newShoot = DoitShootModel.fromMap(jsonDecode(response.body));
+    newShoot.imageUrl = shootList[index].imageUrl;
+    shootList[index] = newShoot;
     return true;
   }
 
@@ -85,16 +154,17 @@ class DoitShootModel {
     this.shootId = 0,
     this.text,
     this.goalId,
-    this.timerElapsed = 0,
-    this.timerTarget = 0,
+    this.timerElapsed,
+    this.timerTarget,
+    this.imageUrl,
     @required this.shootName,
   });
-  final bool didILike;
-  final bool didIdislike;
+  bool didILike;
+  bool didIdislike;
   final DateTime shootDate;
   final bool overWorked;
-  final int numLike;
-  final int numDislike;
+  int numLike;
+  int numDislike;
   final DoitMember shooter;
   final String shootName;
   final int shootId;
@@ -102,6 +172,7 @@ class DoitShootModel {
   final int goalId;
   final int timerTarget;
   final int timerElapsed;
+  String imageUrl;
 
   Map<String, dynamic> toJsonToShoot() => {
         'baseTime': timerTarget,
@@ -136,8 +207,8 @@ class DoitShootModel {
       overWorked: shoot['exceeded'],
       didIdislike: map['likeBoolean'],
       didILike: map['unLikeBoolean'],
-      timerTarget: times != null ? int.parse(times[1]) : 0,
-      timerElapsed: times != null ? int.parse(times[0]) : 0,
+      timerTarget: times != null ? int.parse(times[1]) : null,
+      timerElapsed: times != null ? int.parse(times[0]) : null,
       text: text,
     );
   }

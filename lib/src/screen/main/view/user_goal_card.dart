@@ -63,13 +63,17 @@ class UserGoalCard extends StatelessWidget {
     return GestureDetector(
       onTap: () async {
         if (isStarted(goal)) {
-          Navigator.of(context).push(
+          int tabIndex = await Navigator.of(context).push(
             MaterialPageRoute(
               builder: (context) => DoitTimeline(
                 goal: goal,
               ),
             ),
           );
+          print('goto $tabIndex');
+          if (tabIndex != null) DefaultTabController.of(context).animateTo(tabIndex);
+        } else {
+          DefaultTabController.of(context).animateTo(1);
         }
       },
       child: DoitMainCard(

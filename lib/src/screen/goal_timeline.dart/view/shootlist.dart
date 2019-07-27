@@ -17,7 +17,8 @@ class DoitTimelineShootList extends StatefulWidget {
   _DoitTimelineShootListState createState() => _DoitTimelineShootListState();
 }
 
-class _DoitTimelineShootListState extends State<DoitTimelineShootList> with SingleTickerProviderStateMixin {
+class _DoitTimelineShootListState extends State<DoitTimelineShootList>
+    with SingleTickerProviderStateMixin {
   double height = 120.0;
   AnimationController _animationController;
   Animation<Offset> _offsetAnimation;
@@ -59,41 +60,33 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList> with Sing
         } else {
           _animationController.fling(velocity: -1.0);
         }
-
-        setState(() {
-          height -= velocity;
-          if (height < 120) height = 120;
-          if (height > maxHeight) height = maxHeight;
-        });
       },
       onVerticalDragEnd: (dragInfo) {},
       behavior: HitTestBehavior.deferToChild,
-      child: SafeArea(
-        child: SlideTransition(
-          position: _offsetAnimation,
-          child: Container(
-            height: maxHeight,
-            margin: EdgeInsets.only(top: 80),
-            padding: EdgeInsets.only(bottom: 20.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(10.0),
-                  topRight: Radius.circular(
-                    10.0,
-                  )),
-              color: Color(0xff222222),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                DoitShootlistTopTouchArea(animationController: _animationController),
-                Expanded(
-                  child: ShootlistView(
-                    goal: widget.goal,
-                  ),
+      child: SlideTransition(
+        position: _offsetAnimation,
+        child: Container(
+          height: maxHeight,
+          margin: EdgeInsets.only(top: 102),
+          padding: EdgeInsets.only(bottom: 20.0),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(10.0),
+                topRight: Radius.circular(
+                  10.0,
+                )),
+            color: Color(0xff222222),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              DoitShootlistTopTouchArea(animationController: _animationController),
+              Expanded(
+                child: ShootlistView(
+                  goal: widget.goal,
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:do_it/src/color/swatch.dart';
 import 'package:do_it/src/common_view/doit_bottom_widget.dart';
 import 'package:do_it/src/screen/goal_timeline.dart/view/shootlist.dart';
 import 'package:do_it/src/screen/goal_timeline.dart/view/timeline_backdrop.dart';
@@ -16,7 +17,46 @@ class DoitTimeline extends StatelessWidget {
       floatingActionButton: DoitFloatingActionButton(
         goal: goal,
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        elevation: 0.0,
+        notchMargin: 8.0,
+        child: Container(
+          height: 65.0,
+          decoration: BoxDecoration(
+            color: doitMainSwatch,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  print("Tap to home");
+                  Navigator.of(context).pop(0);
+                },
+                behavior: HitTestBehavior.translucent,
+                child: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                  size: 23.0,
+                ),
+              ),
+              GestureDetector(
+                behavior: HitTestBehavior.translucent,
+                onTap: () {
+                  print("Tap to profile");
+                  Navigator.of(context).pop(1);
+                },
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 23.0,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Stack(
         fit: StackFit.loose,
         children: <Widget>[

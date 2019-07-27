@@ -106,7 +106,18 @@ class _DoitShootPostState extends State<DoitShootPost> {
                 alignment: Alignment(0.0, (120) / height),
                 child: Text(
                   getTimeFromDuration(widget.timer.elapsed),
-                  style: TextStyle(fontFamily: 'Roboto', fontSize: 30.0, color: Colors.white),
+                  style: TextStyle(
+                    fontFamily: 'Roboto',
+                    fontSize: 30.0,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        blurRadius: 1.0,
+                        offset: Offset(0.0, 2.0),
+                        color: Color(0x19000000),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             Align(
@@ -246,6 +257,13 @@ class DoitPostTextField extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                   fontSize: 18.0,
                   color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      blurRadius: 1.0,
+                      offset: Offset(0.0, 2.0),
+                      color: Color(0x19000000),
+                    ),
+                  ],
                 ),
                 keyboardType: TextInputType.multiline,
                 decoration: InputDecoration(
