@@ -45,7 +45,6 @@ class _DoitHomeState extends State<DoitHome> {
                 child: RefreshProgressIndicator(),
               );
             } else {
-              DateTime now = DateTime.now();
               List<DoitGoalModel> inProgressGoals = DoitGoalService.goalList
                   .where(
                     (goal) => !isEnded(goal),
@@ -89,19 +88,43 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
     this.topPadding,
     Key key,
   }) : super(key: key);
-
   final double topPadding;
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(30.0, 74.0, 30.0, 0.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            "Do it",
-            style: Theme.of(context).appBarTheme.textTheme.title.copyWith(fontSize: 30.0),
+          Image.asset('assets/images/img_logo_wh.png'),
+          SizedBox(height: 15.0),
+          RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: '오늘 할 일을 미루지 말고, ',
+                  style: const TextStyle(
+                    color: Color(0xff9b9b9b),
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "SpoqaHanSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 14.0,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+                TextSpan(
+                  text: '두잇',
+                  style: const TextStyle(
+                    color: Color(0xffffffff),
+                    fontWeight: FontWeight.w400,
+                    fontFamily: "SpoqaHanSans",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 14.0,
+                    letterSpacing: -0.2,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -109,5 +132,5 @@ class DoitMainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(110.0);
+  Size get preferredSize => Size.fromHeight(115.0);
 }

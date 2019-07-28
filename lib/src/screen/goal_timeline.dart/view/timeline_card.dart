@@ -61,7 +61,8 @@ class DoitTimelineCard extends StatelessWidget {
                 linearStrokeCap: LinearStrokeCap.roundAll,
                 progressColor: Color(0xffffffff),
                 backgroundColor: Colors.white.withOpacity(0.15),
-                percent: member.progressRate / 100.0 > 1.0 ? 1.0 : member.progressRate / 100.0,
+                percent:
+                    (member.progressRate ?? 0) / 100.0 > 1.0 ? 1.0 : member.progressRate / 100.0,
               ),
             ],
           ),

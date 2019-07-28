@@ -179,6 +179,7 @@ class DoitGoalModel {
     this.progressRate,
     this.memberCount,
     this.createMid,
+    this.isMine,
   });
   final int goalId;
   final String goalName;
@@ -193,22 +194,29 @@ class DoitGoalModel {
   final int progressRate;
   final int memberCount;
   final int createMid;
+  final bool isMine;
 
-  factory DoitGoalModel.fromMap(Map map) => DoitGoalModel(
-        categoryName: map['category'],
-        endDate:
-            DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000 + 100)),
-        startDate: DateTime.fromMillisecondsSinceEpoch(
-            map['epochStartDate'] * (60 * 60 * 24 * 1000 + 100)),
-        goalId: map['gid'],
-        goalName: map['goalName'],
-        penalty: map['penalty'],
-        repeatDays: map['progressCheckCount'],
-        repeatType: getReapeatTypeFromIndex(map['progressCheckType']['pctId']),
-        progressRate: map['progressRate'],
-        goalColor: map['themeColor'],
-        useTimer: map['timerCheck'],
-      );
+  factory DoitGoalModel.fromMap(Map goalMap) {
+    Map map = goalMap['goal'];
+    bool isMine = goalMap['host'];
+
+    return DoitGoalModel(
+      categoryName: map['category'],
+      endDate:
+          DateTime.fromMillisecondsSinceEpoch(map['epochEndDate'] * (60 * 60 * 24 * 1000 + 100)),
+      startDate:
+          DateTime.fromMillisecondsSinceEpoch(map['epochStartDate'] * (60 * 60 * 24 * 1000 + 100)),
+      goalId: map['gid'],
+      goalName: map['goalName'],
+      penalty: map['penalty'],
+      repeatDays: map['progressCheckCount'],
+      repeatType: getReapeatTypeFromIndex(map['progressCheckType']['pctId']),
+      progressRate: map['progressRate'],
+      goalColor: map['themeColor'],
+      useTimer: map['timerCheck'],
+      isMine: isMine,
+    );
+  }
 
   Map<String, dynamic> toJsonForServerWithMid(int memberId) => {
         'category': categoryName,

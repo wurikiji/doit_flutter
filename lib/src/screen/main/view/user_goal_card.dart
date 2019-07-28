@@ -385,11 +385,14 @@ class CardTitleBar extends StatelessWidget {
                       inviteToGoal(context, goal);
                     },
                   ),
-                  CupertinoActionSheetAction(
-                    onPressed: () {},
-                    child: Text("Goal 삭제하기"),
-                    isDestructiveAction: true,
-                  ),
+                  if (goal.isMine)
+                    CupertinoActionSheetAction(
+                      onPressed: () {
+                        /// TODO 골 삭제하는 API 연동하기
+                      },
+                      child: Text("Goal 삭제하기"),
+                      isDestructiveAction: true,
+                    ),
                 ],
                 cancelButton: CupertinoActionSheetAction(
                   onPressed: () {

@@ -9,7 +9,7 @@ class MakeGoalAppBar extends AppBar {
   MakeGoalAppBar({Key key})
       : super(
           key: key,
-          title: Text("Make Goal"),
+          title: Text("Make a goal"),
           centerTitle: true,
           elevation: 0.0,
           leading: MakeGoalBackButton(),

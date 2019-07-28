@@ -88,6 +88,7 @@ class DoitFinishedGoalProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double percent = (goal.progressRate ?? 0) / 100 > 1.0 ? 1.0 : (goal.progressRate ?? 0) / 100;
     return Row(
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.start,
@@ -104,7 +105,7 @@ class DoitFinishedGoalProgress extends StatelessWidget {
             linearStrokeCap: LinearStrokeCap.roundAll,
             progressColor: Color(0xffccccc0),
             backgroundColor: Color(0x33ffffff),
-            percent: goal.progressRate / 100,
+            percent: percent,
           ),
         ),
         SizedBox(width: 12.5),
