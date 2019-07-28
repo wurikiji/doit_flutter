@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:ui';
-import 'dart:ui' as prefix0;
 
 import 'package:do_it/src/screen/main/view/user_goal_card.dart';
 import 'package:do_it/src/screen/make_goal/view/scond_page/project_color.dart';
@@ -11,10 +10,8 @@ import 'package:do_it/src/service/api/user_service.dart';
 import 'package:do_it/src/service/date_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix1;
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:photo_manager/photo_manager.dart';
 
 enum DoitShootPostStatus { create, edit, view }
@@ -76,7 +73,7 @@ class _DoitShootPostState extends State<DoitShootPost> {
         return false;
       },
       child: Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[

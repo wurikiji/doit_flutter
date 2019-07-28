@@ -72,8 +72,6 @@ class UserGoalCard extends StatelessWidget {
           );
           print('goto $tabIndex');
           if (tabIndex != null) DefaultTabController.of(context).animateTo(tabIndex);
-        } else {
-          DefaultTabController.of(context).animateTo(1);
         }
       },
       child: DoitMainCard(

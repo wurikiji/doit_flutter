@@ -19,7 +19,6 @@ class DoitTimelineShootList extends StatefulWidget {
 
 class _DoitTimelineShootListState extends State<DoitTimelineShootList>
     with SingleTickerProviderStateMixin {
-  double height = 120.0;
   AnimationController _animationController;
   Animation<Offset> _offsetAnimation;
 
@@ -31,7 +30,7 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList>
       duration: Duration(milliseconds: 300),
     );
     _offsetAnimation = Tween<Offset>(
-      begin: Offset(0, 0.73),
+      begin: Offset(0, 0.78),
       end: Offset(0, 0),
     ).animate(
       _animationController.drive(
@@ -55,7 +54,6 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList>
       onVerticalDragUpdate: (dragInfo) {
         double velocity = dragInfo.delta.dy;
         if (velocity < 0) {
-          _animationController.reset();
           _animationController.fling();
         } else {
           _animationController.fling(velocity: -1.0);
@@ -68,7 +66,6 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList>
         child: Container(
           height: maxHeight,
           margin: EdgeInsets.only(top: 102),
-          padding: EdgeInsets.only(bottom: 20.0),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(10.0),

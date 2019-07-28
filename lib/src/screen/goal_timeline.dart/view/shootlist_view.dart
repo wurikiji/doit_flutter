@@ -56,22 +56,18 @@ class _ShootlistViewState extends State<ShootlistView> {
               ),
             );
           }
-          return Padding(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                await DoitShootService.getShoots(widget.goal);
+          return RefreshIndicator(
+            onRefresh: () async {
+              await DoitShootService.getShoots(widget.goal);
+            },
+            child: ListView.builder(
+              itemCount: DoitShootService.shootList.length,
+              itemBuilder: (context, index) {
+                return DoitShootCard(
+                  shoot: DoitShootService.shootList[index],
+                  index: index,
+                );
               },
-              child: ListView.separated(
-                separatorBuilder: (context, index) => SizedBox(height: 16.0),
-                itemCount: DoitShootService.shootList.length,
-                itemBuilder: (context, index) {
-                  return DoitShootCard(
-                    shoot: DoitShootService.shootList[index],
-                    index: index,
-                  );
-                },
-              ),
             ),
           );
         }
@@ -114,6 +110,7 @@ class _DoitShootCardState extends State<DoitShootCard> {
           shoot: widget.shoot,
           index: widget.index,
         ),
+        SizedBox(height: 16.0),
       ],
     );
   }
@@ -394,14 +391,14 @@ class DoitShootPostBody extends StatefulWidget {
 class _DoitShootPostBodyState extends State<DoitShootPostBody> {
   @override
   Widget build(BuildContext context) {
-    final Random random = Random();
+    final int goalColor = widget.shoot.shootId % projectColors.length;
     return Screenshot(
       controller: widget.screenshotController,
       child: Container(
         height: 270.0,
         child: Container(
           decoration: BoxDecoration(
-            gradient: widget.shoot.imageUrl == null ? projectColors[random.nextInt(7)] : null,
+            gradient: widget.shoot.imageUrl == null ? projectColors[goalColor] : null,
             image: widget.shoot.imageUrl != null
                 ? DecorationImage(
                     image: CachedNetworkImageProvider(

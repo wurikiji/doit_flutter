@@ -19,7 +19,7 @@ class DoitTimelineBackdrop extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+      padding: EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 60.0),
       decoration: BoxDecoration(
         gradient: projectColors[getProjectColorIndex(goal.goalColor)],
       ),

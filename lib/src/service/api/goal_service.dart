@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:do_it/src/screen/main/doit_main.dart' as prefix0;
 import 'package:do_it/src/service/api/user_service.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
