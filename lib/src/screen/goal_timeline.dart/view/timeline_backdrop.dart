@@ -27,9 +27,9 @@ class DoitTimelineBackdrop extends StatelessWidget {
         child: Column(
           children: <Widget>[
             DoitTimeLineAppBar(goal: goal),
-            SizedBox(height: 30.0),
+            SizedBox(height: 10.0),
             DoitTimelineMainTitle(goal: goal),
-            SizedBox(height: 30.0),
+            SizedBox(height: 20.0),
             DoitTimelineInfo(goal: goal),
             SizedBox(height: 20.0),
             Expanded(

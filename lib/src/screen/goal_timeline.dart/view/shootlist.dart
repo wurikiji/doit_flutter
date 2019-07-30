@@ -17,54 +17,57 @@ class DoitTimelineShootList extends StatefulWidget {
   _DoitTimelineShootListState createState() => _DoitTimelineShootListState();
 }
 
-class _DoitTimelineShootListState extends State<DoitTimelineShootList>
-    with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation<Offset> _offsetAnimation;
+const double minHeight = 60.0;
+
+class _DoitTimelineShootListState extends State<DoitTimelineShootList> {
+  double height = minHeight;
 
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-    _offsetAnimation = Tween<Offset>(
-      begin: Offset(0, 0.78),
-      end: Offset(0, 0),
-    ).animate(
-      _animationController.drive(
-        CurveTween(
-          curve: Curves.easeIn,
-        ),
-      ),
-    );
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
     super.dispose();
+  }
+
+  _handleDrag(DragUpdateDetails dragInfo) async {
+    final double velocity = dragInfo.delta.dy;
+    double targetHeight;
+    if (velocity < 0) {
+      targetHeight = MediaQuery.of(context).size.height;
+    } else {
+      targetHeight = minHeight;
+    }
+    setState(() {
+      height = targetHeight;
+    });
+  }
+
+  _handleTouch() async {
+    double targetHeight;
+    if (height > 70.0) {
+      targetHeight = minHeight;
+    } else {
+      targetHeight = MediaQuery.of(context).size.height;
+    }
+    setState(() {
+      height = targetHeight;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    double maxHeight = MediaQuery.of(context).size.height;
-    return GestureDetector(
-      onVerticalDragUpdate: (dragInfo) {
-        double velocity = dragInfo.delta.dy;
-        if (velocity < 0) {
-          _animationController.fling();
-        } else {
-          _animationController.fling(velocity: -1.0);
-        }
-      },
-      onVerticalDragEnd: (dragInfo) {},
-      behavior: HitTestBehavior.deferToChild,
-      child: SlideTransition(
-        position: _offsetAnimation,
-        child: Container(
-          height: maxHeight,
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: GestureDetector(
+        onVerticalDragUpdate: _handleDrag,
+        behavior: HitTestBehavior.deferToChild,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 300),
+          curve: Curves.easeOutExpo,
+          height: height,
           margin: EdgeInsets.only(top: 102),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.only(
@@ -77,7 +80,7 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList>
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              DoitShootlistTopTouchArea(animationController: _animationController),
+              DoitShootlistTopTouchArea(handleTouch: _handleTouch),
               Expanded(
                 child: ShootlistView(
                   goal: widget.goal,
@@ -94,23 +97,16 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList>
 class DoitShootlistTopTouchArea extends StatelessWidget {
   const DoitShootlistTopTouchArea({
     Key key,
-    @required AnimationController animationController,
-  })  : _animationController = animationController,
-        super(key: key);
+    @required this.handleTouch,
+  }) : super(key: key);
 
-  final AnimationController _animationController;
+  final Function handleTouch;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () async {
-        if (_animationController.value > 0.5) {
-          _animationController.fling(velocity: -1.0);
-        } else {
-          _animationController.fling();
-        }
-      },
+      onTap: handleTouch,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 33.0, top: 8.0),
         child: Center(

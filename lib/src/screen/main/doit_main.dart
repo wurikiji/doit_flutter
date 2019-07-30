@@ -50,6 +50,9 @@ class _DoitHomeState extends State<DoitHome> {
                     (goal) => !isEnded(goal),
                   )
                   .toList();
+              // inProgressGoals.sort(
+              //   (goal1, goal2) => goal2.date.difference(shoot1.shootDate).inMilliseconds,
+              // );
               return Center(
                 child: inProgressGoals.isEmpty
                     ? EmptyGoalCard()

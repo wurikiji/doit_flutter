@@ -40,7 +40,7 @@ class _DoitTimelineRankingState extends State<DoitTimelineRanking> {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: EdgeInsets.only(top: 20.0),
+      padding: EdgeInsets.only(top: 00.0),
       itemCount: rankings?.length ?? 0,
       itemBuilder: (context, index) => rankings[index],
       separatorBuilder: (context, index) => Divider(

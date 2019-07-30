@@ -370,38 +370,40 @@ class CardTitleBar extends StatelessWidget {
           goal.goalName,
           style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 24.0),
         ),
-        GestureDetector(
-          child: Image.asset('assets/images/btn_more_n.png'),
-          onTap: () async {
-            await showCupertinoModalPopup(
-              context: context,
-              builder: (context) => CupertinoActionSheet(
-                actions: <Widget>[
-                  CupertinoActionSheetAction(
-                    child: Text("친구 초대 링크 보내기"),
+        if (!isStarted(goal) || goal.isMine)
+          GestureDetector(
+            child: Image.asset('assets/images/btn_more_n.png'),
+            onTap: () async {
+              await showCupertinoModalPopup(
+                context: context,
+                builder: (context) => CupertinoActionSheet(
+                  actions: <Widget>[
+                    if (!isStarted(goal))
+                      CupertinoActionSheetAction(
+                        child: Text("친구 초대 링크 보내기"),
+                        onPressed: () {
+                          inviteToGoal(context, goal);
+                        },
+                      ),
+                    if (goal.isMine)
+                      CupertinoActionSheetAction(
+                        onPressed: () {
+                          /// TODO 골 삭제하는 API 연동하기
+                        },
+                        child: Text("Goal 삭제하기"),
+                        isDestructiveAction: true,
+                      ),
+                  ],
+                  cancelButton: CupertinoActionSheetAction(
                     onPressed: () {
-                      inviteToGoal(context, goal);
+                      Navigator.of(context).pop();
                     },
+                    child: Text("취소"),
                   ),
-                  if (goal.isMine)
-                    CupertinoActionSheetAction(
-                      onPressed: () {
-                        /// TODO 골 삭제하는 API 연동하기
-                      },
-                      child: Text("Goal 삭제하기"),
-                      isDestructiveAction: true,
-                    ),
-                ],
-                cancelButton: CupertinoActionSheetAction(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  child: Text("취소"),
                 ),
-              ),
-            );
-          },
-        ),
+              );
+            },
+          ),
       ],
     );
   }

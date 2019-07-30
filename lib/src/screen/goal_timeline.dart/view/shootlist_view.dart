@@ -44,6 +44,9 @@ class _ShootlistViewState extends State<ShootlistView> {
     return StreamBuilder(
       stream: DoitShootService.shootNotifier.stream,
       builder: (context, snapshot) {
+        DoitShootService.shootList.sort(
+          (shoot1, shoot2) => shoot2.shootDate.difference(shoot1.shootDate).inMilliseconds,
+        );
         if (!snapshot.hasData) {
           return Center(
             child: RefreshProgressIndicator(),
@@ -143,30 +146,20 @@ class _DoitPostSocialBarState extends State<DoitPostSocialBar> {
             print("mid: ${DoitUserAPI.memberInfo.memberId}, sid: ${widget.shoot.shootId}");
             setState(() {
               if (widget.shoot.didILike) {
-                widget.shoot.numLike--;
+                // widget.shoot.numLike--;
                 DoitShootService.setSocialCounter(
                   DoitSocialType.likeDown,
                   widget.shoot,
                   widget.index,
                 );
               } else {
-                widget.shoot.numLike++;
+                // widget.shoot.numLike++;
                 DoitShootService.setSocialCounter(
                   DoitSocialType.likeUp,
                   widget.shoot,
                   widget.index,
                 );
-                if (widget.shoot.didIdislike) {
-                  DoitShootService.setSocialCounter(
-                    DoitSocialType.dislikeDown,
-                    widget.shoot,
-                    widget.index,
-                  );
-                  widget.shoot.numDislike--;
-                  widget.shoot.didIdislike = false;
-                }
               }
-              widget.shoot.didILike = !widget.shoot.didILike;
             });
           },
           child: Row(
@@ -195,30 +188,21 @@ class _DoitPostSocialBarState extends State<DoitPostSocialBar> {
           onTap: () {
             setState(() {
               if (widget.shoot.didIdislike) {
-                widget.shoot.numDislike--;
+                // widget.shoot.numDislike--;
                 DoitShootService.setSocialCounter(
                   DoitSocialType.dislikeDown,
                   widget.shoot,
                   widget.index,
                 );
               } else {
-                widget.shoot.numDislike++;
+                // widget.shoot.numDislike++;
                 DoitShootService.setSocialCounter(
                   DoitSocialType.dislikeUp,
                   widget.shoot,
                   widget.index,
                 );
-                if (widget.shoot.didILike) {
-                  widget.shoot.numLike--;
-                  DoitShootService.setSocialCounter(
-                    DoitSocialType.likeDown,
-                    widget.shoot,
-                    widget.index,
-                  );
-                  widget.shoot.didILike = false;
-                }
               }
-              widget.shoot.didIdislike = !widget.shoot.didIdislike;
+              // widget.shoot.didIdislike = !widget.shoot.didIdislike;
             });
           },
           child: Row(

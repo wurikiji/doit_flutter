@@ -61,10 +61,7 @@ class DoitTimeline extends StatelessWidget {
         fit: StackFit.loose,
         children: <Widget>[
           DoitTimelineBackdrop(goal: goal),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: DoitTimelineShootList(goal: goal),
-          ),
+          DoitTimelineShootList(goal: goal),
         ],
       ),
     );

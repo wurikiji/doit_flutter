@@ -57,9 +57,9 @@ class DoitShootService {
       'unLikeBoolean': false,
     });
     if (image != null) {}
-    getShoots(DoitGoalModel(goalId: shoot.goalId));
-    // shootList.add(newShoot);
-    // shootNotifier.add(0);
+    // getShoots(DoitGoalModel(goalId: shoot.goalId));
+    shootList.add(newShoot);
+    shootNotifier.add(0);
     return true;
   }
 
@@ -81,11 +81,27 @@ class DoitShootService {
     return true;
   }
 
-  static setSocialCounter(DoitSocialType type, DoitShootModel shoot, int index) async {
+  static _putSocialCountToServer(int shootId, String url) async {
     Map headers = <String, String>{
       'Accept': 'application/json',
     };
+    var response = await http.put(
+      url,
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print(url);
+      print("[DOIT GOAL API] Failed to social count: Code ${response.statusCode}");
+      print(response.body);
+      return null;
+    }
+    return response.body;
+  }
+
+  static setSocialCounter(DoitSocialType type, DoitShootModel shoot, int index) async {
     String url;
+    DoitShootModel newShoot;
+    String result;
     switch (type) {
       case DoitSocialType.dislikeDown:
         url = _dislikeDownUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
@@ -100,18 +116,31 @@ class DoitShootService {
         url = _dislikeUpUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
         break;
     }
-    var response = await http.put(
-      url,
-      headers: headers,
-    );
-    if (response.statusCode != 201 && response.statusCode != 200) {
-      print("[DOIT GOAL API] Failed to social count: Code ${response.statusCode}");
-      print(response.body);
-      return false;
+    result = await _putSocialCountToServer(shoot.shootId, url);
+    switch (type) {
+      case DoitSocialType.dislikeDown:
+      case DoitSocialType.likeDown:
+        // 추가 작업이 필요 없음
+        break;
+      case DoitSocialType.likeUp:
+        if (shoot.didIdislike) {
+          url = _dislikeDownUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+          result = await _putSocialCountToServer(shoot.shootId, url);
+        }
+        break;
+      case DoitSocialType.dislikeUp:
+        if (shoot.didILike) {
+          url = _likeDownUrl(DoitUserAPI.memberInfo.memberId, shoot.shootId);
+          result = await _putSocialCountToServer(shoot.shootId, url);
+        }
+        break;
     }
-    DoitShootModel newShoot = DoitShootModel.fromMap(jsonDecode(response.body));
-    newShoot.imageUrl = shootList[index].imageUrl;
-    shootList[index] = newShoot;
+    if (result != null) {
+      newShoot = DoitShootModel.fromMap(jsonDecode(result));
+      newShoot.imageUrl = shootList[index].imageUrl;
+      shootList[index] = newShoot;
+      shootNotifier.add(0);
+    }
     return true;
   }
 
@@ -131,7 +160,6 @@ class DoitShootService {
       print(response.body);
       return false;
     }
-    print(response.body);
     List shoots = jsonDecode(response.body);
     shootList = shoots.map((map) => DoitShootModel.fromMap(map)).toList();
     if (shootList == null) {
@@ -205,8 +233,8 @@ class DoitShootModel {
       shooter: DoitMember.fromMap(shoot['maker']),
       shootDate: DateTime.fromMillisecondsSinceEpoch(shoot['epochDate'] * 60 * 60 * 24 * 1000),
       overWorked: shoot['exceeded'],
-      didIdislike: map['likeBoolean'],
-      didILike: map['unLikeBoolean'],
+      didIdislike: map['unLikeBoolean'],
+      didILike: map['likeBoolean'],
       timerTarget: times != null ? int.parse(times[1]) : null,
       timerElapsed: times != null ? int.parse(times[0]) : null,
       text: text,
