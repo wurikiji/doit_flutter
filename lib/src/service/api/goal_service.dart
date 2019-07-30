@@ -21,11 +21,11 @@ class DoitGoalService {
 
   static initialize() {
     notifyStream = StreamController<int>();
-    refreshTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
-      getGoalsFromServer(
-        null,
-      );
-    });
+    // refreshTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
+    //   getGoalsFromServer(
+    //     null,
+    //   );
+    // });
   }
 
   static dispose() {
