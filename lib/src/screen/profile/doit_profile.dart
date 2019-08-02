@@ -105,19 +105,41 @@ class DoitShowFinshedGoals extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool buttonClicked = false;
     return DoitProfileMenu(
       title: 'Goal',
       children: <Widget>[
-        GestureDetector(
-          onTap: () async {
-            await Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => DoitFinishedGoals(),
-              ),
-            );
-          },
-          child: Text("종료 된 Goal 보기", style: menuTextStyle),
-        ),
+        StatefulBuilder(builder: (context, setState) {
+          return GestureDetector(
+            onTap: () async {
+              await Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => DoitFinishedGoals(),
+                ),
+              );
+            },
+            onTapDown: (_) {
+              setState(() {
+                buttonClicked = true;
+              });
+            },
+            onTapUp: (_) {
+              setState(() {
+                buttonClicked = false;
+              });
+            },
+            onTapCancel: () {
+              setState(() {
+                buttonClicked = false;
+              });
+            },
+            child: AnimatedOpacity(
+              opacity: buttonClicked ? 0.6 : 1.0,
+              duration: Duration(milliseconds: 200),
+              child: Text("종료 된 Goal 보기", style: menuTextStyle),
+            ),
+          );
+        }),
       ],
     );
   }

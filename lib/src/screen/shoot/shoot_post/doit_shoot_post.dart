@@ -87,7 +87,8 @@ class _DoitShootPostState extends State<DoitShootPost> {
                 top: 79,
                 right: 20.0,
                 child: ProgressChip(
-                  title: ((widget.timer.elapsed.inSeconds / widget.timer.target.inSeconds) * 100)
+                  title: (((widget.timer.elapsed?.inSeconds ?? 0) / widget.timer.target.inSeconds) *
+                              100)
                           .toInt()
                           .toString() +
                       ' %',

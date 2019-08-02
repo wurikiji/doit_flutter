@@ -60,64 +60,85 @@ class UserGoalCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () async {
-        if (isStarted(goal)) {
-          int tabIndex = await Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => DoitTimeline(
-                goal: goal,
-              ),
-            ),
-          );
-          print('goto $tabIndex');
-          if (tabIndex != null) DefaultTabController.of(context).animateTo(tabIndex);
-        }
-      },
-      child: DoitMainCard(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 22.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              CardTitleBar(goal: goal),
-              CardGoalPeriod(goal: goal),
-              SizedBox(height: 10.0),
-              CardCategoryChip(goal: goal),
-              SizedBox(height: 20.0),
-              Container(
-                height: 190,
-                padding: const EdgeInsets.only(
-                  right: 10.0,
-                ),
-                child: CardProgressIndicator(
+    bool cardClicked = false;
+    return StatefulBuilder(builder: (context, setState) {
+      return GestureDetector(
+        onTapUp: (_) {
+          setState(() {
+            cardClicked = false;
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            cardClicked = false;
+          });
+        },
+        onTapDown: (_) {
+          setState(() {
+            cardClicked = true;
+          });
+        },
+        onTap: () async {
+          if (isStarted(goal)) {
+            int tabIndex = await Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => DoitTimeline(
                   goal: goal,
                 ),
               ),
-              SizedBox(height: 30.0),
-              if (!isStarted(goal))
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Center(child: CardInvitationButton(goal: goal)),
-                ),
-              if (isStarted(goal))
-                Padding(
-                  padding: const EdgeInsets.only(right: 10.0),
-                  child: Container(
-                    height: 20.0,
-                    child: DoitGoalMemberListBar(goal: goal),
+            );
+            if (tabIndex != null) DefaultTabController.of(context).animateTo(tabIndex);
+          }
+        },
+        child: AnimatedOpacity(
+          opacity: cardClicked ? 0.6 : 1.0,
+          duration: Duration(milliseconds: 100),
+          child: DoitMainCard(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20.0, 20.0, 10.0, 22.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  CardTitleBar(goal: goal),
+                  CardGoalPeriod(goal: goal),
+                  SizedBox(height: 10.0),
+                  CardCategoryChip(goal: goal),
+                  SizedBox(height: 20.0),
+                  Container(
+                    height: 190,
+                    padding: const EdgeInsets.only(
+                      right: 10.0,
+                    ),
+                    child: CardProgressIndicator(
+                      goal: goal,
+                    ),
                   ),
-                ),
-            ],
+                  SizedBox(height: 30.0),
+                  if (!isStarted(goal))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Center(child: CardInvitationButton(goal: goal)),
+                    ),
+                  if (isStarted(goal))
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        height: 20.0,
+                        child: DoitGoalMemberListBar(goal: goal),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: projectColors[getProjectColorIndex(goal.goalColor)].colors,
+            ),
           ),
         ),
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: projectColors[getProjectColorIndex(goal.goalColor)].colors,
-        ),
-      ),
-    );
+      );
+    });
   }
 }
 

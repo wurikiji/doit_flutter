@@ -74,7 +74,10 @@ class DoitGoalService {
       print(response.body);
       return false;
     }
-    goalList.add(DoitGoalModel.fromMap(jsonDecode(response.body)));
+    goalList.add(DoitGoalModel.fromMap({
+      'goal': jsonDecode(response.body),
+      'host': true,
+    }));
     notifyStream.add(0);
     return true;
   }
