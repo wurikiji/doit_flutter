@@ -116,7 +116,7 @@ class DoitLoginScreen extends StatelessWidget {
               color: Color(0xff333333),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4.0)),
               onPressed: () async {
-                final KakaoUserToken token = await KakaoUsersRestAPI.login(context);
+                final KakaoUserToken token = await KakaoUsersRestAPI.loginWithDifferentUser(context);
                 if (token != null) {
                   gotoDoitMain(context, token);
                 }
