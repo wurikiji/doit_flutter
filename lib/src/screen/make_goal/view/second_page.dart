@@ -172,39 +172,42 @@ class SuccessModal extends StatelessWidget {
                     vertical: 40.0,
                     horizontal: 55.0,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        "Success!",
-                        style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 30.0),
-                      ),
-                      SizedBox(height: 2.0),
-                      Text(
-                        '${title ?? '프로젝트'} 생성이 완료되었습니다.\n'
-                        '이제 두잇에서 목표를 이뤄보세요!',
-                        style: DoitMainTheme.makeGoalUserInputTextStyle.copyWith(fontSize: 14.0),
-                      ),
-                      Spacer(),
-                      RaisedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop(true);
-                        },
-                        shape: StadiumBorder(),
-                        color: Colors.white,
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 28.0,
-                          vertical: 15.0,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Success!",
+                          style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(fontSize: 30.0),
                         ),
-                        child: Text(
-                          "프로젝트 홈 가기",
-                          style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(
-                            fontSize: 14.0,
-                            color: Color(0xff222222),
+                        SizedBox(height: 2.0),
+                        Text(
+                          '${title ?? '프로젝트'} 생성이 완료되었습니다.\n'
+                          '이제 두잇에서 목표를 이뤄보세요!',
+                          style: DoitMainTheme.makeGoalUserInputTextStyle.copyWith(fontSize: 12.0),
+                          textAlign: TextAlign.center,
+                        ),
+                        Spacer(),
+                        RaisedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(true);
+                          },
+                          shape: StadiumBorder(),
+                          color: Colors.white,
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 28.0,
+                            vertical: 15.0,
+                          ),
+                          child: Text(
+                            "프로젝트 홈 가기",
+                            style: DoitMainTheme.makeGoalQuestionTitleStyle.copyWith(
+                              fontSize: 14.0,
+                              color: Color(0xff222222),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

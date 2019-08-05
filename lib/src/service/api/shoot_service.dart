@@ -231,7 +231,7 @@ class DoitShootModel {
       numLike: shoot['likeCount'],
       numDislike: shoot['unLikeCount'],
       shooter: DoitMember.fromMap(shoot['maker']),
-      shootDate: DateTime.fromMillisecondsSinceEpoch(shoot['epochDate'] * 60 * 60 * 24 * 1000),
+      shootDate: DateTime.fromMillisecondsSinceEpoch(shoot['epochDateTime'] * 1000),
       overWorked: shoot['exceeded'],
       didIdislike: map['unLikeBoolean'],
       didILike: map['likeBoolean'],

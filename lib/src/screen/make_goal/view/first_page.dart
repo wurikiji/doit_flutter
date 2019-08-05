@@ -63,11 +63,11 @@ class MakeGoalNextStepButton extends StatelessWidget {
       bloc: BlocProvider.of<FirstPageMakeGoalBloc>(context),
       builder: (context, FirstPageMakeGoalInfoSnapshot snapshot) {
         final bool didAnswerAll = snapshot?.goal?.isAllAnswered ?? false;
-        print(snapshot?.goal?.numOfGoalsSet);
         return GestureDetector(
           onTap: () {
             if (didAnswerAll) {
-              final MakeGoalNavigationBloc _makeGoalNavBloc = BlocProvider.of<MakeGoalNavigationBloc>(context);
+              final MakeGoalNavigationBloc _makeGoalNavBloc =
+                  BlocProvider.of<MakeGoalNavigationBloc>(context);
               _makeGoalNavBloc.dispatch(
                 MakeGoalNavigationEvent(
                   action: MakeGoalNavigationAction.goNext,

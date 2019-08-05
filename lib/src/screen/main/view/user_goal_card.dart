@@ -25,7 +25,7 @@ const buttonColors = <Color>[
   Color(0xffab20d0),
 ];
 
-void inviteToGoal(BuildContext context, DoitGoalModel goal) async {
+inviteToGoal(BuildContext context, DoitGoalModel goal) async {
   const List imageList = <String>[
     'https://dl.dropbox.com/s/8826i1rofclmgob/kakao_invitation_1.png',
     'https://dl.dropbox.com/s/y50hu91999v6my5/kakao_invitation_2.png',
@@ -402,14 +402,16 @@ class CardTitleBar extends StatelessWidget {
                     if (!isStarted(goal))
                       CupertinoActionSheetAction(
                         child: Text("친구 초대 링크 보내기"),
-                        onPressed: () {
-                          inviteToGoal(context, goal);
+                        onPressed: () async {
+                          await inviteToGoal(context, goal);
+                          Navigator.of(context).pop();
                         },
                       ),
                     if (goal.isMine)
                       CupertinoActionSheetAction(
-                        onPressed: () {
-                          /// TODO 골 삭제하는 API 연동하기
+                        onPressed: () async {
+                          await DoitGoalService.deleteGoal(goal);
+                          Navigator.of(context).pop();
                         },
                         child: Text("Goal 삭제하기"),
                         isDestructiveAction: true,

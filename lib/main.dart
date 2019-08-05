@@ -36,7 +36,43 @@ void main() async {
   runApp(DoIt());
 }
 
-class DoIt extends StatelessWidget {
+class DoIt extends StatefulWidget {
+  @override
+  _DoItState createState() => _DoItState();
+}
+
+class _DoItState extends State<DoIt> {
+  @override
+  void initState() {
+    super.initState();
+    initFirstDynamicLink();
+  }
+
+  initFirstDynamicLink() async {
+    final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
+
+    final Uri deeplink = data?.link;
+    if (deeplink != null) {
+      List<String> path = deeplink.path.split('/');
+      final int goalId = int.parse(path[3]);
+      final int joinId = int.parse(path[5]);
+      if (goalId != null && joinId != null) {
+        var result = await DoitGoalService.joinGoal(goalId, joinId);
+        if (result != null) {
+          await showDialog(
+            context: context,
+            barrierDismissible: true,
+            builder: (context) {
+              return SuccessModal(
+                title: result.goalName,
+              );
+            },
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider<FirebaseMessaging>.value(
@@ -122,7 +158,6 @@ class _DoitMainState extends State<DoitMain> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      print('[[[]]][][][]State is $state');
       // initDynamicLinks();
     }
   }
@@ -135,20 +170,6 @@ class _DoitMainState extends State<DoitMain> with WidgetsBindingObserver {
   }
 
   initDynamicLinks() async {
-    // final PendingDynamicLinkData data = await FirebaseDynamicLinks.instance.getInitialLink();
-
-    // final Uri deeplink = data?.link;
-    // print('[[[[[[[[[[[[[[[[[hhhhh]]]]]]]]]]]]]]]: $data');
-    // if (deeplink != null) {
-    //   final Map query = deeplink.queryParameters;
-    //   final int goalId = int.parse(query['goalId']);
-    //   final int joinId = int.parse(query['joinId']);
-    //   print('[[[[[[[[[[[[[[[[[hhhhh22]]]]]]]]]]]]]]]: ${deeplink.queryParameters}');
-    //   if (goalId != null && joinId != null) {
-    //     var result = await DoitGoalService.joinGoal(goalId, joinId);
-    //     print('[[[[[[[[[[[[[[]]]]]]]]]]]]]]]$goalId, $joinId result: $result');
-    //   }
-    // }
     FirebaseDynamicLinks.instance.onLink(
       onSuccess: (PendingDynamicLinkData dynamiclink) async {
         final Uri link = dynamiclink.link;
@@ -157,8 +178,6 @@ class _DoitMainState extends State<DoitMain> with WidgetsBindingObserver {
           List<String> path = link.path.split('/');
           int goalId = int.parse(path[3]);
           int joinId = int.parse(path[5]);
-
-          print(path);
           if (goalId != null && joinId != null) {
             var result = await DoitGoalService.joinGoal(goalId, joinId);
             if (result != null) {

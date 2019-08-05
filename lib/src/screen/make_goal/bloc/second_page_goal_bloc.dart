@@ -66,7 +66,6 @@ class MakeGoalSecondPageBloc extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecon
         nextModel = nextModel.copyWith(repeatType: event.data, workCycle: 0);
         break;
     }
-    print('${nextModel.repeatType}-${nextModel.workCycle} : ${nextModel.penalty}');
     makeGoalBloc.dispatch(
       MakeGoalEvent(
         action: MakeGoalAction.setSecondPageGoal,
@@ -79,5 +78,6 @@ class MakeGoalSecondPageBloc extends Bloc<MakeGoalSecondPageEvent, MakeGoalSecon
     );
   }
 
-  static MakeGoalSecondPageBloc getBloc(BuildContext context) => BlocProvider.of<MakeGoalSecondPageBloc>(context);
+  static MakeGoalSecondPageBloc getBloc(BuildContext context) =>
+      BlocProvider.of<MakeGoalSecondPageBloc>(context);
 }

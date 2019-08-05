@@ -14,6 +14,7 @@ class DoitGoalService {
   static String _createCreateInvitationLinkUrl(int mid, int gid) =>
       'http://13.125.252.156:8080/api/goal/invite/from/$mid/goal/$gid';
   static String _joinGaolUrl() => 'http://13.125.252.156:8080/api/goal/participate/';
+  static String _deleteGoalUrl(int gid) => 'http://13.125.252.156:8080/api/goal/$gid';
 
   static StreamController<int> notifyStream;
   static List<DoitGoalModel> goalList = <DoitGoalModel>[];
@@ -21,11 +22,6 @@ class DoitGoalService {
 
   static initialize() {
     notifyStream = StreamController<int>();
-    // refreshTimer = Timer.periodic(Duration(seconds: 15), (timer) async {
-    //   getGoalsFromServer(
-    //     null,
-    //   );
-    // });
   }
 
   static dispose() {
@@ -79,6 +75,23 @@ class DoitGoalService {
       'host': true,
     }));
     notifyStream.add(0);
+    return true;
+  }
+
+  static Future<bool> deleteGoal(DoitGoalModel goal) async {
+    Map headers = <String, String>{
+      'Accept': 'text/plain',
+    };
+    var response = await http.delete(
+      _deleteGoalUrl(goal.goalId),
+      headers: headers,
+    );
+    if (response.statusCode != 201 && response.statusCode != 200) {
+      print("[DOIT GOAL API] Failed to delete goal: Code ${response.statusCode}");
+      print(response.body);
+      return false;
+    }
+    getGoalsFromServer(null);
     return true;
   }
 
@@ -149,11 +162,11 @@ class DoitGoalService {
       ),
     );
     if (response.statusCode != 201 && response.statusCode != 200) {
-      print("[DOIT GOAL API] Failed to create invitation link: Code ${response.statusCode}");
+      print("[DOIT GOAL API] Failed to join invitation link: Code ${response.statusCode}");
       print(response.body);
       return null;
     }
-    DoitGoalModel goal = DoitGoalModel.fromMap(jsonDecode(response.body)['goal']);
+    DoitGoalModel goal = DoitGoalModel.fromMap(jsonDecode(response.body));
     goalList.add(goal);
     notifyStream.add(0);
     return goal;
@@ -223,8 +236,8 @@ class DoitGoalModel {
   Map<String, dynamic> toJsonForServerWithMid(int memberId) => {
         'category': categoryName,
         'color': goalColor,
-        'endDate': endDate.millisecondsSinceEpoch ~/ (60 * 60 * 24 * 1000),
-        'startDate': startDate.millisecondsSinceEpoch ~/ (60 * 60 * 24 * 1000),
+        'endDate': (endDate.millisecondsSinceEpoch + 1000) ~/ (60 * 60 * 24 * 1000),
+        'startDate': (startDate.millisecondsSinceEpoch + 1000) ~/ (60 * 60 * 24 * 1000),
         'memberCount': memberCount,
         'mid': memberId,
         'name': goalName,

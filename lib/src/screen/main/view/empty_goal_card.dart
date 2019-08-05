@@ -34,7 +34,6 @@ class EmptyGoalCard extends StatelessWidget {
           await DoitGoalService.createGoal(
             DoitGoalModel(
               categoryName: CategoryService.getCategoryName(model.firstPage.category),
-              endDate: model.firstPage.endDate,
               goalColor: getColorsString(projectColors[model.secondPage.colorIndex].colors),
               goalId: null,
               goalName: model.firstPage.goalTitle,
@@ -43,7 +42,8 @@ class EmptyGoalCard extends StatelessWidget {
               progressRate: null,
               repeatType: model.secondPage.repeatType,
               repeatDays: model.secondPage.workCycle,
-              startDate: model.firstPage.startDate,
+              startDate: model.firstPage.startDate.add(Duration(hours: 12)),
+              endDate: model.firstPage.endDate.add(Duration(hours: 12)),
               useTimer: model.firstPage.useTimer,
             ),
           );

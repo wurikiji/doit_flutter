@@ -38,6 +38,8 @@ class _DefineTitleState extends State<DefineTitle> {
               hintStyle: DoitMainTheme.makeGoalHintTextStyle,
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
             ),
+            autocorrect: false,
+            maxLength: 15,
             textAlign: TextAlign.center,
             maxLines: 1,
             style: DoitMainTheme.makeGoalUserInputTextStyle,

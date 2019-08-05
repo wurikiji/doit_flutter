@@ -59,34 +59,44 @@ class _DoitTimelineShootListState extends State<DoitTimelineShootList> {
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: GestureDetector(
-        onVerticalDragUpdate: _handleDrag,
-        behavior: HitTestBehavior.deferToChild,
-        child: AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          curve: Curves.easeOutExpo,
-          height: height,
-          margin: EdgeInsets.only(top: 102),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10.0),
-                topRight: Radius.circular(
-                  10.0,
-                )),
-            color: Color(0xff222222),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              DoitShootlistTopTouchArea(handleTouch: _handleTouch),
-              Expanded(
-                child: ShootlistView(
-                  goal: widget.goal,
+    return WillPopScope(
+      onWillPop: () async {
+        if (height == minHeight) {
+          return true;
+        } else {
+          _handleTouch();
+          return false;
+        }
+      },
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: GestureDetector(
+          onVerticalDragUpdate: _handleDrag,
+          behavior: HitTestBehavior.deferToChild,
+          child: AnimatedContainer(
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOutExpo,
+            height: height,
+            margin: EdgeInsets.only(top: 102),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10.0),
+                  topRight: Radius.circular(
+                    10.0,
+                  )),
+              color: Color(0xff222222),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                DoitShootlistTopTouchArea(handleTouch: _handleTouch),
+                Expanded(
+                  child: ShootlistView(
+                    goal: widget.goal,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

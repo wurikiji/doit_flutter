@@ -13,8 +13,6 @@ class HowManyTimes extends StatefulWidget {
   _HowManyTimesState createState() => _HowManyTimesState();
 }
 
-enum _AdditionalQuestion { daysPerWeek, everyWeekDays, none }
-
 class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderStateMixin {
   DoitGoalRepeatType additionalQuestionIndex = DoitGoalRepeatType.invalid;
   AnimationController animationController;
@@ -38,9 +36,9 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     final String groupKey = 'howManyTimes';
     MakeGoalSecondPageBloc _bloc = MakeGoalSecondPageBloc.getBloc(context);
-    DoitGoalRepeatType repeatType = _bloc.currentState.data.repeatType ?? DoitGoalRepeatType.invalid;
+    DoitGoalRepeatType repeatType =
+        _bloc.currentState.data.repeatType ?? DoitGoalRepeatType.invalid;
     additionalQuestionIndex = repeatType;
-    print(repeatType);
     return QuestionScaffold(
       title: '어떻게 진행할까요?',
       body: Column(
@@ -98,7 +96,9 @@ class _HowManyTimesState extends State<HowManyTimes> with SingleTickerProviderSt
                   child: Column(
                     children: <Widget>[
                       SizedBox(height: 20.0),
-                      additionalQuestionIndex == DoitGoalRepeatType.perWeek ? DaysPerWeek() : EveryWeekdays(),
+                      additionalQuestionIndex == DoitGoalRepeatType.perWeek
+                          ? DaysPerWeek()
+                          : EveryWeekdays(),
                     ],
                   ),
                 );
