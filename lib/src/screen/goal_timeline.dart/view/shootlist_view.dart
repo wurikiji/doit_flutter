@@ -105,7 +105,6 @@ class _DoitShootCardState extends State<DoitShootCard> {
         SizedBox(height: 10.0),
         DoitShootPostBody(
           screenshotController: screenshotController,
-          key: GlobalObjectKey(widget.shoot),
           shoot: widget.shoot,
         ),
         SizedBox(height: 10.0),

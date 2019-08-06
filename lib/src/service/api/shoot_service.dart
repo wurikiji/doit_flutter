@@ -51,6 +51,7 @@ class DoitShootService {
       print(response.body);
       return false;
     }
+    print(response.body);
     DoitShootModel newShoot = DoitShootModel.fromMap({
       'shoot': jsonDecode(response.body),
       'likeBoolean': false,
@@ -58,7 +59,10 @@ class DoitShootService {
     });
     if (image != null) {}
     // getShoots(DoitGoalModel(goalId: shoot.goalId));
-    shootList.add(newShoot);
+    shoot.shootId = newShoot.shootId;
+    shoot.overWorked = newShoot.overWorked;
+    shoot.shootDate = newShoot.shootDate;
+    shootList.add(shoot);
     shootNotifier.add(0);
     return true;
   }
@@ -189,13 +193,13 @@ class DoitShootModel {
   });
   bool didILike;
   bool didIdislike;
-  final DateTime shootDate;
-  final bool overWorked;
+  DateTime shootDate;
+  bool overWorked;
   int numLike;
   int numDislike;
   final DoitMember shooter;
   final String shootName;
-  final int shootId;
+  int shootId;
   final String text;
   final int goalId;
   final int timerTarget;
